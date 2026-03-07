@@ -1,0 +1,315 @@
+
+/* styles.css */
+:root {
+  --bg-color: #0b0b0b;
+  --panel-bg: #111;
+  --card-bg: #141414;
+  --track-bg: #000;
+  --text-main: #e0e0e0;
+  --text-muted: #666;
+  --color-pos: #00cc66;
+  --color-neg: #ff3333;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.controls-bar {
+  position: sticky;
+  top: 0;
+  background: rgba(10, 10, 10, 0.95);
+  border-bottom: 1px solid #333;
+  padding: 10px 12px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  z-index: 100;
+  flex-wrap: wrap;
+}
+
+.main-container {
+  display: grid;
+  grid-template-columns: minmax(460px, 1fr) minmax(760px, 1fr) minmax(860px, 1.2fr);
+  min-height: calc(100vh - 60px);
+}
+
+.left-panel {
+  position: relative;
+  background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+  border-right: 1px solid #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 520px;
+}
+
+.telemetry-panel {
+  padding: 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background-color: var(--panel-bg);
+  border-right: 1px solid #333;
+  overflow-y: auto;
+}
+
+.charts-panel {
+  padding: 24px 20px;
+  background: #101010;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.g-value-display {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-family: "Roboto Mono", monospace;
+}
+
+.g-value-display .number {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.g-value-display .unit {
+  font-size: 1.3rem;
+  color: var(--text-muted);
+}
+
+.section-header {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.steering-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 125px;
+  justify-content: center;
+}
+
+.steering-val {
+  font-family: "Roboto Mono", monospace;
+  margin-top: 32px;
+  font-size: 1rem;
+}
+
+.sensors-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.col-header {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.sensor-column-card {
+  background: var(--card-bg);
+  border: 1px solid #222;
+  border-radius: 2px;
+  padding: 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sensor-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.sensor-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 60px;
+}
+
+.unit-label {
+  font-size: 0.65rem;
+  color: #444;
+  margin-bottom: 2px;
+  font-weight: bold;
+}
+
+.capsule-track {
+  width: 32px;
+  height: 130px;
+  background: var(--track-bg);
+  border-radius: 1px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #222;
+}
+
+.capsule-fill {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  background: #555;
+  transition: all 0.08s;
+  border-radius: 1px;
+  height: 0%;
+}
+
+.unit-val,
+.pedal-val-text {
+  font-size: 0.9rem;
+  font-family: "Roboto Mono";
+  color: #fff;
+  margin-top: 5px;
+}
+
+.rpm-value {
+  font-family: "Roboto Mono";
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.pedals-wrapper {
+  background: var(--card-bg);
+  border: 1px solid #222;
+  border-radius: 2px;
+  padding: 15px;
+}
+
+.pedals-container {
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+}
+
+.pedal-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pedal-track {
+  width: 30px;
+  height: 130px;
+  background: var(--track-bg);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pedal-fill {
+  width: 100%;
+  bottom: 0;
+  position: absolute;
+  border-radius: 2px;
+  height: 0%;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.chart-section {
+  background: #111;
+  border: 1px solid #2c2c2c;
+  border-radius: 6px;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.metric-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.metric-controls label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #1b1b1b;
+  border: 1px solid #2c2c2c;
+  padding: 5px 7px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+}
+
+.chartWrap {
+  background: #090909;
+  border: 1px solid #202020;
+  border-radius: 4px;
+  padding: 8px;
+  height: 240px;
+}
+
+input {
+  background: #222;
+  border: 1px solid #444;
+  color: #fff;
+  padding: 5px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+button {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+button:hover { background: #555; }
+.btn-rec { background: #b71c1c; }
+.btn-rec.recording { background: #e53935; animation: pulse 1.5s infinite; }
+.btn-download { background: #2e7d32; display: none; }
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+@media (max-width: 1850px) {
+  .main-container { grid-template-columns: minmax(460px, 1fr) minmax(760px, 1fr); }
+  .charts-panel { grid-column: 1 / -1; border-top: 1px solid #333; }
+}
+
+@media (max-width: 1300px) {
+  .main-container { grid-template-columns: 1fr; }
+  .left-panel { border-right: 0; border-bottom: 1px solid #333; }
+  .telemetry-panel { border-right: 0; border-bottom: 1px solid #333; }
+  .sensors-grid { grid-template-columns: 1fr 1fr; }
+  .charts-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 760px) {
+  .sensors-grid, .charts-grid { grid-template-columns: 1fr; }
+}
