@@ -514,7 +514,6 @@
     let demoInt;
 
     let isRecording = false;
-    let recordedData = [];
     let startTime = 0;
     let recTimerInt;
 
@@ -717,19 +716,6 @@
       updatePedal("bar-brake", "val-brake", d.fren);
       updatePedal("bar-throttle", "val-throttle", d.acel);
 
-      if (isRecording) {
-        const t = (performance.now() - startTime) / 1000;
-        recordedData.push({
-          time: t.toFixed(3),
-          g: d.g.toFixed(3),
-          steer: d.phi.toFixed(2),
-          accel: d.acel.toFixed(2),
-          brake: d.fren.toFixed(2),
-          fl: d.fi.toFixed(2), fr: d.fd.toFixed(2), rl: d.ti.toFixed(2), rr: d.td.toFixed(2),
-          tfi: d.tfi.toFixed(1), tfd: d.tfd.toFixed(1), tti: d.tti.toFixed(1), ttd: d.ttd.toFixed(1),
-          pfi: d.pfi.toFixed(1), pfd: d.pfd.toFixed(1), pti: d.pti.toFixed(1), ptd: d.ptd.toFixed(1),
-        });
-      }
     }
 
     function addTelemetrySample(d, timeSeconds) {
@@ -763,28 +749,6 @@
           chart.options.scales.x.max = xMax;
           chart.options.scales.x.min = xMin;
           chart.update("none");
-      });
-    }
-
-    // --- NUEVO SISTEMA DE POLLING ASÍNCRONO ---
-    function pollData() {
-      if (!isDemoRunning) return;
-      
-      // extrae el dato desde Python sin bloquear el hilo principal
-      window.pywebview.api.get_latest_data().then((response) => {
-        if (response) {
-          let payload = JSON.parse(response);
-          if (payload && payload.d) {
-            updateUI(payload.d);
-            draw(payload.d.x, payload.d.y);
-            addTelemetrySample(payload.d, payload.elapsed);
-          }
-        }
-        // Llamada recursiva hasta que terminó de dibujar
-        setTimeout(pollData, 50);
-      }).catch((err) => {
-        console.error("Error IPC:", err);
-        setTimeout(pollData, 50);
       });
     }
 
@@ -854,43 +818,6 @@
       bar.style.height = `${pct}%`;
     }
 
-    function toggleRecord() {
-      if (!isRecording) {
-        isRecording = true;
-        recordedData = [];
-        startTime = performance.now();
-        document.getElementById("btnRec").innerHTML = "STOP";
-        document.getElementById("btnRec").classList.add("recording");
-        document.getElementById("btnDown").style.display = "none";
-        document.getElementById("rec-timer").style.display = "block";
-        recTimerInt = setInterval(() => {
-          const s = Math.floor((performance.now() - startTime) / 1000);
-          const m = Math.floor(s / 60);
-          const ss = s % 60;
-          document.getElementById("rec-timer").innerText = `${m}:${ss.toString().padStart(2, "0")}`;
-        }, 1000);
-      } else {
-        isRecording = false;
-        clearInterval(recTimerInt);
-        document.getElementById("btnRec").innerHTML = "REC";
-        document.getElementById("btnRec").classList.remove("recording");
-        document.getElementById("btnDown").style.display = "inline-block";
-        alert(`Grabación terminada. ${recordedData.length} datos.`);
-      }
-    }
-
-    function downloadCSV() {
-      if (recordedData.length === 0) return;
-      let csv = "Time,G,Steer,Accel,Brake,FL,FR,RL,RR,TFI,TFD,TTI,TTD,PFI,PFD,PTI,PTD\n";
-      recordedData.forEach((r) => {
-        csv += `${r.time},${r.g},${r.steer},${r.accel},${r.brake},${r.fl},${r.fr},${r.rl},${r.rr},${r.tfi},${r.tfd},${r.tti},${r.ttd},${r.pfi},${r.pfd},${r.pti},${r.ptd}\n`;
-      });
-      const blob = new Blob([csv], { type: "text/csv" });
-      const a = document.createElement("a");
-      a.href = window.URL.createObjectURL(blob);
-      a.download = "telemetry_data.csv";
-      a.click();
-    }
 
     // ==========================================
     // 1. HARDWARE REAL (WebSockets con ESP32)
