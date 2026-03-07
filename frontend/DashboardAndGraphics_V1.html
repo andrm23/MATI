@@ -470,16 +470,6 @@
   <script src="javascript/comms.js"></script>
   <script src="javascript/ui.js"></script>
   <script src="javascript/charts.js"></script>
-  <script>
-    // app.js integrado (Orquestador de inicio)
-   document.addEventListener("DOMContentLoaded", () => {
-      buildMetricControls("metricControls1", chartMetricSets[0]);
-      buildMetricControls("metricControls2", chartMetricSets[1]);
-      buildMetricControls("metricControls3", chartMetricSets[2]);
-      buildMetricControls("metricControls4", chartMetricSets[3]);
-      draw(0, 0);
-      refreshCharts();
-    });
-  </script>
+  <script src="javascript/app.js"></script>
 </body>
 </html>
