@@ -25,7 +25,7 @@ def obtencion_ruta_html(ruta_relativa):
 
 
 html_path = obtencion_ruta_html("frontend/DashboardAndGraphics_V1.html")
-TITULO_APP = "MATI v1.0.1"
+TITULO_APP = "MATI"
 
 
 def app_inicializacion():
