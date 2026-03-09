@@ -7,8 +7,20 @@ from db_manager import TelemetryDB
 
 
 class TelemetryAPI:
+    """
+    Controlador (API) entre el motor de Python y la vista en JavaScript.
+
+    Actúa como el puente de comunicación IPC (Inter-Process Communication) del sistema de telemetría. Se
+    encarga de gestionar el ciclo de vida del simulador de hardware (Modeo Demo), realizar la grabación
+    datos reales hacia la base de datos local, y exponer la información empaquetada para que el frontend
+    la consuma en tiempo real.
+    """
+
     def __init__(self):
-        # conexión con SQLite
+        """
+        Inicializa el estado de la API, configurando banderas de control y estableciendo la conexión
+        con la base de datos SQLite.
+        """
         self.db = TelemetryDB()
         self.is_running = False
         self.window = None
@@ -16,37 +28,80 @@ class TelemetryAPI:
         self.latest_payload = None
 
     def set_window(self, window):
+        """
+        Asigna la referencia de la ventana principal de la interfaz gráfica.
+
+        Permite que el backend (la API de Python) se cominuqe directamente con el contenedor web. Es
+        fundamental para poder gestionar eventos nativos (como el cierre de la app) o inyectar comandos
+        JavaScript desde Python.
+
+        Args:
+            window (webview.Window): La instancia de la ventana generada por la librería pywebview.
+        """
         self.window = window
 
     def get_latest_data(self):
-        """Pull de los datos desde el frontend"""
+        """
+        Expone el último paquete de telemetría generado para ser enviado al frontend.
+
+        Esta función es invocada de manera asíncrona desde JavaScript (mediane la técnica de polling)
+        a través del punete IPC de pywebview. Su objetivo es entregar los datos calculados por el hilo
+        de simulación para que la interfaz web actualice el radas de fuerzas G y las gráficas en tiempo
+        real.
+
+        Returns:
+            str: Cadena en formato JSON con el diccionario de sensores ('d') y el tiempo transcurrido
+                 ('elapsed').
+            None: Si la simulación aún no ha generado el primer paquete de datos.
+        """
         if getattr(self, "latest_payload", None):
             return json.dumps(self.latest_payload)
         return None
 
     def start_demo(self):
-        """Conexión con el botón DEMO para iniciar la simulación de datos"""
+        """
+        Inicializa la simulación de telemetría.
+
+        Esta función inicia la simulación de telemetría invocando a la función hardware_loop cuando
+        se presiona en botón "DEMO" desde el frontend.
+
+        """
         if not self.is_running:
             self.is_running = True
-
-            # simulación
             t = threading.Thread(target=self.hardware_loop)
             t.daemon = True
             t.start()
-            return "Simulación iniciadad desde Python"
 
     def stop_demo(self):
+        """
+        Deteiene la simulación de telemetría.
+
+        Detiene el proceso de simulación de telemetría en caso de que el usuario presione la tecla "STOP
+        DEMO" o en caso de conectarse con el módulo ESP32."
+        """
+
         self.is_running = False
-        return f"Simulación detenida desde Python."
 
     def start_record(self):
-        """Conexión con el botón REC para iniciar la grabación de datos"""
+        """
+        Interruptor para iniciar el almacenamiento de datos de telemetría.
+
+        Esta fución se encarga de crear una nueva tabla dentro de la base de datos para preparar el
+        almacenamiento de datos de telemetría.
+        """
         self.is_recording = True
         self.db.create_table()  # borrado de la DB y reset del PK
-        return "Grabación iniciada en la base de datos."
 
     def stop_record(self):
-        """Conexión con el botón REC para detener la grabación de datos"""
+        """
+        Interruptor para detener el almacenamiento de datos de telemetría.
+
+        Detiene la grabación de telemetría dentro de la base de datos y exporta la información almacenada
+        en un archivo csv en la carpeta "Desktop" del usuario.
+
+        Returns:
+            str: Mensaje que indica el path en el que se exportó el archivo csv.
+        """
         self.is_recording = False
         desktop_path = os.path.join(
             os.path.expanduser("~"), "Desktop", "telemetry_data.csv"
@@ -55,21 +110,56 @@ class TelemetryAPI:
         return f"CSV exportado en:\n{desktop_path}"
 
     def push_real_data(self, data):
-        """Incersión de datos obtenidos de la ---- a la DB"""
+        """
+        Almacena los datos de telemetría reales en la base de datos.
+
+        Se encarga de recibir un paquete de datos crudos exclusivamente desde el ESP32 a través del
+        frontend, realizar un redondeo a cuatro decimales e intertar el diccionario limpio en el gestor
+        de la base de datos.
+
+        Args:
+            data (dict): Diccionario con las lecturas de los sensores (g, phi, etc).
+        """
         if getattr(self, "is_recording", False):
             d_limpio = {
-                clave: round(valor, 3)
+                clave: round(valor, 4)
                 for clave, valor in data.items()
                 if isinstance(valor, (int, float))
             }
             self.db.insert_data(d_limpio)
 
     def clamp(self, value, min_val, max_val):
-        """Función de apoyo"""
+        """
+        Limita un valor numérico dentro de un rango definido.
+
+        Esta función asegura que las lecturas generadas por el modelo matemático no superen los límites
+        físicos de los sensores reales (ej. presiones negativas o temperaturas por encima del límite
+        operativo).
+
+        Args:
+            value (float o int): Valor crudo por evaluar.
+            min_val (float o int): Límite inferior permitido.
+            max_val (float o int): Límite superior permitido.
+
+        Returns:
+            float o int: Valor ajustado al límite más cercano si excede el rango, o el valor original
+                         si se enceuntra dentro del mismo.
+        """
         return max(min_val, min(value, max_val))
 
     def hardware_loop(self):
-        """SSimulador de datos"""
+        """
+        Ciclo principal de simulación de telemetría (Modo Demo).
+
+        Se ejecuta en un hilo secundario para no bloquear la interfaz principal.
+        Sustituye al hardware físico generando datos sintéticos mediante funciones trigonométricas para
+        probar el renderizado de gráficas y el radar de gráficas G.
+
+        Opera a una frecuencia de 20GHz (sleep de 0.005s). Además, esta función evalúa si la grabación
+        está activa para enviarlos a la base de datos y actualiza el playload global para que el frontend
+        los consuma vía IPC.
+
+        """
         t = 0.0
         #  perf_counter es el equivalente al performance.now() de JS
         demo_start = time.perf_counter()
@@ -154,5 +244,13 @@ class TelemetryAPI:
             time.sleep(0.05)
 
     def on_closing(self):
+        """
+        Rutina de limpieza (teardown) para un cierre seguro del sistema.
+
+        Detiene el hilo del simulador de hardware (si está activo) y cierra la conexión con la base de
+        datos SQLite. Es necesario para evitar que siga corriendo procesos en memoria RAM y previene la
+        corrupción del archivo de datos.
+        """
+
         self.is_running = False
         self.db.close()
