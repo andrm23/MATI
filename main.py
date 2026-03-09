@@ -1,3 +1,7 @@
+from compat import apply_fixes
+
+apply_fixes()
+
 import webview
 import sys
 import os
@@ -5,13 +9,6 @@ import traceback
 from db_manager import TelemetryDB
 from pathlib import Path
 from telemetry_api import TelemetryAPI
-
-# --- PARCHE ANTI-CRASH PARA MACOS EN MODO WINDOWED ---
-if sys.stdout is None:
-    sys.stdout = open(os.devnull, "w")
-if sys.stderr is None:
-    sys.stderr = open(os.devnull, "w")
-# ------------------------------------------------------
 
 
 def obtencion_ruta_html(ruta_relativa):
