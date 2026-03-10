@@ -69,6 +69,15 @@ function updatePedal(barId, txtId, val) {
   bar.style.height = `${pct}%`;
 }
 
+function toggleModal() {
+  const modal = document.getElementById("modalInfo");
+   if (modal.style.display === "none") {
+    modal.style.display = "flex";
+  } else {
+    modal.style.display = "none";
+  }
+}
+
 function updateUI(d) {
   getEl("g-total").innerText = d.g.toFixed(2);
 

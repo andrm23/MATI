@@ -18,6 +18,7 @@
     <button id="btnRec" class="btn-rec" onclick="toggleRecord()">REC</button>
     <button id="btnDown" class="btn-download" onclick="downloadCSV()">CSV</button>
     <span id="rec-timer" style="font-family: 'Roboto Mono'; font-size: 0.8rem; display: none">00:00</span>
+    <button class="btn-info" onclick="toggleModal()">ⓘ</button>
   </div>
 
   <div class="main-container">
@@ -157,5 +158,15 @@
   <script src="javascript/ui.js"></script>
   <script src="javascript/charts.js"></script>
   <script src="javascript/app.js"></script>
+
+  <div id="modalInfo" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h2 style="color: var(--color-pos)">MATI</h2>
+      <p style="color: var(--text-muted)">Telemetría Interactiva v1.0.1</p>
+      <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
+      <p>Desarrollado para monitoreo de sensores en tiempo real.</p>
+      <button onclick="toggleModal()" style="margin-top: 20px;">CERRAR</button>
+    </div>
+  </div>
 </body>
 </html>
