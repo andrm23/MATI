@@ -11,15 +11,13 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    
-    # ESTO ES LO NUEVO: Le dice a GitHub que todo ocurre dentro de la carpeta MATI
-    defaults:
-      run:
-        working-directory: ./MATI
 
     steps:
     - name: Descargar el código
       uses: actions/checkout@v4
+
+    - name: Listar archivos para depuración (Debug)
+      run: ls -R  # Esto nos dirá en el log si la carpeta 'frontend' realmente existe
 
     - name: Instalar Python
       uses: actions/setup-python@v5
@@ -35,7 +33,6 @@ jobs:
     - name: Instalar librerías de Python
       run: |
         pip install pyinstaller pywebview
-        # En Linux necesitamos PyGObject para el motor GTK
         if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
           pip install PyGObject==3.48.2
         fi
@@ -49,10 +46,11 @@ jobs:
     - name: Compilar ejecutable (Linux y Mac)
       if: matrix.os != 'windows-latest'
       run: |
+        # Cambiamos a sintaxis de punto para asegurar que encuentre la carpeta
         pyinstaller --windowed --onefile --name "MATI" --add-data "frontend:frontend" --hidden-import gi --hidden-import gi.repository.Gtk --hidden-import gi.repository.Gdk --hidden-import gi.repository.WebKit2 main.py
 
     - name: Guardar Artifacts (Descargables)
       uses: actions/upload-artifact@v4
       with:
         name: MATI-${{ matrix.os }}
-        path: MATI/dist/
+        path: dist/
