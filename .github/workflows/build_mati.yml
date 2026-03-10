@@ -3,7 +3,7 @@ name: Build MATI Cross-Platform
 on:
   push:
     # REEMPLAZA 'fix/linux-compatibility' por el nombre de tu rama real
-    branches: [ "fix/linux-compatibility" ]
+    branches: [ "fix/linux-mint-compatibility" ]
   workflow_dispatch:
 
 jobs:
