@@ -2,7 +2,7 @@ name: Build MATI Cross-Platform
 
 on:
   push:
-    branches: [ "fix/linux-compatibility" ]
+    branches: [ "fix/linux-mint-compatibility" ]
   workflow_dispatch:
 
 jobs:
