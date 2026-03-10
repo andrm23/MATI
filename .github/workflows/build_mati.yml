@@ -2,7 +2,7 @@ name: Build MATI Cross-Platform
 
 on:
   push:
-    branches: [ "fix/linux-mint-compatibility" ]
+    branches: [ "fix/linux-compatibility" ]
   workflow_dispatch:
 
 jobs:
@@ -16,9 +16,6 @@ jobs:
     - name: Descargar el código
       uses: actions/checkout@v4
 
-    - name: Listar archivos para depuración (Debug)
-      run: ls -R  # Esto nos dirá en el log si la carpeta 'frontend' realmente existe
-
     - name: Instalar Python
       uses: actions/setup-python@v5
       with:
@@ -28,7 +25,8 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt-get update
-        sudo apt-get install -y libgirepository1.0-dev gcc libcairo2-dev pkg-config python3-dev gir1.2-gtk-3.0 libwebkit2gtk-4.0-37
+        # Cambiamos 4.0-37 por 4.1-0 que es la versión de Ubuntu 24.04
+        sudo apt-get install -y libgirepository1.0-dev gcc libcairo2-dev pkg-config python3-dev gir1.2-gtk-3.0 libwebkit2gtk-4.1-0
 
     - name: Instalar librerías de Python
       run: |
@@ -41,12 +39,13 @@ jobs:
     - name: Compilar ejecutable (Windows)
       if: matrix.os == 'windows-latest'
       run: |
+        # Usamos ; para Windows
         pyinstaller --windowed --onefile --name "MATI" --add-data "frontend;frontend" main.py
 
     - name: Compilar ejecutable (Linux y Mac)
       if: matrix.os != 'windows-latest'
       run: |
-        # Cambiamos a sintaxis de punto para asegurar que encuentre la carpeta
+        # Usamos : para Linux/Mac y agregamos los imports ocultos para evitar que se congele
         pyinstaller --windowed --onefile --name "MATI" --add-data "frontend:frontend" --hidden-import gi --hidden-import gi.repository.Gtk --hidden-import gi.repository.Gdk --hidden-import gi.repository.WebKit2 main.py
 
     - name: Guardar Artifacts (Descargables)
