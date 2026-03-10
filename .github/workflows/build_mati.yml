@@ -2,7 +2,6 @@ name: Build MATI Cross-Platform
 
 on:
   push:
-    # REEMPLAZA 'fix/linux-compatibility' por el nombre de tu rama real
     branches: [ "fix/linux-mint-compatibility" ]
   workflow_dispatch:
 
@@ -10,9 +9,13 @@ jobs:
   build:
     strategy:
       matrix:
-        # Esto disparará tres computadoras virtuales en paralelo
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
+    
+    # ESTO ES LO NUEVO: Le dice a GitHub que todo ocurre dentro de la carpeta MATI
+    defaults:
+      run:
+        working-directory: ./MATI
 
     steps:
     - name: Descargar el código
@@ -32,7 +35,7 @@ jobs:
     - name: Instalar librerías de Python
       run: |
         pip install pyinstaller pywebview
-        # PyGObject solo es necesario para el motor GTK de Linux
+        # En Linux necesitamos PyGObject para el motor GTK
         if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
           pip install PyGObject==3.48.2
         fi
@@ -46,11 +49,10 @@ jobs:
     - name: Compilar ejecutable (Linux y Mac)
       if: matrix.os != 'windows-latest'
       run: |
-        # Incluimos los hidden-imports para asegurar que WebKit cargue bien en Linux
         pyinstaller --windowed --onefile --name "MATI" --add-data "frontend:frontend" --hidden-import gi --hidden-import gi.repository.Gtk --hidden-import gi.repository.Gdk --hidden-import gi.repository.WebKit2 main.py
 
     - name: Guardar Artifacts (Descargables)
       uses: actions/upload-artifact@v4
       with:
         name: MATI-${{ matrix.os }}
-        path: dist/
+        path: MATI/dist/
