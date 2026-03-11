@@ -1,3 +1,11 @@
+"""
+Módulo de gestión de persistencia de datos para el sistema MATI.
+
+Este script facilita la conexión y las operaciones sobre una base de datos
+local SQLite, permitiendo el almacenamiento estructurado de las sesiones de
+telemetría capturadas y su posterior exportación a formatos estándar.
+"""
+
 import sqlite3
 import os
 import csv
@@ -9,7 +17,20 @@ BATCH_SIZE = 20  # Frecuencia de 20Hz
 
 
 class TelemetryDB:
+    """
+    Clase encargada de la gestión del ciclo de vida de la base de datos de telemetría.
+
+    Maneja la creación de tablas, la inserción optimizada por lotes (batching)
+    y la exportación de datos históricos a archivos CSV.
+    """
+
     def __init__(self):
+        """
+        Inicializa la conexión con la base de datos y prepara el entorno.
+
+        Crea la carpeta de almacenamiento si no existe y reinicia la base de
+        datos para asegurar una sesión de grabación limpia.
+        """
         os.makedirs(CARPETA_SEGURA, exist_ok=True)
 
         if os.path.exists(DB_NAME):
@@ -28,7 +49,12 @@ class TelemetryDB:
         self.create_table()
 
     def create_table(self):
-        # Aseguramos borrar la tabla vieja al presionar REC
+        """
+        Define la estructura de la tabla de telemetría en la base de datos.
+
+        Elimina cualquier tabla previa 'telemetry_data' para evitar la mezcla
+        de datos entre sesiones de grabación distintas.
+        """
         self.cursor.execute("DROP TABLE IF EXISTS telemetry_data")
 
         query = """
@@ -44,7 +70,15 @@ class TelemetryDB:
         self.conn.commit()
 
     def insert_data(self, d):
-        # Mapeamos de datos del diccionario
+        """
+        Procesa y encola un nuevo registro de telemetría.
+
+        Mapea los valores del diccionario de entrada a una tupla estructurada.
+        Si se alcanza el BATCH_SIZE definido, se dispara el commit a la DB.
+
+        Args:
+            d (dict): Diccionario con los datos crudos de los sensores.
+        """
         row = (
             float(d.get("Time", 0.0)),
             float(d.get("g", 0.0)),
@@ -70,7 +104,13 @@ class TelemetryDB:
             self.commit_batch()
 
     def commit_batch(self):
-        """Ingresa los datos a la DB"""
+        """
+        Realiza la inserción masiva de los datos encolados en la base de datos.
+
+        Utiliza executemany para optimizar el rendimiento de escritura y
+        limpia el búfer temporal tras confirmar la transacción.
+        """
+
         if not self.batch_data:
             return
 
@@ -87,7 +127,16 @@ class TelemetryDB:
         self.batch_data.clear()
 
     def export_csv(self, filename="telemetry_data.csv"):
-        """Exporta la DB a un archivo .csv"""
+        """
+        Exporta el contenido íntegro de la tabla telemetry_data a un archivo CSV.
+
+        Realiza un commit final de los datos pendientes antes de leer la
+        base de datos y generar el archivo con encabezados técnicos.
+
+        Args:
+            filename (str): Nombre o ruta del archivo de salida.
+        """
+
         self.commit_batch()
         self.cursor.execute(
             "SELECT Time, G, Steer, Accel, Brake, FL, FR, RL, RR, TFI, TFD, TTI, TTD, PFI, PFD, PTI, PTD FROM telemetry_data ORDER BY id ASC"
@@ -121,5 +170,15 @@ class TelemetryDB:
             writer.writerows(registros)
 
     def close(self):
+        """
+        Exporta el contenido íntegro de la tabla telemetry_data a un archivo CSV.
+
+        Realiza un commit final de los datos pendientes antes de leer la
+        base de datos y generar el archivo con encabezados técnicos.
+
+        Args:
+            filename (str): Nombre o ruta del archivo de salida.
+        """
+
         self.commit_batch()
         self.conn.close()
