@@ -327,12 +327,31 @@ button:hover { background: #555; }
 }
 
 .modal-content{
+  font-family: 'Roboto Mono';
   background: var(--card-bg);
   padding: 30px;
   border: 1px solid #333;
   border-radius: 8px;
   max-width: 400px;
   text-align: center;
+}
+
+.app-branding{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Espacio entre el logo y el texto */
+    margin-bottom: 10px;
+}
+
+.app-icon {
+    width: 60px;  /* Logo de la app más prominente */
+    height: 60px;
+    object-fit: contain;
+}
+
+.app-info-text {
+    text-align: left; /* El texto se alinea a la izquierda respecto al logo */
 }
 
 @keyframes pulse {
