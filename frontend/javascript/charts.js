@@ -1,9 +1,16 @@
-// charts.js
-// Renderizado de gráficas (Chart.js) y radar de fuerzas G (Canvas nativo)
+/**
+ * @file charts.js
+ * @description Gestión de visualización gráfica de MATI. 
+ * Controla el radar de fuerzas G mediante Canvas nativo y las gráficas temporales 
+ * utilizando la librería Chart.js con soporte de zoom y pan.
+ */
 
 const canvas = document.getElementById("gPlot");
 const ctx = canvas.getContext("2d");
 
+/**
+ * Ajusta las dimensiones del canvas del radar según el tamaño de la ventana.
+ */
 function resizeCanvas() {
   const size = Math.min(window.innerWidth * 0.33, 520);
   canvas.width = size;
@@ -12,6 +19,11 @@ function resizeCanvas() {
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
+/**
+ * Renderiza el radar de fuerzas G y la estela (trail) de movimiento.
+ * @param {number} x - Fuerza G lateral.
+ * @param {number} y - Fuerza G longitudinal.
+ */
 function draw(x, y) {
   const w = canvas.width;
   const h = canvas.height;
@@ -21,15 +33,12 @@ function draw(x, y) {
 
   ctx.clearRect(0, 0, w, h);
 
+  // Dibujo de ejes y círculos de referencia (1G, 2G, 3G)
   ctx.strokeStyle = "#333";
   ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(cx, 0);
-  ctx.lineTo(cx, h);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(0, cy);
-  ctx.lineTo(w, cy);
+  ctx.moveTo(cx, 0); ctx.lineTo(cx, h);
+  ctx.moveTo(0, cy); ctx.lineTo(w, cy);
   ctx.stroke();
 
   ctx.fillStyle = "#444";
@@ -41,11 +50,13 @@ function draw(x, y) {
     ctx.fillText(`${i}G`, cx + 5, cy - scale * i + 12);
   }
 
+  // Cálculo de posición actual y gestión de la estela
   const sx = cx + x * scale;
   const sy = cy - y * scale;
   trail.push({ x: sx, y: sy });
   if (trail.length > 50) trail.shift();
 
+  // Renderizado de la estela
   if (trail.length > 1) {
     ctx.beginPath();
     ctx.strokeStyle = "rgba(0,170,255,0.6)";
@@ -55,6 +66,7 @@ function draw(x, y) {
     ctx.stroke();
   }
 
+  // Punto indicador de posición actual
   ctx.beginPath();
   ctx.shadowBlur = 100;
   ctx.arc(sx, sy, 8, 0, Math.PI * 2);
@@ -62,6 +74,10 @@ function draw(x, y) {
   ctx.shadowBlur = 0;
 }
 
+/**
+ * Define la configuración base para las instancias de Chart.js.
+ * @returns {Object} Objeto de configuración con escalas y plugins de zoom.
+ */
 function chartOptions() {
   return {
     responsive: true,
@@ -85,22 +101,25 @@ function chartOptions() {
       legend: { labels: { color: "#f2f2f2" } },
       zoom: {
         pan: { enabled: true, mode: "xy" },
-        zoom: {
-          wheel: { enabled: true },
-          pinch: { enabled: true },
-          mode: "xy",
-        },
+        zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: "xy" },
       },
     },
   };
 }
 
+// Inicialización de las 4 gráficas del dashboard
 const charts = [1, 2, 3, 4].map((n) => new Chart(document.getElementById(`telemetryChart${n}`), {
   type: "line",
   data: { datasets: [] },
   options: chartOptions(),
 }));
 
+/**
+ * Construye los objetos de datos para Chart.js basados en las métricas seleccionadas.
+ * @param {Array} sorted - Datos de telemetría ordenados por tiempo.
+ * @param {Set} selectedMetrics - Conjunto de claves de métricas a mostrar.
+ * @returns {Array} Listado de datasets configurados.
+ */
 function buildDatasets(sorted, selectedMetrics) {
   const datasets = [];
   selectedMetrics.forEach((metricKey) => {
@@ -119,14 +138,21 @@ function buildDatasets(sorted, selectedMetrics) {
   return datasets;
 }
 
+/**
+ * Refresca el contenido visual de todas las gráficas activas.
+ */
 function refreshCharts() {
-  const sorted = [...telemetrySeries].sort((a, b) => a.time - b.time);
   charts.forEach((chart, idx) => {
     chart.data.datasets = buildDatasets(telemetrySeries, chartMetricSets[idx]);
     chart.update("none");
   });
 }
 
+/**
+ * Agrega una muestra de telemetría y gestiona el desplazamiento automático del eje X.
+ * @param {Object} d - Datos del sensor.
+ * @param {number} timeSeconds - Tiempo transcurrido en segundos.
+ */
 function addTelemetrySample(d, timeSeconds) {
   telemetrySeries.push({ time: timeSeconds, ...d });
   if (telemetrySeries.length > 2800) telemetrySeries.shift();
@@ -140,19 +166,11 @@ function addTelemetrySample(d, timeSeconds) {
         }
       });
 
+      // Lógica de escalado dinámico del eje X
       let xMax, xMin;
-      if (timeSeconds <= 10) {
-        xMax = 10; xMin = 0;
-      } else if (timeSeconds <= 20) {
-        xMax = Math.ceil(timeSeconds / 2) * 2; xMin = 0;
-      } else if (timeSeconds <= 50) {
-        xMax = Math.ceil(timeSeconds / 5) * 5; xMin = 0;
-      } else if (timeSeconds <= 100) {
-        xMax = Math.ceil(timeSeconds / 10) * 10; xMin = 0;
-      } else {
-        xMax = Math.ceil(timeSeconds / 20) * 20;
-        xMin = Math.max(0, xMax - 120);
-      }
+      if (timeSeconds <= 10) { xMax = 10; xMin = 0; }
+      else if (timeSeconds <= 100) { xMax = Math.ceil(timeSeconds / 10) * 10; xMin = 0; }
+      else { xMax = Math.ceil(timeSeconds / 20) * 20; xMin = Math.max(0, xMax - 120); }
 
       chart.options.scales.x.max = xMax;
       chart.options.scales.x.min = xMin;
@@ -160,15 +178,27 @@ function addTelemetrySample(d, timeSeconds) {
   });
 }
 
+/**
+ * Restablece el nivel de zoom de una gráfica específica.
+ * @param {Object} chartInstance - Instancia de Chart.js a resetear.
+ */
 function resetZoom(chartInstance) {
   chartInstance.resetZoom();
 }
 
+/**
+ * Limpia el búfer de datos de telemetría y vacía las gráficas.
+ */
 function clearChartData() {
   telemetrySeries.length = 0;
   refreshCharts();
 }
 
+/**
+ * Crea dinámicamente los controles (checkboxes) para activar/desactivar métricas.
+ * @param {string} containerId - ID del contenedor HTML.
+ * @param {Set} selectedMetrics - Conjunto de métricas vinculadas al contenedor.
+ */
 function buildMetricControls(containerId, selectedMetrics) {
   const container = document.getElementById(containerId);
   METRICS.forEach((metric) => {
