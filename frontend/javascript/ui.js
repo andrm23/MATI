@@ -128,11 +128,20 @@ function updatePedal(barId, txtId, val) {
   bar.style.height = `${pct}%`;
 }
 
+function toggleModal() {
+  const modal = document.getElementById("modalInfo");
+   if (modal.style.display === "none") {
+    modal.style.display = "flex";
+  } else {
+    modal.style.display = "none";
+  }
+}
 /**
  * Función principal de actualización de la interfaz de usuario.
  * Procesa el objeto de telemetría completo y refresca todos los componentes visuales.
  * @param {Object} d - Objeto con los datos de telemetría (G, phi, fi, fd, etc.).
  */
+
 function updateUI(d) {
   // G-Force Display
   getEl("g-total").innerText = d.g.toFixed(2);
