@@ -107,7 +107,7 @@ class TelemetryAPI:
             os.path.expanduser("~"), "Desktop", "telemetry_data.csv"
         )
         total_registros = self.db.export_csv(desktop_path)
-        return f"\nSe guardaron {total_registros} registros en:\n\n{desktop_path}"
+        return {"total": total_registros, "path": desktop_path}
 
     def push_real_data(self, data):
         """
