@@ -117,7 +117,7 @@ class TelemetryDB:
         INSERT INTO telemetry_data (
             Time, G, Steer, Accel, Brake, 
             FL, FR, RL, RR, 
-            TFI, TFD, TTI, TTD,
+            TFI, TFD, TTI, TTD
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
         self.cursor.executemany(query, self.batch_data)
