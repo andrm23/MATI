@@ -3,6 +3,7 @@ import time
 import math
 import json
 import os
+import webbrowser
 from db_manager import TelemetryDB
 
 
@@ -14,6 +15,10 @@ class TelemetryAPI:
         self.window = None
         self.is_recording = False
         self.latest_payload = None
+
+    def open_external_link(self, url):
+        """Abre una URL en el navegador predeterminado del sistema."""
+        webbrowser.open(url)
 
     def set_window(self, window):
         self.window = window
