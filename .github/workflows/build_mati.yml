@@ -1,5 +1,9 @@
 name: Build MATI Cross-Platform
 
+# Variable global para forzar el uso de Node 24 y evitar avisos de depreciación
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   push:
     branches: [ "fix/linux-mint-compatibility" ]
@@ -25,7 +29,7 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt-get update
-        # Cambiamos 4.0-37 por 4.1-0 que es la versión de Ubuntu 24.04
+        # Se utiliza libwebkit2gtk-4.1-0 para compatibilidad con Ubuntu 24.04 / Mint
         sudo apt-get install -y libgirepository1.0-dev gcc libcairo2-dev pkg-config python3-dev gir1.2-gtk-3.0 libwebkit2gtk-4.1-0
 
     - name: Instalar librerías de Python
@@ -39,13 +43,13 @@ jobs:
     - name: Compilar ejecutable (Windows)
       if: matrix.os == 'windows-latest'
       run: |
-        # Usamos ; para Windows
+        # En Windows el separador de --add-data es ";"
         pyinstaller --windowed --onefile --name "MATI" --add-data "frontend;frontend" main.py
 
     - name: Compilar ejecutable (Linux y Mac)
       if: matrix.os != 'windows-latest'
       run: |
-        # Usamos : para Linux/Mac y agregamos los imports ocultos para evitar que se congele
+        # En Linux/Mac el separador es ":" e incluimos los imports de GObject Introspection
         pyinstaller --windowed --onefile --name "MATI" --add-data "frontend:frontend" --hidden-import gi --hidden-import gi.repository.Gtk --hidden-import gi.repository.Gdk --hidden-import gi.repository.WebKit2 main.py
 
     - name: Guardar Artifacts (Descargables)
