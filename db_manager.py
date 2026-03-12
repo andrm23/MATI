@@ -62,8 +62,7 @@ class TelemetryDB:
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             Time REAL, G REAL, Steer REAL, Accel REAL, Brake REAL,
             FL REAL, FR REAL, RL REAL, RR REAL,
-            TFI REAL, TFD REAL, TTI REAL, TTD REAL,
-            PFI REAL, PFD REAL, PTI REAL, PTD REAL
+            TFI REAL, TFD REAL, TTI REAL, TTD REAL
         )
         """
         self.cursor.execute(query)
@@ -80,23 +79,23 @@ class TelemetryDB:
             d (dict): Diccionario con los datos crudos de los sensores.
         """
         row = (
-            float(d.get("Time", 0.0)),
-            float(d.get("g", 0.0)),
-            float(d.get("phi", 0.0)),
-            float(d.get("acel", 0.0)),
-            float(d.get("fren", 0.0)),
-            float(d.get("fi", 0.0)),
-            float(d.get("fd", 0.0)),
-            float(d.get("ti", 0.0)),
-            float(d.get("td", 0.0)),
-            float(d.get("tfi", 0.0)),
-            float(d.get("tfd", 0.0)),
-            float(d.get("tti", 0.0)),
-            float(d.get("ttd", 0.0)),
-            float(d.get("pfi", 0.0)),
-            float(d.get("pfd", 0.0)),
-            float(d.get("pti", 0.0)),
-            float(d.get("ptd", 0.0)),
+            round(float(d.get("Time", 0.0)), 4),
+            round(float(d.get("g", 0.0)), 4),
+            round(float(d.get("phi", 0.0)), 4),
+            round(float(d.get("acel", 0.0)), 4),
+            round(float(d.get("fren", 0.0)), 4),
+            round(float(d.get("fi", 0.0)), 4),
+            round(float(d.get("fd", 0.0)), 4),
+            round(float(d.get("ti", 0.0)), 4),
+            round(float(d.get("td", 0.0)), 4),
+            round(float(d.get("tfi", 0.0)), 4),
+            round(float(d.get("tfd", 0.0)), 4),
+            round(float(d.get("tti", 0.0)), 4),
+            round(float(d.get("ttd", 0.0)), 4),
+            # float(d.get("pfi", 0.0)),
+            # float(d.get("pfd", 0.0)),
+            # float(d.get("pti", 0.0)),
+            # float(d.get("ptd", 0.0)),
         )
         self.batch_data.append(row)
 
@@ -118,9 +117,8 @@ class TelemetryDB:
         INSERT INTO telemetry_data (
             Time, G, Steer, Accel, Brake, 
             FL, FR, RL, RR, 
-            TFI, TFD, TTI, TTD, 
-            PFI, PFD, PTI, PTD
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            TFI, TFD, TTI, TTD
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
         self.cursor.executemany(query, self.batch_data)
         self.conn.commit()
@@ -139,7 +137,7 @@ class TelemetryDB:
 
         self.commit_batch()
         self.cursor.execute(
-            "SELECT Time, G, Steer, Accel, Brake, FL, FR, RL, RR, TFI, TFD, TTI, TTD, PFI, PFD, PTI, PTD FROM telemetry_data ORDER BY id ASC"
+            "SELECT Time, G, Steer, Accel, Brake, FL, FR, RL, RR, TFI, TFD, TTI, TTD FROM telemetry_data ORDER BY id ASC"
         )
         registros = self.cursor.fetchall()
 
@@ -157,10 +155,6 @@ class TelemetryDB:
             "TFD",
             "TTI",
             "TTD",
-            "PFI",
-            "PFD",
-            "PTI",
-            "PTD",
         ]
 
         # creación del archivo .csv
@@ -168,6 +162,8 @@ class TelemetryDB:
             writer = csv.writer(f)
             writer.writerow(headers)
             writer.writerows(registros)
+
+        return len(registros)
 
     def close(self):
         """

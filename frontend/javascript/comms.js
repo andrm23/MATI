@@ -26,8 +26,8 @@ function connect() {
         fi: j.fi || 0, fd: j.fd || 0, ti: j.ti || 0, td: j.td || 0,
         tfi: Math.max(0, j.tfi || 0), tfd: Math.max(0, j.tfd || 0),
         tti: Math.max(0, j.tti || 0), ttd: Math.max(0, j.ttd || 0),
-        pfi: Math.max(0, j.pfi || 0), pfd: Math.max(0, j.pfd || 0),
-        pti: Math.max(0, j.pti || 0), ptd: Math.max(0, j.ptd || 0),
+        // pfi: Math.max(0, j.pfi || 0), pfd: Math.max(0, j.pfd || 0),
+        // pti: Math.max(0, j.pti || 0), ptd: Math.max(0, j.ptd || 0),
         rpmFi: j.rpmFi || 0, rpmFd: j.rpmFd || 0, rpmTi: j.rpmTi || 0, rpmTd: j.rpmTd || 0,
       };
       
@@ -75,6 +75,42 @@ function toggleRecord() {
       const ss = s % 60;
       recTimer.innerText = `${m}:${ss.toString().padStart(2, "0")}`;
     }, 1000);
+
+  }  else {
+    window.pywebview.api.stop_record().then((response) => {
+       const modal = document.getElementById('csvModal');
+       const msg = document.getElementById('csvModalMsg');
+       msg.innerHTML = `Se guardaron ${response.total} registros en:<br>${response.path}`; 
+       modal.style.display = 'block';
+    });
+    
+    isRecording = false;
+    clearInterval(recTimerInt);
+    btnRec.innerHTML = "REC";
+    btnRec.classList.remove("recording");
+    recTimer.style.display = "none";
+  }
+}
+
+  const btnRec = document.getElementById("btnRec");
+  const recTimer = document.getElementById("rec-timer");
+
+  if (!isRecording) {
+    window.pywebview.api.start_record().then(console.log);
+    
+    isRecording = true;
+    startTime = performance.now();
+    
+    btnRec.innerHTML = "STOP";
+    btnRec.classList.add("recording");
+    recTimer.style.display = "block";
+    
+    recTimerInt = setInterval(() => {
+      const s = Math.floor((performance.now() - startTime) / 1000);
+      const m = Math.floor(s / 60);
+      const ss = s % 60;
+      recTimer.innerText = `${m}:${ss.toString().padStart(2, "0")}`;
+    }, 1000);
   } else {
     window.pywebview.api.stop_record().then((mensaje) => {
        alert(mensaje); 
@@ -86,7 +122,7 @@ function toggleRecord() {
     btnRec.classList.remove("recording");
     recTimer.style.display = "none";
   }
-}
+
 
 /**
  * Realiza el polling asíncrono de datos cuando el modo simulación (Demo) está activo.

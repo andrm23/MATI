@@ -154,27 +154,42 @@ function refreshCharts() {
  * @param {number} timeSeconds - Tiempo transcurrido en segundos.
  */
 function addTelemetrySample(d, timeSeconds) {
+  // 1. Guardamos el dato en el historial global (esto no cambia)
   telemetrySeries.push({ time: timeSeconds, ...d });
   if (telemetrySeries.length > 2800) telemetrySeries.shift();
 
-  charts.forEach((chart) => {
-      chart.data.datasets.forEach((dataset) => {
-        const key = dataset.metricKey;
-        if (key){
-          dataset.data.push({ x: timeSeconds, y: d[key]});
-          if(dataset.data.length > 2800) dataset.data.shift(); 
-        }
-      });
+  charts.forEach((chart, idx) => {
+      // CAMBIO 1: El "Seguro de vida". Si la gráfica no existe, sáltatela.
+      if (!chart) return;
 
-      // Lógica de escalado dinámico del eje X
+      // CAMBIO 2: Solo intentamos meter datos si hay "datasets" (líneas) creadas
+      if (chart.data.datasets && chart.data.datasets.length > 0) {
+          chart.data.datasets.forEach((dataset) => {
+            const key = dataset.metricKey;
+            if (key && d[key] !== undefined) {
+              dataset.data.push({ x: timeSeconds, y: d[key] });
+              if (dataset.data.length > 2800) dataset.data.shift(); 
+            }
+          });
+      }
+
+      // CAMBIO 3: La "Independencia del eje X". 
+      // Calculamos el máximo y mínimo de tiempo IGUAL para todas.
       let xMax, xMin;
-      if (timeSeconds <= 10) { xMax = 10; xMin = 0; }
-      else if (timeSeconds <= 100) { xMax = Math.ceil(timeSeconds / 10) * 10; xMin = 0; }
-      else { xMax = Math.ceil(timeSeconds / 20) * 20; xMin = Math.max(0, xMax - 120); }
+      if (timeSeconds <= 10) { 
+          xMax = 10; xMin = 0; 
+      } else { 
+          // Ajustamos para que se mueva de 10 en 10 segundos
+          xMax = Math.ceil(timeSeconds / 10) * 10; 
+          xMin = Math.max(0, xMax - 60); // Ventana de 60 segundos
+      }
 
+      // CAMBIO 4: Aplicar el movimiento sí o sí
       chart.options.scales.x.max = xMax;
       chart.options.scales.x.min = xMin;
-      chart.update("none");
+      
+      // Esto es lo que hace que la gráfica "fluya" continuamente
+      chart.update("none"); 
   });
 }
 
