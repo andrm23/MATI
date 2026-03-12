@@ -328,7 +328,7 @@ button:hover { background: #555; }
 
 .modal-content{
   font-family: 'Roboto Mono';
-  background: var(--card-bg);
+  background: #fff;
   padding: 30px;
   border: 1px solid #333;
   border-radius: 8px;
@@ -350,9 +350,16 @@ button:hover { background: #555; }
     object-fit: contain;
 }
 
-.app-info-text {
-    text-align: left; /* El texto se alinea a la izquierda respecto al logo */
+.mati-icon{
+  width: 85px;
+  height: 60px;
+  object-fit: contain;
 }
+
+.app-info-text {
+    text-align: left;
+}
+
 
 @keyframes pulse {
   0% { opacity: 1; }
