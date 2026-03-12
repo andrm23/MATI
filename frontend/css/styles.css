@@ -112,8 +112,12 @@ body {
 
 .sensors-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(3, minmax(180px, 1fr)); 
+  gap: 16px;
+  justify-content: center; /* Centra las columnas si sobran espacio */
+  max-width: 800px;        /* Evita que se estiren demasiado en pantallas grandes */
+  margin: 0 auto;          /* Centra el bloque completo horizontalmente */
+  width: 100%;
 }
 
 .col-header {
@@ -308,6 +312,7 @@ button:hover { background: #555; }
   .telemetry-panel { border-right: 0; border-bottom: 1px solid #333; }
   .sensors-grid { grid-template-columns: 1fr 1fr; }
   .charts-grid { grid-template-columns: 1fr 1fr; }
+  .sensors-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));}
 }
 
 @media (max-width: 760px) {
