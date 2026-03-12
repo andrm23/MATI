@@ -1,7 +1,14 @@
-// comms.js
-// Manejo de comunicaciones de red y puente IPC con Python
+/**
+ * @file comms.js
+ * @description Gestión de comunicaciones de red y puente IPC con el backend de Python.
+ * Maneja la recepción de datos vía WebSockets desde el hardware y el flujo de 
+ * control para grabación y simulación (Demo).
+ */
 
-// HARDWARE REAL (WebSockets con ESP32)
+/**
+ * Establece la conexión WebSocket con el hardware (ESP32).
+ * Procesa los paquetes JSON entrantes, actualiza la UI y despacha datos a la API de Python.
+ */
 function connect() {
   if (isDemoRunning) stopDemo();
   
@@ -19,18 +26,18 @@ function connect() {
         fi: j.fi || 0, fd: j.fd || 0, ti: j.ti || 0, td: j.td || 0,
         tfi: Math.max(0, j.tfi || 0), tfd: Math.max(0, j.tfd || 0),
         tti: Math.max(0, j.tti || 0), ttd: Math.max(0, j.ttd || 0),
-        pfi: Math.max(0, j.pfi || 0), pfd: Math.max(0, j.pfd || 0),
-        pti: Math.max(0, j.pti || 0), ptd: Math.max(0, j.ptd || 0),
+        // pfi: Math.max(0, j.pfi || 0), pfd: Math.max(0, j.pfd || 0),
+        // pti: Math.max(0, j.pti || 0), ptd: Math.max(0, j.ptd || 0),
         rpmFi: j.rpmFi || 0, rpmFd: j.rpmFd || 0, rpmTi: j.rpmTi || 0, rpmTd: j.rpmTd || 0,
       };
       
-      // Llamadas a funciones que vivirán en ui.js y charts.js
       updateUI(d);
       draw(d.x, d.y);
       
       const t_now = isRecording ? (performance.now() - startTime) / 1000 : performance.now() / 1000;
       addTelemetrySample(d, t_now);
 
+      // Envío de datos al API de Python para persistencia en SQLite
       if (isRecording && !isDemoRunning && window.pywebview) {
          d.Time = t_now; 
          window.pywebview.api.push_real_data(d);
@@ -39,12 +46,51 @@ function connect() {
   };
 }
 
-// SISTEMA DE GRABACIÓN (SQLite + CSV)
+/**
+ * Alterna el estado de grabación de telemetría.
+ * Gestiona el temporizador visual y las llamadas a la API de inicio/parada de grabación.
+ */
 function toggleRecord() {
   if (!window.pywebview || !window.pywebview.api) {
     console.error("Error: La API de Python no está conectada.");
     return;
   }
+
+  const btnRec = document.getElementById("btnRec");
+  const recTimer = document.getElementById("rec-timer");
+
+  if (!isRecording) {
+    window.pywebview.api.start_record().then(console.log);
+    
+    isRecording = true;
+    startTime = performance.now();
+    
+    btnRec.innerHTML = "STOP";
+    btnRec.classList.add("recording");
+    recTimer.style.display = "block";
+    
+    recTimerInt = setInterval(() => {
+      const s = Math.floor((performance.now() - startTime) / 1000);
+      const m = Math.floor(s / 60);
+      const ss = s % 60;
+      recTimer.innerText = `${m}:${ss.toString().padStart(2, "0")}`;
+    }, 1000);
+
+  }  else {
+    window.pywebview.api.stop_record().then((response) => {
+       const modal = document.getElementById('csvModal');
+       const msg = document.getElementById('csvModalMsg');
+       msg.innerHTML = `Se guardaron ${response.total} registros en:<br>${response.path}`; 
+       modal.style.display = 'block';
+    });
+    
+    isRecording = false;
+    clearInterval(recTimerInt);
+    btnRec.innerHTML = "REC";
+    btnRec.classList.remove("recording");
+    recTimer.style.display = "none";
+  }
+}
 
   const btnRec = document.getElementById("btnRec");
   const recTimer = document.getElementById("rec-timer");
@@ -76,9 +122,12 @@ function toggleRecord() {
     btnRec.classList.remove("recording");
     recTimer.style.display = "none";
   }
-}
 
-// 3. SIMULADOR DEMO (Polling Asíncrono IPC)
+
+/**
+ * Realiza el polling asíncrono de datos cuando el modo simulación (Demo) está activo.
+ * Se comunica con el backend de Python para obtener datos sintéticos.
+ */
 function pollData() {
   if (!isDemoRunning) return;
   
@@ -98,6 +147,9 @@ function pollData() {
   });
 }
 
+/**
+ * Alterna el estado de la simulación de telemetría (Demo).
+ */
 function toggleDemo() {
   const btnElements = document.getElementsByTagName("button");
   let btnDemo = Array.from(btnElements).find(b => b.innerText.includes("DEMO") || b.innerText.includes("STOP DEMO"));
@@ -111,6 +163,9 @@ function toggleDemo() {
   }
 }
 
+/**
+ * Inicializa el modo de demostración a través de la API de Python.
+ */
 function startDemo() {
   if (window.pywebview && window.pywebview.api) {
     if (!isRecording) startTime = performance.now();
@@ -126,6 +181,9 @@ function startDemo() {
   }
 }
 
+/**
+ * Finaliza el modo de demostración.
+ */
 function stopDemo() {
   if (window.pywebview && window.pywebview.api) {
     window.pywebview.api.stop_demo().then(() => {

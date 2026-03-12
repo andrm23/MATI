@@ -1,0 +1,55 @@
+name: Build MATI Cross-Platform
+
+on:
+  push:
+    branches: [ "fix/linux-mint-compatibility" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Descargar el código
+      uses: actions/checkout@v4
+
+    - name: Instalar Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Instalar dependencias de sistema (Solo Linux)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        # Cambiamos 4.0-37 por 4.1-0 que es la versión de Ubuntu 24.04
+        sudo apt-get install -y libgirepository1.0-dev gcc libcairo2-dev pkg-config python3-dev gir1.2-gtk-3.0 libwebkit2gtk-4.1-0
+
+    - name: Instalar librerías de Python
+      run: |
+        pip install pyinstaller pywebview
+        if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
+          pip install PyGObject==3.48.2
+        fi
+      shell: bash
+
+    - name: Compilar ejecutable (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        # Usamos ; para Windows
+        pyinstaller --windowed --onefile --name "MATI" --add-data "frontend;frontend" main.py
+
+    - name: Compilar ejecutable (Linux y Mac)
+      if: matrix.os != 'windows-latest'
+      run: |
+        # Usamos : para Linux/Mac y agregamos los imports ocultos para evitar que se congele
+        pyinstaller --windowed --onefile --name "MATI" --add-data "frontend:frontend" --hidden-import gi --hidden-import gi.repository.Gtk --hidden-import gi.repository.Gdk --hidden-import gi.repository.WebKit2 main.py
+
+    - name: Guardar Artifacts (Descargables)
+      uses: actions/upload-artifact@v4
+      with:
+        name: MATI-${{ matrix.os }}
+        path: dist/

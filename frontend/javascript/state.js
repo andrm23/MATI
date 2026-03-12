@@ -1,22 +1,70 @@
-// state.js
-// Variables globales dinámicas
+/**
+ * @file state.js
+ * @description Centralización del estado global y configuración estática de MATI.
+ * Define las variables dinámicas de sesión, constantes de color para la identidad 
+ * visual de sensores y los límites operacionales del hardware.
+ */
+
+// --- VARIABLES GLOBALES DINÁMICAS ---
+
+/** * Instancia del WebSocket para la comunicación con el hardware (ESP32).
+ * @type {WebSocket|null} 
+ */
 let ws = null;
+
+/** * Estado de la grabación de telemetría en la base de datos local.
+ * @type {boolean} 
+ */
 let isRecording = false;
+
+/** * Marca de tiempo (timestamp) del inicio de la grabación.
+ * @type {number} 
+ */
 let startTime = 0;
+
+/** * Intervalo del cronómetro visual en la barra de controles.
+ * @type {number|null} 
+ */
 let recTimerInt = null;
+
+/** * Indica si el modo de simulación (Demo) está activo.
+ * @type {boolean} 
+ */
 let isDemoRunning = false;
+
+/** * Estado del bucle de procesamiento de datos entrantes.
+ * @type {boolean} 
+ */
 let loopActive = false;
+
+/** * Almacén de series temporales para la renderización de gráficas.
+ * @type {Array<Object>} 
+ */
 let telemetrySeries = []; 
+
+/** * Estela de puntos para la visualización del radar de fuerzas G.
+ * @type {Array<Object>} 
+ */
 let trail = [];            
 
-// Constantes de configuración estática
+// --- CONSTANTES DE CONFIGURACIÓN ESTÁTICA ---
+
+/**
+ * Mapeo de colores hexadecimales por tipo de métrica.
+ * Utilizado para mantener la consistencia entre gráficas e indicadores visuales.
+ * @constant {Object}
+ */
 const COLORS = {
   g: "#00d1ff", phi: "#8b5cf6", acel: "#00cc66", fren: "#ff3333",
   fi: "#f59e0b", fd: "#f97316", ti: "#3b82f6", td: "#06b6d4",
   tfi: "#ff7849", tfd: "#ff8f4c", tti: "#ff5f55", ttd: "#ff3b47",
-  pfi: "#8ab4ff", pfd: "#6fa0ff", pti: "#5a91ff", ptd: "#3f7fff",
+  // pfi: "#8ab4ff", pfd: "#6fa0ff", pti: "#5a91ff", ptd: "#3f7fff",
 };
 
+/**
+ * Definición de métricas disponibles, incluyendo su clave técnica y etiqueta legible.
+ * @constant {Array<{key: string, label: string}>}
+ */
 const METRICS = [
   { key: "g", label: "Fuerza g" }, { key: "phi", label: "Giro" },
   { key: "acel", label: "Acelerador" }, { key: "fren", label: "Freno" },
@@ -24,19 +72,31 @@ const METRICS = [
   { key: "ti", label: "Suspensión TI" }, { key: "td", label: "Suspensión TD" },
   { key: "tfi", label: "Temp FI" }, { key: "tfd", label: "Temp FD" },
   { key: "tti", label: "Temp TI" }, { key: "ttd", label: "Temp TD" },
-  { key: "pfi", label: "Pres FI" }, { key: "pfd", label: "Pres FD" },
-  { key: "pti", label: "Pres TI" }, { key: "ptd", label: "Pres TD" },
+  // { key: "pfi", label: "Pres FI" }, { key: "pfd", label: "Pres FD" },
+  // { key: "pti", label: "Pres TI" }, { key: "ptd", label: "Pres TD" },
 ];
 
+/**
+ * Conjuntos predefinidos de métricas para la visualización agrupada en las 4 gráficas del dashboard.
+ * @constant {Array<Set<string>>}
+ */
 const chartMetricSets = [
   new Set(["g", "phi", "acel", "fren"]),
   new Set(["fi", "fd", "ti", "td"]),
   new Set(["tfi", "tfd", "tti", "ttd"]),
-  new Set(["pfi", "pfd", "pti", "ptd"]),
+  new Set([])
+  // new Set(["pfi", "pfd", "pti", "ptd"]),
 ];
 
+/**
+ * Límites de escalado y alertas para los sensores del vehículo.
+ * @constant {Object}
+ */
 const SENSOR_LIMITS = {
+  /** Límite superior de temperatura en grados Celsius. */
   MAX_TEMP: 120,
-  MAX_PRESSURE: 40,
+  /** Límite superior de presión en PSI. */
+  // MAX_PRESSURE: 40,
+  /** Recorrido máximo de suspensión en unidades relativas. */
   MAX_SUSPENSION: 10
 };
