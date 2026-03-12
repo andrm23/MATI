@@ -163,6 +163,8 @@ class TelemetryDB:
             writer.writerow(headers)
             writer.writerows(registros)
 
+        return len(registros)
+
     def close(self):
         """
         Exporta el contenido íntegro de la tabla telemetry_data a un archivo CSV.
