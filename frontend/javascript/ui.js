@@ -65,10 +65,10 @@ function temperatureColor(value) {
  * @param {number} value - Presión en PSI.
  * @returns {string} Representación de color (Blanco a Azul).
  */
-function pressureColor(value) {
-  const v = clamp(value, 0, SENSOR_LIMITS.MAX_PRESSURE);
-  return mixHex("ffffff", "0066ff", v / SENSOR_LIMITS.MAX_PRESSURE);
-}
+// function pressureColor(value) {
+//   const v = clamp(value, 0, SENSOR_LIMITS.MAX_PRESSURE);
+//   return mixHex("ffffff", "0066ff", v / SENSOR_LIMITS.MAX_PRESSURE);
+// }
 
 /**
  * Actualiza los indicadores visuales tipo "cápsula" de valor positivo (Temperatura/Presión).
@@ -155,10 +155,10 @@ function updateUI(d) {
   updatePositiveCapsule("bar-ttd", "val-ttd", d.ttd, SENSOR_LIMITS.MAX_TEMP, temperatureColor);
 
   // Presiones
-  updatePositiveCapsule("bar-pfi", "val-pfi", d.pfi, SENSOR_LIMITS.MAX_PRESSURE, pressureColor);
-  updatePositiveCapsule("bar-pfd", "val-pfd", d.pfd, SENSOR_LIMITS.MAX_PRESSURE, pressureColor);
-  updatePositiveCapsule("bar-pti", "val-pti", d.pti, SENSOR_LIMITS.MAX_PRESSURE, pressureColor);
-  updatePositiveCapsule("bar-ptd", "val-ptd", d.ptd, SENSOR_LIMITS.MAX_PRESSURE, pressureColor);
+  // updatePositiveCapsule("bar-pfi", "val-pfi", d.pfi, SENSOR_LIMITS.MAX_PRESSURE, pressureColor);
+  // updatePositiveCapsule("bar-pfd", "val-pfd", d.pfd, SENSOR_LIMITS.MAX_PRESSURE, pressureColor);
+  // updatePositiveCapsule("bar-pti", "val-pti", d.pti, SENSOR_LIMITS.MAX_PRESSURE, pressureColor);
+  // updatePositiveCapsule("bar-ptd", "val-ptd", d.ptd, SENSOR_LIMITS.MAX_PRESSURE, pressureColor);
 
   // RPMs por rueda
   getEl("rpm-fi").innerText = Math.round(d.rpmFi || 0);

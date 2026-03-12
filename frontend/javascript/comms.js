@@ -26,8 +26,8 @@ function connect() {
         fi: j.fi || 0, fd: j.fd || 0, ti: j.ti || 0, td: j.td || 0,
         tfi: Math.max(0, j.tfi || 0), tfd: Math.max(0, j.tfd || 0),
         tti: Math.max(0, j.tti || 0), ttd: Math.max(0, j.ttd || 0),
-        pfi: Math.max(0, j.pfi || 0), pfd: Math.max(0, j.pfd || 0),
-        pti: Math.max(0, j.pti || 0), ptd: Math.max(0, j.ptd || 0),
+        // pfi: Math.max(0, j.pfi || 0), pfd: Math.max(0, j.pfd || 0),
+        // pti: Math.max(0, j.pti || 0), ptd: Math.max(0, j.ptd || 0),
         rpmFi: j.rpmFi || 0, rpmFd: j.rpmFd || 0, rpmTi: j.rpmTi || 0, rpmTd: j.rpmTd || 0,
       };
       
