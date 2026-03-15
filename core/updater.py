@@ -1,92 +1,40 @@
-import os
+import urllib.request
 import json
-import platform
-import glob
-import logging
 
-logger = logging.getLogger("MATI_updater")
-logger.addHandler(logging.NullHandler())
-
-ACTUAL_VERSION = "1.1.1"
-PROJECT_NAME_FOLDER = "MATI_updater"
-UAM_DOMAIN = "@azc.uam.mx"
-
-
-def get_drive_path():
-    sistema = platform.system()
-    home = os.path.expanduser("~")
-    ROOTS = ["Mi unidad", "My Drive", "Unidades compartidas", "Shared Drives"]
-
-    SUB_PATH = os.path.join(
-        "UAMOTORS",
-        "2026",
-        "Design",
-        "Electronics",
-        "Data-Code telemetry",
-        "MATI",
-        PROJECT_NAME_FOLDER,
-    )
-
-    if sistema == "Darwin":
-        cloud_pattern = os.path.join(home, "Library/CloudStorage/GoogleDrive-*")
-        folders = glob.glob(cloud_pattern)
-
-        uam_folders = [f for f in folders if UAM_DOMAIN in f]
-        target_folder = uam_folders if uam_folders else folders
-
-        for instance in target_folder:
-            for root in ROOTS:
-
-                path_uam = os.path.join(instance, root, SUB_PATH)
-                if os.path.exists(path_uam):
-                    return path_uam
-
-    elif sistema == "Windows":
-        import string
-        from ctypes import windll
-
-        bitmask = windll.kernel32.GetLogicalDrives()
-
-        for i in range(26):
-            if bitmask & (1 << i):
-                letra = string.ascii_uppercase[i]
-                for root in ROOTS:
-
-                    path_uam = os.path.join(f"{letra}:", root, SUB_PATH)
-                    if os.path.exists(path_uam):
-                        return path_uam
-
-    return None
+# Aquí vas a controlar tu versión local (la que estás programando)
+ACTUAL_VERSION = "1.1.2"
 
 
 def check_update():
-    drive_path = get_drive_path()
-    print(f"🔍 DEBUG: Ruta del Drive detectada -> {drive_path}")
-
-    if not drive_path:
-        print("🔍 DEBUG: ¡No se encontró la carpeta MATI_updater en el Drive!")
-        return None
-
-    json_path = os.path.join(drive_path, "version.json")
-    print(f"🔍 DEBUG: Buscando el archivo en -> {json_path}")
-    print(f"🔍 DEBUG: ¿El archivo existe físicamente? -> {os.path.exists(json_path)}")
+    """
+    Consulta la API pública de GitHub para verificar si hay un nuevo Release.
+    Retorna una tupla (True, dict_datos) si hay actualización, o None si estás al día.
+    """
+    # Esta es la API oficial de GitHub apuntando a tu repo público
+    url = "https://api.github.com/repos/lexrammart/MATI-Releases/releases/latest"
+    # url = "https://api.github.com/repos/microsoft/vscode/releases/latest"
 
     try:
-        if os.path.exists(json_path):
-            with open(json_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
+        # Hacemos la petición (simulando ser un navegador básico para que GitHub no nos bloquee)
+        req = urllib.request.Request(url, headers={"User-Agent": "MATI-Updater"})
+        with urllib.request.urlopen(req, timeout=5) as response:
+            data = json.loads(response.read().decode())
 
-            remote_version = data.get("version", "0.0.0")
-            print(
-                f"🔍 DEBUG: Versión remota (Drive) -> {remote_version} | Versión local (Código) -> {ACTUAL_VERSION}"
-            )
+        # GitHub guarda la versión en "tag_name" (ej. "v1.1.1")
+        latest_version_tag = data.get("tag_name", "")
 
-            if remote_version > ACTUAL_VERSION:
-                print("🔍 DEBUG: ¡Actualización detectada! Mandando señal al Bridge...")
-                return True, data
-            else:
-                print("🔍 DEBUG: La versión local es igual o mayor. No hay update.")
+        # Le quitamos la 'v' para poder comparar los puros números
+        latest_version = latest_version_tag.replace("v", "")
+
+        # El cuerpo del Release en GitHub nos servirá como changelog
+        changelog = data.get("body", "Mejoras de rendimiento y telemetría.")
+
+        # Si la versión de GitHub es mayor a la tuya, disparamos la alerta
+        if latest_version > ACTUAL_VERSION:
+            datos_reales = {"version": latest_version, "changelog": changelog}
+            return (True, datos_reales)
+
     except Exception as e:
-        print(f"🔍 DEBUG: ¡Error al leer el JSON! -> {e}")
+        print(f"Error al conectar con GitHub para buscar actualizaciones: {e}")
 
     return None
