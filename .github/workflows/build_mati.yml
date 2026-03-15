@@ -33,12 +33,12 @@ jobs:
     - name: Compilar ejecutable (Windows)
       if: matrix.os == 'windows-latest'
       run: |
-        pyinstaller --windowed --onefile --name "MATI" --add-data "frontend;frontend" --add-data "core;core" --add-data "rcs;rcs" --add-data "assets;assets" main.py
+        pyinstaller --windowed --onefile --name "MATI" --add-data "frontend;frontend" --add-data "core;core" main.py
 
     - name: Compilar ejecutable (Mac)
       if: matrix.os == 'macos-latest'
       run: |
-        pyinstaller --windowed --name "MATI" --add-data "frontend:frontend" --add-data "core:core" --add-data "rcs:rcs" --add-data "assets:assets" main.py
+        pyinstaller --windowed --name "MATI" --add-data "frontend:frontend" --add-data "core:core" main.py
 
     - name: Guardar Artifacts (Descargables)
       uses: actions/upload-artifact@v4
