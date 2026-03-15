@@ -3,7 +3,7 @@ name: Build and Public Release
 on:
   push:
     tags:
-      - 'v*' # Se activa al subir tags como v1.1.1
+      - 'v*' # Se activa al subir tags como v1.1.3
   workflow_dispatch:
 
 jobs:
@@ -15,16 +15,30 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+          
       - name: Install dependencies
         run: pip install pyinstaller pywebview
       
+      # --- BUILD WINDOWS ---
       - name: Build Windows
         if: matrix.os == 'windows-latest'
         run: pyinstaller --windowed --onefile --name "MATI" --add-data "frontend;frontend" --add-data "core;core" main.py
         
+      - name: Upload Windows to Release
+        if: matrix.os == 'windows-latest'
+        uses: softprops/action-gh-release@v2
+        with:
+          repository: lexrammart/MATI-Releases 
+          token: ${{ secrets.RELEASE_TOKEN }}
+          target_commitish: main
+          tag_name: ${{ github.ref_name }}
+          files: dist/MATI.exe
+
+      # --- BUILD MAC ---
       - name: Build Mac
         if: matrix.os == 'macos-latest'
         run: pyinstaller --windowed --name "MATI" --add-data "frontend:frontend" --add-data "core:core" main.py
@@ -33,12 +47,12 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: cd dist && zip -r MATI-macOS.zip MATI.app
 
-      - name: Upload to Public Release
+      - name: Upload Mac to Release
+        if: matrix.os == 'macos-latest'
         uses: softprops/action-gh-release@v2
         with:
-          # SUSTITUYE con tu usuario y el nombre del repo público
-          repository: alejandro/MATI-Releases 
+          repository: lexrammart/MATI-Releases 
           token: ${{ secrets.RELEASE_TOKEN }}
-          files: |
-            dist/MATI.exe
-            dist/MATI-macOS.zip
+          target_commitish: main
+          tag_name: ${{ github.ref_name }}
+          files: dist/MATI-macOS.zip
