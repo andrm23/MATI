@@ -8,9 +8,9 @@ on:
 jobs:
   build:
     strategy:
-      fail-fast: false # Si Mac falla, deja que Windows termine (y viceversa)
+      fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest] # Adiós Linux por ahora
+        os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     
     env:
@@ -37,9 +37,8 @@ jobs:
 
     - name: Compilar ejecutable (Mac)
       if: matrix.os == 'macos-latest'
-      # Quitamos los imports raros de Gtk que solo servían para Linux y estaban rompiendo Mac
       run: |
-        pyinstaller --windowed --onefile --name "MATI" --add-data "frontend:frontend" --add-data "core:core" --add-data "rcs:rcs" --add-data "assets:assets" main.py
+        pyinstaller --windowed --name "MATI" --add-data "frontend:frontend" --add-data "core:core" --add-data "rcs:rcs" --add-data "assets:assets" main.py
 
     - name: Guardar Artifacts (Descargables)
       uses: actions/upload-artifact@v4
