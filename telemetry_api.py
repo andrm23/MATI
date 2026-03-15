@@ -259,3 +259,20 @@ class TelemetryAPI:
 
         self.is_running = False
         self.db.close()
+
+    def open_drive_folder(self):
+        from core.updater import get_drive_path
+        import platform
+        import subprocess
+
+        path = get_drive_path()
+        if path and os.path.exists(path):
+            if platform.system() == "Darwin":
+                subprocess.run(["open", path])
+            else:
+                os.startfile(path)
+
+    def open_external_link(self, url):
+        import webbrowser
+
+        webbrowser.open(url)
