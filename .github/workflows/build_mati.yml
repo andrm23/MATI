@@ -2,8 +2,8 @@ name: Build MATI Cross-Platform
 
 on:
   push:
-    branches: [ "fix/linux-mint-compatibility" ]
-  workflow_dispatch:
+    branches: [ "main" ] # Se activa automáticamente al hacer merge a main
+  workflow_dispatch:     # Mantiene el botón manual por si las dudas
 
 jobs:
   build:
@@ -12,14 +12,12 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     
-    # 1. Ponemos la variable AQUÍ, dentro del job, para que no haya duda
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
-    # 2. Actualizamos a las versiones que ya soportan Node 24 nativamente
     - name: Descargar el código
-      uses: actions/checkout@v4 # V4 sigue siendo estándar, pero forzada por el env
+      uses: actions/checkout@v4
 
     - name: Instalar Python
       uses: actions/setup-python@v5
@@ -42,16 +40,18 @@ jobs:
 
     - name: Compilar ejecutable (Windows)
       if: matrix.os == 'windows-latest'
+      # Fíjate cómo en Windows usamos punto y coma (;) para separar las carpetas
       run: |
-        pyinstaller --windowed --onefile --name "MATI" --add-data "frontend;frontend" main.py
+        pyinstaller --windowed --onefile --name "MATI" --add-data "frontend;frontend" --add-data "core;core" --add-data "rcs;rcs" --add-data "assets;assets" main.py
 
     - name: Compilar ejecutable (Linux y Mac)
       if: matrix.os != 'windows-latest'
+      # En Mac/Linux usamos dos puntos (:) para separar las carpetas
       run: |
-        pyinstaller --windowed --onefile --name "MATI" --add-data "frontend:frontend" --hidden-import gi --hidden-import gi.repository.Gtk --hidden-import gi.repository.Gdk --hidden-import gi.repository.WebKit2 main.py
+        pyinstaller --windowed --onefile --name "MATI" --add-data "frontend:frontend" --add-data "core:core" --add-data "rcs:rcs" --add-data "assets:assets" --hidden-import gi --hidden-import gi.repository.Gtk --hidden-import gi.repository.Gdk --hidden-import gi.repository.WebKit2 main.py
 
     - name: Guardar Artifacts (Descargables)
-      uses: actions/upload-artifact@v4 # Si v4 falla, prueba cambiar a v5
+      uses: actions/upload-artifact@v4
       with:
         name: MATI-${{ matrix.os }}
         path: dist/
