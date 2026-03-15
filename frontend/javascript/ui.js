@@ -179,3 +179,14 @@ function updateUI(d) {
   updatePedal("bar-brake", "val-brake", d.fren);
   updatePedal("bar-throttle", "val-throttle", d.acel);
 }
+
+function showUpdateNotification(data){
+  const version = data.version;
+  const notes = data.changelog || "Mejoras generales de MATI.";
+
+  const userChoice = confirm(`Nueva versión de MATI disponible: ${version}!\n\nNotas:\n${notes}\n\n¿Quieres actualizar?`);
+
+  if (userChoice){
+    window.pywebview.api.open_drive_folder();
+  }
+}
