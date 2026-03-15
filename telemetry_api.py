@@ -276,3 +276,9 @@ class TelemetryAPI:
         import webbrowser
 
         webbrowser.open(url)
+
+    def get_app_version(self):
+        """Devuelve la versión actual para inyectarla en la interfaz."""
+        from core.updater import ACTUAL_VERSION
+
+        return ACTUAL_VERSION

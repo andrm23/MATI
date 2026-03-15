@@ -7,7 +7,7 @@ import logging
 logger = logging.getLogger("MATI_updater")
 logger.addHandler(logging.NullHandler())
 
-ACTUAL_VERSION = "1.0.1"
+ACTUAL_VERSION = "1.1.1"
 PROJECT_NAME_FOLDER = "MATI_updater"
 UAM_DOMAIN = "@azc.uam.mx"
 

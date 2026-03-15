@@ -190,3 +190,13 @@ function showUpdateNotification(data){
     window.pywebview.api.open_drive_folder();
   }
 }
+
+// Solicita la versión a Python y la pinta en el modal de información
+window.addEventListener('pywebviewready', function() {
+    window.pywebview.api.get_app_version().then(function(version) {
+        const versionEl = document.getElementById('app-version');
+        if (versionEl) {
+            versionEl.innerText = "v" + version;
+        }
+    });
+});
