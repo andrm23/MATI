@@ -187,7 +187,7 @@ function showUpdateNotification(data){
   const userChoice = confirm(`Nueva versión disponible: v${version}`);
 
   if (userChoice){
-    window.pywebview.api.open_drive_folder();
+    window.pywebview.api.open_releases_page();
   }
 }
 

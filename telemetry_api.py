@@ -260,17 +260,17 @@ class TelemetryAPI:
         self.is_running = False
         self.db.close()
 
-    def open_drive_folder(self):
-        from core.updater import get_drive_path
-        import platform
-        import subprocess
+    def open_releases_page(self):
+        """Abre la página oficial de versiones en el navegador."""
+        import webbrowser
 
-        path = get_drive_path()
-        if path and os.path.exists(path):
-            if platform.system() == "Darwin":
-                subprocess.run(["open", path])
-            else:
-                os.startfile(path)
+        url = "https://github.com/lexrammart/MATI-Releases/releases/latest"
+        try:
+            webbrowser.open(url)
+            return True
+        except Exception as e:
+            print(f"Error al abrir el navegador: {e}")
+            return False
 
     def open_external_link(self, url):
         import webbrowser
