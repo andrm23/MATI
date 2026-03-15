@@ -1,8 +1,9 @@
-name: Build MATI Cross-Platform
+name: Build and Public Release
 
 on:
   push:
-    branches: [ "main" ]
+    tags:
+      - 'v*' # Se activa al subir tags como v1.1.1
   workflow_dispatch:
 
 jobs:
@@ -12,36 +13,32 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
     steps:
-    - name: Descargar el código
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install pyinstaller pywebview
+      
+      - name: Build Windows
+        if: matrix.os == 'windows-latest'
+        run: pyinstaller --windowed --onefile --name "MATI" --add-data "frontend;frontend" --add-data "core;core" main.py
+        
+      - name: Build Mac
+        if: matrix.os == 'macos-latest'
+        run: pyinstaller --windowed --name "MATI" --add-data "frontend:frontend" --add-data "core:core" main.py
 
-    - name: Instalar Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+      - name: Zip Mac App
+        if: matrix.os == 'macos-latest'
+        run: cd dist && zip -r MATI-macOS.zip MATI.app
 
-    - name: Instalar librerías de Python
-      run: |
-        pip install pyinstaller pywebview
-      shell: bash
-
-    - name: Compilar ejecutable (Windows)
-      if: matrix.os == 'windows-latest'
-      run: |
-        pyinstaller --windowed --onefile --name "MATI" --add-data "frontend;frontend" --add-data "core;core" main.py
-
-    - name: Compilar ejecutable (Mac)
-      if: matrix.os == 'macos-latest'
-      run: |
-        pyinstaller --windowed --name "MATI" --add-data "frontend:frontend" --add-data "core:core" main.py
-
-    - name: Guardar Artifacts (Descargables)
-      uses: actions/upload-artifact@v4
-      with:
-        name: MATI-${{ matrix.os }}
-        path: dist/
+      - name: Upload to Public Release
+        uses: softprops/action-gh-release@v2
+        with:
+          # SUSTITUYE con tu usuario y el nombre del repo público
+          repository: alejandro/MATI-Releases 
+          token: ${{ secrets.RELEASE_TOKEN }}
+          files: |
+            dist/MATI.exe
+            dist/MATI-macOS.zip
