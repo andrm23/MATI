@@ -4,11 +4,10 @@ apply_fixes()
 
 import webview
 import sys
-import os
-import traceback
 from db_manager import TelemetryDB
 from pathlib import Path
 from telemetry_api import TelemetryAPI
+from core.bridge import handle_on_loaded
 
 
 def obtencion_ruta_html(ruta_relativa):
@@ -47,7 +46,7 @@ def app_inicializacion():
         # arranque de motor de renderizado
         api.set_window(ventana)
         ventana.events.closed += api.on_closing
-        webview.start(debug=False)
+        webview.start(handle_on_loaded, ventana, debug=False)
 
     except Exception as e:
         print(f"Error al iniciar la app: {e}")

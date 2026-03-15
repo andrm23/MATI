@@ -184,7 +184,7 @@ function showUpdateNotification(data){
   const version = data.version;
   const notes = data.changelog || "Mejoras generales de MATI.";
 
-  const userChoice = confirm(`Nueva versión de MATI disponible: ${version}!\n\nNotas:\n${notes}\n\n¿Quieres actualizar?`);
+  const userChoice = confirm(`Nueva versión disponible: v${version}`);
 
   if (userChoice){
     window.pywebview.api.open_drive_folder();

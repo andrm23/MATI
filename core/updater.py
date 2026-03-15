@@ -17,6 +17,16 @@ def get_drive_path():
     home = os.path.expanduser("~")
     ROOTS = ["Mi unidad", "My Drive", "Unidades compartidas", "Shared Drives"]
 
+    SUB_PATH = os.path.join(
+        "UAMOTORS",
+        "2026",
+        "Design",
+        "Electronics",
+        "Data-Code telemetry",
+        "MATI",
+        PROJECT_NAME_FOLDER,
+    )
+
     if sistema == "Darwin":
         cloud_pattern = os.path.join(home, "Library/CloudStorage/GoogleDrive-*")
         folders = glob.glob(cloud_pattern)
@@ -26,13 +36,10 @@ def get_drive_path():
 
         for instance in target_folder:
             for root in ROOTS:
-                path_uam = os.path.join(instance, root, "UAMOTORS", PROJECT_NAME_FOLDER)
+
+                path_uam = os.path.join(instance, root, SUB_PATH)
                 if os.path.exists(path_uam):
                     return path_uam
-
-                path_directo = os.path.join(instance, root, PROJECT_NAME_FOLDER)
-                if os.path.exists(path_directo):
-                    return path_directo
 
     elif sistema == "Windows":
         import string
@@ -44,26 +51,25 @@ def get_drive_path():
             if bitmask & (1 << i):
                 letra = string.ascii_uppercase[i]
                 for root in ROOTS:
-                    path_uam = os.path.join(
-                        f"{letra}:", root, "UAMOTORS", PROJECT_NAME_FOLDER
-                    )
+
+                    path_uam = os.path.join(f"{letra}:", root, SUB_PATH)
                     if os.path.exists(path_uam):
                         return path_uam
-
-                    path_directo = os.path.join(f"{letra}:", root, PROJECT_NAME_FOLDER)
-                    if os.path.exists(path_directo):
-                        return path_directo
 
     return None
 
 
 def check_update():
     drive_path = get_drive_path()
+    print(f"🔍 DEBUG: Ruta del Drive detectada -> {drive_path}")
 
     if not drive_path:
+        print("🔍 DEBUG: ¡No se encontró la carpeta MATI_updater en el Drive!")
         return None
 
     json_path = os.path.join(drive_path, "version.json")
+    print(f"🔍 DEBUG: Buscando el archivo en -> {json_path}")
+    print(f"🔍 DEBUG: ¿El archivo existe físicamente? -> {os.path.exists(json_path)}")
 
     try:
         if os.path.exists(json_path):
@@ -71,10 +77,16 @@ def check_update():
                 data = json.load(f)
 
             remote_version = data.get("version", "0.0.0")
+            print(
+                f"🔍 DEBUG: Versión remota (Drive) -> {remote_version} | Versión local (Código) -> {ACTUAL_VERSION}"
+            )
 
             if remote_version > ACTUAL_VERSION:
+                print("🔍 DEBUG: ¡Actualización detectada! Mandando señal al Bridge...")
                 return True, data
-    except Exception:
-        pass
+            else:
+                print("🔍 DEBUG: La versión local es igual o mayor. No hay update.")
+    except Exception as e:
+        print(f"🔍 DEBUG: ¡Error al leer el JSON! -> {e}")
 
     return None
