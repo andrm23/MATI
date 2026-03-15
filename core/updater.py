@@ -2,7 +2,7 @@ import urllib.request
 import json
 
 # Aquí vas a controlar tu versión local (la que estás programando)
-ACTUAL_VERSION = "1.1.2"
+ACTUAL_VERSION = "1.1.4"
 
 
 def check_update():
