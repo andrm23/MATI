@@ -18,191 +18,162 @@
     <button id="btnRec" class="btn-rec" onclick="toggleRecord()">REC</button>
     <button id="btnDown" class="btn-download" onclick="downloadCSV()">CSV</button>
     <span id="rec-timer" style="font-family: 'Roboto Mono'; font-size: 0.8rem; display: none">00:00</span>
+    
+    <div style="width: 1px; height: 20px; background: #444; margin: 0 5px"></div>
+    <button id="btn-tab-telemetry" class="tab-button active" onclick="switchTab('telemetry')">ANÁLISIS</button>
+    <button id="btn-tab-charts" class="tab-button" onclick="switchTab('charts')">GRÁFICAS</button>
+
     <button class="btn-info" onclick="toggleModal()">ⓘ</button>
   </div>
 
   <div class="main-container">
-    <div class="left-panel">
-      <div class="g-value-display"><span class="number" id="g-total">0.00</span><span class="unit">G</span></div>
-      <canvas id="gPlot"></canvas>
-    </div>
-
-    <div class="telemetry-panel">
-      <div>
-        <div class="section-header">Posición de giro</div>
-        <div class="steering-box">
-          <div id="steering-wheel" style="width: 300px; height: 90px; transition: transform 0.1s linear">
-            <svg viewBox="0 0 130 90" style="width: 100%; height: 100%; fill: none; stroke: #555; stroke-width: 4">
-              <path d="M 20 10 H 110 C 120 10 125 20 125 45 C 125 70 120 80 110 80 H 20 C 10 80 5 70 5 45 C 5 20 10 10 20 10 Z" fill="#1a1a1a"></path>
-              <rect x="55" y="5" width="20" height="10" fill="#00aaff"></rect>
-            </svg>
-          </div>
-          <div class="steering-val" id="phi-val">0.0</div>
-        </div>
-      </div>
-
-      <div class="sensors-grid">
-        <div>
-          <div class="col-header">Suspensión</div>
-          <div class="sensor-column-card">
-            <div class="sensor-row">
-              <div class="sensor-unit"><span class="unit-label">FI</span><div class="capsule-track"><div id="bar-fl" class="capsule-fill"></div></div><span id="val-fl" class="unit-val">0.0</span></div>
-              <div class="sensor-unit"><span class="unit-label">FD</span><div class="capsule-track"><div id="bar-fr" class="capsule-fill"></div></div><span id="val-fr" class="unit-val">0.0</span></div>
-            </div>
-            <div class="sensor-row">
-              <div class="sensor-unit"><span class="unit-label">TI</span><div class="capsule-track"><div id="bar-rl" class="capsule-fill"></div></div><span id="val-rl" class="unit-val">0.0</span></div>
-              <div class="sensor-unit"><span class="unit-label">TD</span><div class="capsule-track"><div id="bar-rr" class="capsule-fill"></div></div><span id="val-rr" class="unit-val">0.0</span></div>
-            </div>
-          </div>
+    
+    <div id="tab-telemetry" class="tab-content active">
+        <div class="left-panel">
+          <div class="g-value-display"><span class="number" id="g-total">0.00</span><span class="unit">G</span></div>
+          <canvas id="gPlot"></canvas>
         </div>
 
-        <div>
-          <div class="col-header">Temperatura (°C)</div>
-          <div class="sensor-column-card">
-            <div class="sensor-row">
-              <div class="sensor-unit"><span class="unit-label">FI</span><div class="capsule-track"><div id="bar-tfi" class="capsule-fill"></div></div><span id="val-tfi" class="unit-val">0.0</span></div>
-              <div class="sensor-unit"><span class="unit-label">FD</span><div class="capsule-track"><div id="bar-tfd" class="capsule-fill"></div></div><span id="val-tfd" class="unit-val">0.0</span></div>
-            </div>
-            <div class="sensor-row">
-              <div class="sensor-unit"><span class="unit-label">TI</span><div class="capsule-track"><div id="bar-tti" class="capsule-fill"></div></div><span id="val-tti" class="unit-val">0.0</span></div>
-              <div class="sensor-unit"><span class="unit-label">TD</span><div class="capsule-track"><div id="bar-ttd" class="capsule-fill"></div></div><span id="val-ttd" class="unit-val">0.0</span></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- <div>
-          <div class="col-header">Presión (PSI)</div>
-          <div class="sensor-column-card">
-            <div class="sensor-row">
-              <div class="sensor-unit"><span class="unit-label">FI</span><div class="capsule-track"><div id="bar-pfi" class="capsule-fill"></div></div><span id="val-pfi" class="unit-val">0.0</span></div>
-              <div class="sensor-unit"><span class="unit-label">FD</span><div class="capsule-track"><div id="bar-pfd" class="capsule-fill"></div></div><span id="val-pfd" class="unit-val">0.0</span></div>
-            </div>
-            <div class="sensor-row">
-              <div class="sensor-unit"><span class="unit-label">TI</span><div class="capsule-track"><div id="bar-pti" class="capsule-fill"></div></div><span id="val-pti" class="unit-val">0.0</span></div>
-              <div class="sensor-unit"><span class="unit-label">TD</span><div class="capsule-track"><div id="bar-ptd" class="capsule-fill"></div></div><span id="val-ptd" class="unit-val">0.0</span></div>
-            </div>
-          </div>
-        </div> -->
-
-        <div>
-          <div class="col-header">RPMs</div>
-          <div class="sensor-column-card" style="gap: 195px; padding-top: 55px; padding-bottom: 55px">
-            <div class="sensor-row">
-              <div class="sensor-unit"><span class="unit-label">FI</span><span class="rpm-value" id="rpm-fi">0</span></div>
-              <div class="sensor-unit"><span class="unit-label">FD</span><span class="rpm-value" id="rpm-fd">0</span></div>
-            </div>
-            <div class="sensor-row">
-              <div class="sensor-unit"><span class="unit-label">TI</span><span class="rpm-value" id="rpm-ti">0</span></div>
-              <div class="sensor-unit"><span class="unit-label">TD</span><span class="rpm-value" id="rpm-td">0</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="section-header">Freno / Acelerador</div>
-        <div class="pedals-wrapper">
-          <div class="pedals-container">
-            <div class="pedal-group">
-              <div class="pedal-track"><div id="bar-brake" class="pedal-fill" style="background: var(--color-neg)"></div></div>
-              <div id="val-brake" class="pedal-val-text">0.0</div>
-            </div>
-            <div class="pedal-group">
-              <div class="pedal-track"><div id="bar-throttle" class="pedal-fill" style="background: var(--color-pos)"></div></div>
-              <div id="val-throttle" class="pedal-val-text">0.0</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="charts-panel">
-      <div class="section-header" style="margin-bottom: 0">4 gráficas interactivas (TIME ascendente)</div>
-      <div style="font-size: 0.78rem; color: #8f8f8f">Incluye G, giro, pedales, suspensión, temperatura y presión · Zoom con rueda/pinch · Pan arrastrando.</div>
-      <div class="charts-grid">
-        <section class="chart-section">
-          <div class="section-header" style="margin-bottom: 0">Gráfica 1</div>
-          <div class="metric-controls" id="metricControls1"></div>
-          <div><button onclick="resetZoom(charts[0])">Reset Zoom</button></div>
-          <div class="chartWrap"><canvas id="telemetryChart1"></canvas></div>
-        </section>
-
-        <section class="chart-section">
-          <div class="section-header" style="margin-bottom: 0">Gráfica 2</div>
-          <div class="metric-controls" id="metricControls2"></div>
-          <div><button onclick="resetZoom(charts[1])">Reset Zoom</button></div>
-          <div class="chartWrap"><canvas id="telemetryChart2"></canvas></div>
-        </section>
-
-        <section class="chart-section">
-          <div class="section-header" style="margin-bottom: 0">Gráfica 3</div>
-          <div class="metric-controls" id="metricControls3"></div>
-          <div><button onclick="resetZoom(charts[2])">Reset Zoom</button></div>
-          <div class="chartWrap"><canvas id="telemetryChart3"></canvas></div>
-        </section>
-
-        <section class="chart-section">
-          <div class="section-header" style="margin-bottom: 0">Gráfica 4</div>
-          <div class="metric-controls" id="metricControls4"></div>
+        <div class="telemetry-panel">
           <div>
-            <button onclick="resetZoom(charts[3])">Reset Zoom</button>
-            <button onclick="clearChartData()">Limpiar datos</button>
+            <div class="section-header">Posición de giro</div>
+            <div class="steering-box">
+              <div id="steering-wheel" style="width: 300px; height: 90px; transition: transform 0.1s linear">
+                <svg viewBox="0 0 130 90" style="width: 100%; height: 100%; fill: none; stroke: #555; stroke-width: 4">
+                  <path d="M 20 10 H 110 C 120 10 125 20 125 45 C 125 70 120 80 110 80 H 20 C 10 80 5 70 5 45 C 5 20 10 10 20 10 Z" fill="#1a1a1a"></path>
+                  <rect x="55" y="5" width="20" height="10" fill="#00aaff"></rect>
+                </svg>
+              </div>
+              <div class="steering-val" id="phi-val">0.0</div>
+            </div>
           </div>
-          <div class="chartWrap"><canvas id="telemetryChart4"></canvas></div>
-        </section>
+
+          <div class="sensors-grid">
+            <div>
+              <div class="col-header">Suspensión</div>
+              <div class="sensor-column-card">
+                <div class="sensor-row">
+                  <div class="sensor-unit"><span class="unit-label">FI</span><div class="capsule-track"><div id="bar-fl" class="capsule-fill"></div></div><span id="val-fl" class="unit-val">0.0</span></div>
+                  <div class="sensor-unit"><span class="unit-label">FD</span><div class="capsule-track"><div id="bar-fr" class="capsule-fill"></div></div><span id="val-fr" class="unit-val">0.0</span></div>
+                </div>
+                <div class="sensor-row">
+                  <div class="sensor-unit"><span class="unit-label">TI</span><div class="capsule-track"><div id="bar-rl" class="capsule-fill"></div></div><span id="val-rl" class="unit-val">0.0</span></div>
+                  <div class="sensor-unit"><span class="unit-label">TD</span><div class="capsule-track"><div id="bar-rr" class="capsule-fill"></div></div><span id="val-rr" class="unit-val">0.0</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="col-header">Temperatura (°C)</div>
+              <div class="sensor-column-card">
+                <div class="sensor-row">
+                  <div class="sensor-unit"><span class="unit-label">FI</span><div class="capsule-track"><div id="bar-tfi" class="capsule-fill"></div></div><span id="val-tfi" class="unit-val">0.0</span></div>
+                  <div class="sensor-unit"><span class="unit-label">FD</span><div class="capsule-track"><div id="bar-tfd" class="capsule-fill"></div></div><span id="val-tfd" class="unit-val">0.0</span></div>
+                </div>
+                <div class="sensor-row">
+                  <div class="sensor-unit"><span class="unit-label">TI</span><div class="capsule-track"><div id="bar-tti" class="capsule-fill"></div></div><span id="val-tti" class="unit-val">0.0</span></div>
+                  <div class="sensor-unit"><span class="unit-label">TD</span><div class="capsule-track"><div id="bar-ttd" class="capsule-fill"></div></div><span id="val-ttd" class="unit-val">0.0</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 15px; height: 100%;">
+              <div style="flex: 1; display: flex; flex-direction: column;">
+                <div class="col-header">RPMs</div>
+                <div class="sensor-column-card" style="flex: 1;">
+                  <div class="sensor-row">
+                    <div class="sensor-unit"><span class="unit-label">FI</span><span class="rpm-value" id="rpm-fi">0</span></div>
+                    <div class="sensor-unit"><span class="unit-label">FD</span><span class="rpm-value" id="rpm-fd">0</span></div>
+                  </div>
+                  <div class="sensor-row">
+                    <div class="sensor-unit"><span class="unit-label">TI</span><span class="rpm-value" id="rpm-ti">0</span></div>
+                    <div class="sensor-unit"><span class="unit-label">TD</span><span class="rpm-value" id="rpm-td">0</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="flex: 1; display: flex; flex-direction: column;">
+                <div class="col-header">Freno / Acelerador</div>
+                <div class="pedals-wrapper" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                  <div class="pedals-container">
+                    <div class="pedal-group">
+                      <div class="pedal-track"><div id="bar-brake" class="pedal-fill" style="background: var(--color-neg)"></div></div>
+                      <div id="val-brake" class="pedal-val-text">0.0</div>
+                    </div>
+                    <div class="pedal-group">
+                      <div class="pedal-track"><div id="bar-throttle" class="pedal-fill" style="background: var(--color-pos)"></div></div>
+                      <div id="val-throttle" class="pedal-val-text">0.0</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> </div> </div> </div> <div id="tab-charts" class="tab-content">
+      <div class="charts-panel">
+        <div class="charts-grid">
+          <section class="chart-section">
+            <div class="section-header" style="margin-bottom: 0">Gráfica 1</div>
+            <div class="metric-controls" id="metricControls1"></div>
+            <div><button onclick="resetZoom(charts[0])">Reset Zoom</button></div>
+            <div class="chartWrap"><canvas id="telemetryChart1"></canvas></div>
+          </section>
+          <section class="chart-section">
+            <div class="section-header" style="margin-bottom: 0">Gráfica 2</div>
+            <div class="metric-controls" id="metricControls2"></div>
+            <div><button onclick="resetZoom(charts[1])">Reset Zoom</button></div>
+            <div class="chartWrap"><canvas id="telemetryChart2"></canvas></div>
+          </section>
+          <section class="chart-section">
+            <div class="section-header" style="margin-bottom: 0">Gráfica 3</div>
+            <div class="metric-controls" id="metricControls3"></div>
+            <div><button onclick="resetZoom(charts[2])">Reset Zoom</button></div>
+            <div class="chartWrap"><canvas id="telemetryChart3"></canvas></div>
+          </section>
+          <section class="chart-section">
+            <div class="section-header" style="margin-bottom: 0">Gráfica 4</div>
+            <div class="metric-controls" id="metricControls4"></div>
+            <div>
+              <button onclick="resetZoom(charts[3])">Reset Zoom</button>
+              <button onclick="clearChartData()">Limpiar datos</button>
+            </div>
+            <div class="chartWrap"><canvas id="telemetryChart4"></canvas></div>
+          </section>
+        </div>
       </div>
-    </div>
-  </div>
-  <script src="javascript/state.js"></script>
+    </div> </div> <script src="javascript/state.js"></script>
   <script src="javascript/comms.js"></script>
   <script src="javascript/ui.js"></script>
   <script src="javascript/charts.js"></script>
   <script src="javascript/app.js"></script>
 
-<div id="modalInfo" class="modal" style="display: none;">
-    <div class="modal-content">
-      <div class="app-branding">
-        <img src="rcs/logo-uamotors-redondo.jpg" class="app-icon" alt="MATI">
-        <div class="mati-icon-font" style="display: flex; flex-direction: column; align-items: flex-start; gap: -2px;">
-          <img src="rcs/icon-mati-font-tira.png" class="mati-icon" alt="MATI-FONT" style="display: block; margin-bottom: 0; margin-top: 0;">
-          <p id="app-version" style="color: var(--text-muted); margin: 0; font-size: 0.8rem; line-height: 1;"></p>
+  <div id="modalInfo" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="app-branding">
+          <img src="rcs/logo-uamotors-redondo.jpg" class="app-icon" alt="MATI">
+          <div class="mati-icon-font" style="display: flex; flex-direction: column; align-items: flex-start; gap: -2px;">
+            <img src="rcs/icon-mati-font-tira.png" class="mati-icon" alt="MATI-FONT">
+            <p id="app-version" style="color: var(--text-muted); margin: 0; font-size: 0.8rem; line-height: 1;"></p>
+          </div>
         </div>
+        <p style="font-size: 0.8rem; color: black;">Measurement And Telemetry Insights</p>
+        <hr style="border: 1; border-top: 1px solid #333; margin: 10px 0;">
+        <p style="font-size: 0.8rem; color: black">Un proyecto de: <br> UAMOTORS <br> Universidad Autónoma Metropolitana</p>
+        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 15px; align-items: center;">
+          <img src="rcs/logo-uam-temp.jpg" alt="Logo UAM" style="height: 40px; width: auto;">
+          <img src="rcs/logo-uamotors-tira.png" alt="Logo UAMOTORS" style="height: 40px; width: auto;">
+        </div>
+        <hr style="border: 1; border-top: 1px solid #333; margin: 10px 0;">
+        <p style="font-size: 0.8rem; color: black; margin-top: 15px;">Desarrollado por Andrés M. & Alejandro R.</p>
+        <div class="credit-area" style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px;">
+            <div>
+                <img src="rcs/icon-github.png" class="github-icon" alt="GitHub Icon" style="width: 35px; height: 35px; display: block;">
+            </div>
+            <div class="credits-column">
+                <a href="#" onclick="window.pywebview.api.open_external_link('https://github.com/andrm23')">andrm23</a>
+                <a href="#" onclick="window.pywebview.api.open_external_link('https://github.com/lexrammart')">lexrammart</a>
+            </div>
+        </div>
+        <button onclick="toggleModal()" style="margin-top: 20px;">CERRAR</button>
       </div>
-
-      <p style="font-size: 0.8rem; color: black;">Measurement And Telemetry Insights</p>
-      <hr style="border: 1; border-top: 1px solid #333; margin: 10px 0;">
-  
-      <p style="font-size: 0.8rem; color: black">
-        Un proyecto de: <br>
-        UAMOTORS <br>
-        Universidad Autónoma Metropolitana
-      </p>
-      
-      <div style="display: flex; justify-content: center; gap: 20px; margin-top: 15px; align-items: center;">
-        <img src="rcs/logo-uam-temp.jpg" alt="Logo UAM" style="height: 40px; width: auto;">
-        <img src="rcs/logo-uamotors-tira.png" alt="Logo UAMOTORS" style="height: 40px; width: auto;">
-      </div>
-
-      <hr style="border: 1; border-top: 1px solid #333; margin: 10px 0;">
-
-      <p style="font-size: 0.8rem; color: black; margin-top: 15px;">
-        Desarrollado por Andrés M. & Alejandro R.
-      </p>
-
-      <div class="credit-area" style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 15px;">
-          <div style="flex: 1; display: flex; justify-content: flex-end; padding-right: 8px;">
-              <img src="rcs/icon-github.png" class="github-icon" alt="GitHub Icon" style="width: 35px; height: 35px;">
-          </div>
-          <div class="credits-column" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px;">
-              <a href="#" onclick="window.pywebview.api.open_external_link('https://github.com/andrm23')" 
-                 style="color: #666; text-decoration: none; font-size: 0.8rem; font-family: sans-serif;">andrm23</a>
-              <a href="#" onclick="window.pywebview.api.open_external_link('https://github.com/lexrammart')" 
-                 style="color: #666; text-decoration: none; font-size: 0.8rem; font-family: sans-serif;">lexrammart</a>
-          </div>
-      </div>
-      
-      <button onclick="toggleModal()" style="margin-top: 20px;">CERRAR</button>
-    </div>
   </div>
 
   <div id="csvModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6);">
@@ -211,13 +182,9 @@
         <img src="assets/csv-icon.png" style="width:40px; opacity:0.8;">
         <div id="csvModalMsg" style="font-size:0.85rem; line-height:1.4; text-align: left; word-break:break-all;"></div>   
       </div> 
-      <button onclick="document.getElementById('csvModal').style.display='none'" 
-              style="background:#333; color:#fff; border:none; padding:8px 30px; border-radius:4px; cursor:pointer; font-size:0.8rem; display: block; margin: 0 auto; width: auto;">
-        Aceptar
-      </button>
+      <button onclick="document.getElementById('csvModal').style.display='none'" style="background:#333; color:#fff; border:none; padding:8px 30px; border-radius:4px; cursor:pointer; font-size:0.8rem; display: block; margin: 0 auto; width: auto;">Aceptar</button>
     </div> 
   </div>
 
 </body>
 </html>
-

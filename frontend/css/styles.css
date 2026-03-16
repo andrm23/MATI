@@ -9,6 +9,7 @@
   --text-muted: #666;
   --color-pos: #00cc66;
   --color-neg: #ff3333;
+  --color-tab: #0047AB;
 }
 
 body {
@@ -16,9 +17,10 @@ body {
   background-color: var(--bg-color);
   color: var(--text-main);
   margin: 0;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .controls-bar {
@@ -35,9 +37,14 @@ body {
 }
 
 .main-container {
-  display: grid;
+  flex: 1;
+  height: calc(100vh - 60px);
+  display: block;
+  overflow: hidden;
+
+  /* display: grid;
   grid-template-columns: minmax(460px, 1fr) minmax(760px, 1fr) minmax(860px, 1.2fr);
-  min-height: calc(100vh - 60px);
+  min-height: calc(100vh - 60px); */
 }
 
 .left-panel {
@@ -47,26 +54,32 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 520px;
+  min-height: 100%;
 }
 
 .telemetry-panel {
-  padding: 24px 24px;
+  height: 100%;
+  padding: 40px 20px 15px 20px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  /* justify-content: space-between; */
+  gap: 50px;
   background-color: var(--panel-bg);
   border-right: 1px solid #333;
-  overflow-y: auto;
+  box-sizing: border-box;
+  overflow-y: hidden;
 }
 
 .charts-panel {
-  padding: 24px 20px;
+  height: 100%;           /* Ocupa el alto total disponible */
+  padding: 10px 15px;      /* Reducido de 24px para ganar espacio vertical */
   background: #101010;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;               /* Reducido de 12px */
+  box-sizing: border-box;  /* Asegura que el padding no sume al tamaño total */
+  overflow: hidden;
+
 }
 
 .g-value-display {
@@ -100,24 +113,32 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 125px;
+  height: 100px;
   justify-content: center;
 }
 
 .steering-val {
   font-family: "Roboto Mono", monospace;
-  margin-top: 32px;
+  margin-top: 33px;
   font-size: 1rem;
+  font-width: bold;
 }
 
 .sensors-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(180px, 1fr)); 
-  gap: 16px;
-  justify-content: center; /* Centra las columnas si sobran espacio */
-  max-width: 800px;        /* Evita que se estiren demasiado en pantallas grandes */
-  margin: 0 auto;          /* Centra el bloque completo horizontalmente */
-  width: 100%;
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 15px;          
+  width: 100%;         
+  flex: 2;            
+  min-height: 0;
+  margin-top: 20px;
+}
+
+.sensors-grid > div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .col-header {
@@ -132,10 +153,12 @@ body {
   background: var(--card-bg);
   border: 1px solid #222;
   border-radius: 2px;
-  padding: 14px 0;
+  padding: 10px 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  justify-content: space-around;
+  gap: 5px;
+  height: 100%;
 }
 
 .sensor-row {
@@ -159,8 +182,8 @@ body {
 }
 
 .capsule-track {
-  width: 32px;
-  height: 130px;
+  width: 28px;
+  height: 100px;
   background: var(--track-bg);
   border-radius: 1px;
   position: relative;
@@ -197,7 +220,7 @@ body {
   background: var(--card-bg);
   border: 1px solid #222;
   border-radius: 2px;
-  padding: 15px;
+  padding: 10px;
 }
 
 .pedals-container {
@@ -214,7 +237,7 @@ body {
 
 .pedal-track {
   width: 30px;
-  height: 130px;
+  height: 80px; /* Antes era 100px o 130px */
   background: var(--track-bg);
   border-radius: 2px;
   position: relative;
@@ -229,19 +252,26 @@ body {
   height: 0%;
 }
 
-.charts-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
 .chart-section {
   background: #111;
   border: 1px solid #2c2c2c;
   border-radius: 6px;
-  padding: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.charts-grid{
   display: grid;
-  gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 12px;           /* Reducido de 15px para ganar área de dibujo */
+  flex: 1;             /* Obliga al grid a estirarse y llenar el panel */
+  min-height: 0;       /* Evita que las gráficas desborden el contenedor */
+  width: 100%;
+  height: 100%;        /* Mantenemos el alto total */
+  box-sizing: border-box;
 }
 
 .metric-controls {
@@ -263,11 +293,11 @@ body {
 }
 
 .chartWrap {
+  flex: 1; /* La gráfica se estira para llenar su mitad de pantalla */
+  min-height: 0; /* Truco de CSS para que el flex respete el contenedor */
   background: #090909;
-  border: 1px solid #202020;
   border-radius: 4px;
-  padding: 8px;
-  height: 240px;
+  padding: 5px;
 }
 
 input {
@@ -298,8 +328,8 @@ button:hover { background: #555; }
 .btn-info{
   margin-left: auto;
   background: transparent;
-  border: 1px solid var(--text-muted);
-  color: var(--text-muted);
+  border: 2px solid var(--text-main);
+  color: var(--text-main);
   font-size: 1.1rem;
   width: 32px;
   height: 32px;
@@ -312,9 +342,11 @@ button:hover { background: #555; }
 }
 
 .btn-info:hover{
-  color: var(--color-pos);
-  border-color: var(--color-pos);
-  background: rgba(0, 204, 102, 0.1);
+  background: rgba(0, 71, 171, 0.15); 
+  color: var(--color-tab);
+  border-color: var(--color-tab);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 10px rgba(0, 71, 171, 0.2);
 }
 
 
@@ -387,4 +419,80 @@ button:hover { background: #555; }
 
 @media (max-width: 760px) {
   .sensors-grid, .charts-grid { grid-template-columns: 1fr; }
+}
+
+.tab-content{
+  display: none;
+  width: 100%;
+  
+}
+
+#tab-telemetry.active{
+  display: grid;
+  grid-template-columns: minmax(460px, 0.8fr) 1.2fr;
+  height: 100%;
+}
+
+#tab-charts.active{
+  display: block;
+  height: 100%;
+  width: 100%;
+  /* display: block; */
+}
+
+.tab-button{
+  background: transparent;
+  border: 1px solid #444;
+  color: var(--text-muted);
+  transition: all 0.3s ease;
+}
+
+.tab-button:hover {
+  background: rgba(0, 71, 171, 0.15); /* Un toque del azul cobalto que elegiste */
+  color: #fff;                        /* Forzamos el texto a blanco para que resalte */
+  border-color: var(--color-tab);     /* El borde se ilumina con tu azul */
+  cursor: pointer;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.tab-button.active{
+  background: var(--color-tab);
+  color: #fff;
+  border-color: var(--color-tab);
+  font-weight: bold;
+}
+
+.tab-button.active:hover {
+  background: var(--color-tab);
+  cursor: default;
+}
+
+.main-container{
+  display: block;
+}
+
+.credits-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2px;
+}
+
+.credits-column a {
+  color: #666;               
+  font-size: 0.8rem;          
+  display: block; 
+  transition: all 0.3s ease;  
+  text-decoration: none; 
+  font-family: 'Roboto';
+}
+
+.credits-column a:hover {
+  background: linear-gradient(180deg, #FF0000 0%, #FF1A7D 100%);
+  -webkit-background-clip: text; /* Para Chrome/Safari actual */
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 5px rgba(255, 26, 125, 0.6));
+  padding-left: 1px; 
 }
