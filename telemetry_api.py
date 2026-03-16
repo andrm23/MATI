@@ -282,3 +282,61 @@ class TelemetryAPI:
         from core.updater import ACTUAL_VERSION
 
         return ACTUAL_VERSION
+
+    # --- NUEVOS MÉTODOS PARA v1.3.0 ---
+
+    def get_history_sessions(self):
+        """Consulta la base de datos segura (.mati) y devuelve las sesiones únicas."""
+        try:
+            self.db.cursor_hist.execute(
+                "SELECT DISTINCT session_id FROM telemetry_data ORDER BY id DESC"
+            )
+            return [row[0] for row in self.db.cursor_hist.fetchall()]
+        except Exception as e:
+            print(f"Error al obtener sesiones: {e}")
+            return []
+
+    def get_session_data(self, session_id):
+        """Recupera todos los registros de una sesión específica del historial."""
+        try:
+            query = "SELECT Time, G, Steer, Accel, Brake, FL, FR, RL, RR, TFI, TFD, TTI, TTD FROM telemetry_data WHERE session_id = ? ORDER BY id ASC"
+            self.db.cursor_hist.execute(query, (session_id,))
+            rows = self.db.cursor_hist.fetchall()
+
+            # Mapeamos a diccionario respetando tus nombres en singular
+            columnas = [
+                "time",
+                "g",
+                "phi",
+                "acel",
+                "fren",
+                "fi",
+                "fd",
+                "ti",
+                "td",
+                "tfi",
+                "tfd",
+                "tti",
+                "ttd",
+            ]
+            return [dict(zip(columnas, r)) for r in rows]
+        except Exception as e:
+            print(f"Error al cargar sesión: {e}")
+            return []
+
+    def stop_record(self, session_name="Carrera"):
+        """
+        Detiene la grabación y realiza el volcado al historial persistente (.mati).
+        """
+        self.is_recording = False
+
+        # 1. Guardamos en el historial seguro antes de que se borre la tabla live
+        full_id = self.db.save_to_history(session_name)
+
+        # 2. Exportamos el CSV de respaldo en el Escritorio
+        desktop_path = os.path.join(
+            os.path.expanduser("~"), "Desktop", f"{session_name}_telemetry.csv"
+        )
+        total_registros = self.db.export_csv(desktop_path)
+
+        return {"total": total_registros, "path": desktop_path, "session_id": full_id}

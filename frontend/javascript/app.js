@@ -12,6 +12,20 @@
  */
 document.addEventListener("DOMContentLoaded", () => {
   
+  // --- Lógica de filtrado para el historial (v1.3.0) ---
+  const historySearch = document.getElementById('historySearchInput');
+  const historySelect = document.getElementById('historySessionSelect');
+
+  if (historySearch) {
+    historySearch.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      Array.from(historySelect.options).forEach(option => {
+        if (option.value === "") return; // Ignoramos el placeholder
+        const text = option.text.toLowerCase();
+        option.style.display = text.includes(term) ? 'block' : 'none';
+      });
+    });
+  }
   /** * Inicialización de los paneles de control de métricas.
    * Crea dinámicamente los checkboxes para cada una de las 4 gráficas del sistema,
    * utilizando los conjuntos de métricas predefinidos en el estado global.

@@ -496,3 +496,59 @@ button:hover { background: #555; }
   filter: drop-shadow(0 0 5px rgba(255, 26, 125, 0.6));
   padding-left: 1px; 
 }
+
+#modalHistory .modal-content{
+  background: #151515;
+  border: 1px solid #333;
+  color: #fff;
+  max-width: 450px;
+  padding: 25px;
+}
+
+#modalHistory input[type="text"],
+#modalHistory select{
+  background: #222;
+  border: 1px solid #444;
+  color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box; /* Evita que el input se salga del modal */
+  margin-top: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.85rem;
+  transition: border-color 0.3s ease;
+}
+
+#modalHistory select:focus,
+#modalHistory input[type="text"]:focus{
+  border-color: var(--color-tab);
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 71, 171, 0.3);
+}
+
+#modalHistory input[type="file"]{
+  background: #111;
+  padding: 12px;
+  border: 1px dashed #444; /* Un borde punteado indica que se puede "soltar" un archivo */
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#modalHistory input[type="file"]::-webkit-file-upload-button {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-right: 10px;
+  font-weight: 500;
+}
+
+#modalHistory input[type="file"]::-webkit-file-upload-button:hover {
+  background: #444;
+}

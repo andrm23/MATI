@@ -22,7 +22,7 @@
     <div style="width: 1px; height: 20px; background: #444; margin: 0 5px"></div>
     <button id="btn-tab-telemetry" class="tab-button active" onclick="switchTab('telemetry')">ANÁLISIS</button>
     <button id="btn-tab-charts" class="tab-button" onclick="switchTab('charts')">GRÁFICAS</button>
-
+    <button id="btn-history" onclick="toggleHistoryModal()" style="margin-left: 5px;">HISTORIAL</button>
     <button class="btn-info" onclick="toggleModal()">ⓘ</button>
   </div>
 
@@ -109,6 +109,14 @@
               </div>
             </div> </div> </div> </div> <div id="tab-charts" class="tab-content">
       <div class="charts-panel">
+        <div id="timeline-container" style="display: none; padding: 15px; background: #151515; margin-bottom: 15px; border-radius: 5px; border: 1px solid #333;">
+          <div style="display: flex; justify-content: space-between; color: var(--color-tab); font-family: 'Roboto Mono'; font-size: 14px; margin-bottom: 8px;">
+              <span>Control de Tiempo (Scroll manual)</span>
+              <span>Ventana de visualización: <span id="timeline-val" style="color: #fff;">0.0 - 60.0</span> s</span>
+          </div>
+          <input type="range" id="historySlider" min="0" value="0" step="0.5" style="width: 100%; cursor: pointer; accent-color: var(--color-tab);">
+        </div>
+        <!-- <div class="charts-grid"> -->
         <div class="charts-grid">
           <section class="chart-section">
             <div class="section-header" style="margin-bottom: 0">Gráfica 1</div>
@@ -174,6 +182,32 @@
         </div>
         <button onclick="toggleModal()" style="margin-top: 20px;">CERRAR</button>
       </div>
+  </div>
+
+  <div id="modalHistory" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 500px; background: #1a1a1a; color: #e0e0e0; border: 1px solid #333;">
+      <h3 class="section-header" style="color: var(--color-tab);">Historial de Telemetría</h3>
+      
+      <div style="margin-bottom: 20px; text-align: left;">
+        <p style="font-size: 0.8rem; margin-bottom: 8px;">Buscar en Base de Datos (.mati):</p>
+        <input type="text" id="historySearchInput" placeholder="Buscar sesión..." style="width: 100%; margin-bottom: 10px; text-align: left; padding: 8px;">
+        <select id="historySessionSelect" style="width: 100%; background: #222; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px;">
+          <option value="">Selecciona una carrera...</option>
+          </select>
+      </div>
+
+      <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
+
+      <div style="margin-bottom: 25px; text-align: left;">
+        <p style="font-size: 0.8rem; margin-bottom: 8px;">Cargar archivo externo (CSV):</p>
+        <input type="file" id="csvFileInput" accept=".csv" style="font-size: 0.75rem; width: 100%;">
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: center;">
+        <button onclick="loadHistoryData()" style="background: var(--color-tab); padding: 10px 20px;">CARGAR DATOS</button>
+        <button onclick="toggleHistoryModal()" style="background: #444; padding: 10px 20px;">CANCELAR</button>
+      </div>
+    </div>
   </div>
 
   <div id="csvModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6);">

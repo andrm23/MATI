@@ -214,5 +214,122 @@ function switchTab(tabName){
       chart.update('none');
     });
   }
+}
 
+function toggleHistoryModal() {
+  const modal = document.getElementById('modalHistory');
+  if (modal.style.display === 'none' || modal.style.display === '') {
+        modal.style.display = 'flex';
+        // Cada vez que abrimos, le pedimos a Python que nos de las sesiones actualizadas
+        updateHistoryList(); 
+    } else {
+        modal.style.display = 'none';
+    }
+}
+
+/**
+ * Solicita a Python las sesiones únicas guardadas en el archivo .mati.
+ */
+async function updateHistoryList() {
+  const select = document.getElementById('historySessionSelect');
+  // Invocamos el puente IPC con Python
+  const sessions = await window.pywebview.api.get_history_sessions();
+  
+  select.innerHTML = '<option value="">Selecciona una carrera...</option>';
+  sessions.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s;
+    opt.textContent = s;
+    select.appendChild(opt);
+  });
+}
+
+async function loadHistoryData() {
+  if (isDemoRunning) stopDemo(); // Detener demo antes de cargar
+    isHistoryMode = true; // <--- ACTIVAMOS EL MODO HISTORIA
+  const session = document.getElementById('historySessionSelect').value;
+  const fileInput = document.getElementById('csvFileInput');
+
+  if (fileInput.files.length > 0) {
+    // Caso A: El usuario seleccionó un archivo local
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => processExternalCSV(e.target.result);
+    reader.readAsText(file);
+  } else if (session) {
+    // Caso B: El usuario eligió una sesión de la DB encriptada
+    const data = await window.pywebview.api.get_session_data(session);
+    displayHistoricalData(data);
+  } else {
+    alert("Por favor selecciona una sesión o carga un archivo CSV.");
+  }
+}
+
+/**
+ * Procesa el CSV externo y lo convierte al formato de MATI.
+ */
+function processExternalCSV(text) {
+  const lines = text.trim().split('\n');
+  const data = [];
+  // Saltamos encabezados
+  for (let i = 1; i < lines.length; i++) {
+    const cols = lines[i].split(',').map(c => c.trim());
+    if (cols.length < 13) continue;
+    data.push({
+      time: parseFloat(cols[0]), g: parseFloat(cols[1]), phi: parseFloat(cols[2]),
+      acel: parseFloat(cols[3]), fren: parseFloat(cols[4]), fi: parseFloat(cols[5]),
+      fd: parseFloat(cols[6]), ti: parseFloat(cols[7]), td: parseFloat(cols[8]),
+      tfi: parseFloat(cols[9]), tfd: parseFloat(cols[10]), tti: parseFloat(cols[11]), ttd: parseFloat(cols[12])
+    });
+  }
+  displayHistoricalData(data);
+}
+
+function displayHistoricalData(data) {
+  if (data.length === 0) return alert("No hay datos en el archivo.");
+
+  isHistoryMode = true; 
+  telemetrySeries.length = 0;
+  data.forEach(d => telemetrySeries.push(d));
+
+  const maxTime = data[data.length - 1].time;
+
+  // 1. Configuramos las gráficas con un rango estricto de 0 a 60
+  charts.forEach(chart => {
+    chart.options.scales.x.min = 0;
+    chart.options.scales.x.max = 60;
+    chart.update('none'); 
+  });
+
+  refreshCharts(); 
+  switchTab('charts');
+  toggleHistoryModal();
+
+  // 2. Activamos el Slider infalible
+  const sliderContainer = document.getElementById('timeline-container');
+  const slider = document.getElementById('historySlider');
+  const timeLabel = document.getElementById('timeline-val');
+
+  if (sliderContainer && slider) {
+    sliderContainer.style.display = 'block'; // Mostramos la barra
+    
+    // El máximo del slider es el tiempo total menos 60s, para evitar salirnos de los datos
+    slider.max = Math.max(0, maxTime - 60); 
+    slider.value = 0;
+    timeLabel.innerText = "0.0 - 60.0";
+
+    // 3. El motor: Cuando muevas la barra, las gráficas obedecen instantáneamente
+    slider.oninput = function() {
+      const start = parseFloat(this.value);
+      const end = start + 60;
+      
+      timeLabel.innerText = `${start.toFixed(1)} - ${end.toFixed(1)}`;
+      
+      charts.forEach(chart => {
+        chart.options.scales.x.min = start;
+        chart.options.scales.x.max = end;
+        chart.update('none'); // Sin animación para que sea ultra fluido
+      });
+    };
+  }
 }
