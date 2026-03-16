@@ -77,43 +77,38 @@
               </div>
             </div>
 
-            <div>
-              <div class="col-header">RPMs</div>
-              <div class="sensor-column-card" style="gap: 195px; padding-top: 55px; padding-bottom: 55px">
-                <div class="sensor-row">
-                  <div class="sensor-unit"><span class="unit-label">FI</span><span class="rpm-value" id="rpm-fi">0</span></div>
-                  <div class="sensor-unit"><span class="unit-label">FD</span><span class="rpm-value" id="rpm-fd">0</span></div>
-                </div>
-                <div class="sensor-row">
-                  <div class="sensor-unit"><span class="unit-label">TI</span><span class="rpm-value" id="rpm-ti">0</span></div>
-                  <div class="sensor-unit"><span class="unit-label">TD</span><span class="rpm-value" id="rpm-td">0</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="section-header">Freno / Acelerador</div>
-            <div class="pedals-wrapper">
-              <div class="pedals-container">
-                <div class="pedal-group">
-                  <div class="pedal-track"><div id="bar-brake" class="pedal-fill" style="background: var(--color-neg)"></div></div>
-                  <div id="val-brake" class="pedal-val-text">0.0</div>
-                </div>
-                <div class="pedal-group">
-                  <div class="pedal-track"><div id="bar-throttle" class="pedal-fill" style="background: var(--color-pos)"></div></div>
-                  <div id="val-throttle" class="pedal-val-text">0.0</div>
+            <div style="display: flex; flex-direction: column; gap: 15px; height: 100%;">
+              <div style="flex: 1; display: flex; flex-direction: column;">
+                <div class="col-header">RPMs</div>
+                <div class="sensor-column-card" style="flex: 1;">
+                  <div class="sensor-row">
+                    <div class="sensor-unit"><span class="unit-label">FI</span><span class="rpm-value" id="rpm-fi">0</span></div>
+                    <div class="sensor-unit"><span class="unit-label">FD</span><span class="rpm-value" id="rpm-fd">0</span></div>
+                  </div>
+                  <div class="sensor-row">
+                    <div class="sensor-unit"><span class="unit-label">TI</span><span class="rpm-value" id="rpm-ti">0</span></div>
+                    <div class="sensor-unit"><span class="unit-label">TD</span><span class="rpm-value" id="rpm-td">0</span></div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-    </div>
 
-    <div id="tab-charts" class="tab-content">
+              <div style="flex: 1; display: flex; flex-direction: column;">
+                <div class="col-header">Freno / Acelerador</div>
+                <div class="pedals-wrapper" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                  <div class="pedals-container">
+                    <div class="pedal-group">
+                      <div class="pedal-track"><div id="bar-brake" class="pedal-fill" style="background: var(--color-neg)"></div></div>
+                      <div id="val-brake" class="pedal-val-text">0.0</div>
+                    </div>
+                    <div class="pedal-group">
+                      <div class="pedal-track"><div id="bar-throttle" class="pedal-fill" style="background: var(--color-pos)"></div></div>
+                      <div id="val-throttle" class="pedal-val-text">0.0</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> </div> </div> </div> <div id="tab-charts" class="tab-content">
       <div class="charts-panel">
-        <div class="section-header" style="margin-bottom: 0">4 gráficas interactivas (TIME ascendente)</div>
-        <div style="font-size: 0.78rem; color: #8f8f8f">Zoom con rueda/pinch · Pan arrastrando.</div>
         <div class="charts-grid">
           <section class="chart-section">
             <div class="section-header" style="margin-bottom: 0">Gráfica 1</div>
@@ -121,21 +116,18 @@
             <div><button onclick="resetZoom(charts[0])">Reset Zoom</button></div>
             <div class="chartWrap"><canvas id="telemetryChart1"></canvas></div>
           </section>
-
           <section class="chart-section">
             <div class="section-header" style="margin-bottom: 0">Gráfica 2</div>
             <div class="metric-controls" id="metricControls2"></div>
             <div><button onclick="resetZoom(charts[1])">Reset Zoom</button></div>
             <div class="chartWrap"><canvas id="telemetryChart2"></canvas></div>
           </section>
-
           <section class="chart-section">
             <div class="section-header" style="margin-bottom: 0">Gráfica 3</div>
             <div class="metric-controls" id="metricControls3"></div>
             <div><button onclick="resetZoom(charts[2])">Reset Zoom</button></div>
             <div class="chartWrap"><canvas id="telemetryChart3"></canvas></div>
           </section>
-
           <section class="chart-section">
             <div class="section-header" style="margin-bottom: 0">Gráfica 4</div>
             <div class="metric-controls" id="metricControls4"></div>
@@ -147,10 +139,7 @@
           </section>
         </div>
       </div>
-    </div>
-  </div>
-
-  <script src="javascript/state.js"></script>
+    </div> </div> <script src="javascript/state.js"></script>
   <script src="javascript/comms.js"></script>
   <script src="javascript/ui.js"></script>
   <script src="javascript/charts.js"></script>
@@ -174,13 +163,13 @@
         </div>
         <hr style="border: 1; border-top: 1px solid #333; margin: 10px 0;">
         <p style="font-size: 0.8rem; color: black; margin-top: 15px;">Desarrollado por Andrés M. & Alejandro R.</p>
-        <div class="credit-area" style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 15px;">
-            <div style="flex: 1; display: flex; justify-content: flex-end; padding-right: 8px;">
-                <img src="rcs/icon-github.png" class="github-icon" alt="GitHub Icon" style="width: 35px; height: 35px;">
+        <div class="credit-area" style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px;">
+            <div>
+                <img src="rcs/icon-github.png" class="github-icon" alt="GitHub Icon" style="width: 35px; height: 35px; display: block;">
             </div>
-            <div class="credits-column" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px;">
-                <a href="#" onclick="window.pywebview.api.open_external_link('https://github.com/andrm23')" style="color: #666; text-decoration: none; font-size: 0.8rem; font-family: sans-serif;">andrm23</a>
-                <a href="#" onclick="window.pywebview.api.open_external_link('https://github.com/lexrammart')" style="color: #666; text-decoration: none; font-size: 0.8rem; font-family: sans-serif;">lexrammart</a>
+            <div class="credits-column">
+                <a href="#" onclick="window.pywebview.api.open_external_link('https://github.com/andrm23')">andrm23</a>
+                <a href="#" onclick="window.pywebview.api.open_external_link('https://github.com/lexrammart')">lexrammart</a>
             </div>
         </div>
         <button onclick="toggleModal()" style="margin-top: 20px;">CERRAR</button>
