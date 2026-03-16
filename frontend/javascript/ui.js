@@ -333,3 +333,14 @@ function displayHistoricalData(data) {
     };
   }
 }
+
+/**
+ * Limpia la selección del archivo CSV para permitir usar la DB de nuevo.
+ */
+function clearCSVSelection() {
+  const fileInput = document.getElementById('csvFileInput');
+  if (fileInput) {
+    fileInput.value = ""; // Resetea el input
+    console.log("Selección de CSV limpiada.");
+  }
+}

@@ -5,6 +5,7 @@ import json
 import os
 import webbrowser
 from db_manager import TelemetryDB
+from datetime import datetime
 
 
 class TelemetryAPI:
@@ -324,18 +325,23 @@ class TelemetryAPI:
             print(f"Error al cargar sesión: {e}")
             return []
 
-    def stop_record(self, session_name="Carrera"):
+    def stop_record(self):
         """
-        Detiene la grabación y realiza el volcado al historial persistente (.mati).
+        Detiene la grabación, genera un nombre automático por fecha/hora
+        y realiza el volcado al historial persistente (.mati).
         """
         self.is_recording = False
 
-        # 1. Guardamos en el historial seguro antes de que se borre la tabla live
-        full_id = self.db.save_to_history(session_name)
+        # Generar nombre automático: mati_2026-03-16_1240
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H%M")
+        auto_name = f"mati_{timestamp}"
 
-        # 2. Exportamos el CSV de respaldo en el Escritorio
+        # 1. Volcado a la base de datos segura .mati
+        full_id = self.db.save_to_history(auto_name)
+
+        # 2. Exportación de CSV al Escritorio
         desktop_path = os.path.join(
-            os.path.expanduser("~"), "Desktop", f"{session_name}_telemetry.csv"
+            os.path.expanduser("~"), "Desktop", f"{auto_name}.csv"
         )
         total_registros = self.db.export_csv(desktop_path)
 

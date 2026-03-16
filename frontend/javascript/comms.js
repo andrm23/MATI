@@ -85,26 +85,18 @@ function toggleRecord() {
     }, 1000);
 
   } else {
-    // --- FIN DE GRABACIÓN ---
-    // Pedimos el nombre para la "Tabla Maestra" del historial
-    const sessionName = prompt("Ingrese el nombre de la sesión (ej. Prueba_Zacatenco):", "Carrera");
-
-    // Enviamos el nombre al backend para el volcado seguro
-    window.pywebview.api.stop_record(sessionName || "Sin_Nombre").then((response) => {
+    // Ya no pedimos nombre, Python lo genera solo
+    window.pywebview.api.stop_record().then((response) => {
        const modal = document.getElementById('csvModal');
        const msg = document.getElementById('csvModalMsg');
        
-       // Inyectamos el resumen en el modal que ya tienes en el HTML
        if (modal && msg) {
            msg.innerHTML = `
-             <b>Sesión Guardada:</b> ${response.session_id}<br>
-             <b>Total Registros:</b> ${response.total}<br>
+             <b>Sesión:</b> ${response.session_id}<br>
+             <b>Registros:</b> ${response.total}<br>
              <b>Ruta CSV:</b> ${response.path}
            `; 
            modal.style.display = 'block';
-       } else {
-           // Fallback por si el modal no existe aún en HTML
-           alert(`Sesión guardada: ${response.session_id}\nRegistros: ${response.total}`);
        }
     });
     

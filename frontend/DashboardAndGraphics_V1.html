@@ -23,6 +23,26 @@
     <button id="btn-tab-telemetry" class="tab-button active" onclick="switchTab('telemetry')">ANÁLISIS</button>
     <button id="btn-tab-charts" class="tab-button" onclick="switchTab('charts')">GRÁFICAS</button>
     <button id="btn-history" onclick="toggleHistoryModal()" style="margin-left: 5px;">HISTORIAL</button>
+    <div id="timeline-container" style="display: none; flex: 1; align-items: center; gap: 0; margin: 0 10px;">
+        <!-- <div style="width: 1px; height: 20px; background: #444; margin: 0 15px;"></div> -->
+        
+        <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
+            
+            <span style="color: var(--color-muted); font-family: 'Roboto Mono'; font-size: 0.7rem; font-weight: bold; white-space: nowrap;">
+                TIEMPO
+            </span>
+            
+            <input type="range" id="historySlider" min="0" value="0" step="0.5" style="flex: 1; cursor: pointer; accent-color: var(--color-tab); height: 4px; background: #333; border: none; outline: none; border-radius: 5px; margin: 0;">
+            
+            <span style="color: #fff; font-family: 'Roboto Mono'; font-size: 0.7rem; white-space: nowrap; width: 100px; text-align: right;">
+                <span id="timeline-val">0.0 - 60.0</span>s
+            </span>
+            
+        </div>
+
+        <!-- <div style="width: 1px; height: 20px; background: #444; margin: 0 15px;"></div> -->
+    </div>
+    
     <button class="btn-info" onclick="toggleModal()">ⓘ</button>
   </div>
 
@@ -108,14 +128,7 @@
                 </div>
               </div>
             </div> </div> </div> </div> <div id="tab-charts" class="tab-content">
-      <div class="charts-panel">
-        <div id="timeline-container" style="display: none; padding: 15px; background: #151515; margin-bottom: 15px; border-radius: 5px; border: 1px solid #333;">
-          <div style="display: flex; justify-content: space-between; color: var(--color-tab); font-family: 'Roboto Mono'; font-size: 14px; margin-bottom: 8px;">
-              <span>Control de Tiempo (Scroll manual)</span>
-              <span>Ventana de visualización: <span id="timeline-val" style="color: #fff;">0.0 - 60.0</span> s</span>
-          </div>
-          <input type="range" id="historySlider" min="0" value="0" step="0.5" style="width: 100%; cursor: pointer; accent-color: var(--color-tab);">
-        </div>
+      
         <!-- <div class="charts-grid"> -->
         <div class="charts-grid">
           <section class="chart-section">
@@ -185,27 +198,28 @@
   </div>
 
   <div id="modalHistory" class="modal" style="display: none;">
-    <div class="modal-content" style="max-width: 500px; background: #1a1a1a; color: #e0e0e0; border: 1px solid #333;">
-      <h3 class="section-header" style="color: var(--color-tab);">Historial de Telemetría</h3>
+    <div class="modal-content" style="max-width: 420px; background: #ffffff; color: #000000; border-radius: 8px; padding: 25px;">
+      
+      <h2 class="modal-gradient-title">HISTORIAL DE REGISTROS</h2>
       
       <div style="margin-bottom: 20px; text-align: left;">
-        <p style="font-size: 0.8rem; margin-bottom: 8px;">Buscar en Base de Datos (.mati):</p>
-        <input type="text" id="historySearchInput" placeholder="Buscar sesión..." style="width: 100%; margin-bottom: 10px; text-align: left; padding: 8px;">
-        <select id="historySessionSelect" style="width: 100%; background: #222; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px;">
-          <option value="">Selecciona una carrera...</option>
-          </select>
+        <label style="font-size: 0.8rem; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Seleccionar registro:</label>
+        <select id="historySessionSelect" style="width: 100%; background: #f9f9f9; color: #333; border: 1px solid #ddd; padding: 10px; border-radius: 4px; font-family: 'Roboto Mono'; font-size: 0.75rem;">
+          <option value="">Cargando sesiones...</option>
+        </select>
       </div>
-
-      <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
 
       <div style="margin-bottom: 25px; text-align: left;">
-        <p style="font-size: 0.8rem; margin-bottom: 8px;">Cargar archivo externo (CSV):</p>
-        <input type="file" id="csvFileInput" accept=".csv" style="font-size: 0.75rem; width: 100%;">
+        <label style="font-size: 0.8rem; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Cargar archivo externo (CSV):</label>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <input type="file" id="csvFileInput" accept=".csv" style="flex: 1;">
+          <button class="btn-modal-history clear" onclick="clearCSVSelection()" title="Quitar archivo">✕</button>
+        </div>
       </div>
 
-      <div style="display: flex; gap: 10px; justify-content: center;">
-        <button onclick="loadHistoryData()" style="background: var(--color-tab); padding: 10px 20px;">CARGAR DATOS</button>
-        <button onclick="toggleHistoryModal()" style="background: #444; padding: 10px 20px;">CANCELAR</button>
+      <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+        <button class="btn-modal-history" onclick="loadHistoryData()">CARGAR</button>
+        <button class="btn-modal-history cancel" onclick="toggleHistoryModal()">CANCELAR</button>
       </div>
     </div>
   </div>
