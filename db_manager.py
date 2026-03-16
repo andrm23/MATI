@@ -9,10 +9,14 @@ telemetría capturadas y su posterior exportación a formatos estándar.
 import sqlite3
 import os
 import csv
+from datetime import datetime
 
 # --- CONFIGURACIÓN PRINCIPAL (Rutas Absolutas) ---
 CARPETA_SEGURA = os.path.join(os.path.expanduser("~"), "Documents", "TelemetriaApp")
-DB_NAME = os.path.join(CARPETA_SEGURA, "telemetry_data.db")
+DB_NAME = os.path.join(CARPETA_SEGURA, "telemetry_data.db")  # DB vólatil (tiempo real)
+DB_HISTORY_NAME = os.path.join(
+    CARPETA_SEGURA, "telemetry_history.mati"
+)  # DB persistente
 BATCH_SIZE = 20  # Frecuencia de 20Hz
 
 
@@ -36,16 +40,20 @@ class TelemetryDB:
         if os.path.exists(DB_NAME):
             try:
                 os.remove(DB_NAME)
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"[DEBUG] No se pudo borrar la DB temporal: {e}")
 
         # Conexión con la DB
         self.conn = sqlite3.connect(DB_NAME, check_same_thread=False)
         self.cursor = self.conn.cursor()
 
+        # conexión con DB persistente y cifrado
+        self.conn_hist = sqlite3.connect("DB_HISTORY_NAME", check_same_thread=False)
+        self.cursor_hist = self.conn_hist.cursor()
+        self.cursor_hist.execute("PRAGMA key = 'UAMOTORS_gotera'")
+
         # lote de datos temporales
         self.batch_data = []
-
         self.create_table()
 
     def create_table(self):
@@ -57,7 +65,7 @@ class TelemetryDB:
         """
         self.cursor.execute("DROP TABLE IF EXISTS telemetry_data")
 
-        query = """
+        query_base = """
         CREATE TABLE telemetry_data (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             Time REAL, G REAL, Steer REAL, Accel REAL, Brake REAL,
@@ -65,8 +73,28 @@ class TelemetryDB:
             TFI REAL, TFD REAL, TTI REAL, TTD REAL
         )
         """
-        self.cursor.execute(query)
+        self.cursor.execute(query_base)
+
+        # tabla historial
+        query_history = query_base.replace("CREATE TABLE", "CREATE TABLE IF NOT EXISTS")
+        query_history = query_base.replace("id INTEGER", "id INTEGER", 1).replace(
+            "TTD REAL", "TTD REAL, session_id TEXT"
+        )
+
+        try:
+            self.cursor_hist.execute(query_history)
+        except sqlite3.OperationalError as e:
+            # Si la tabla existe pero no tiene la columna session_id (versión vieja), la añadimos
+            if "duplicate column name: session_id" not in str(e).lower():
+                try:
+                    self.cursor_hist.execute(
+                        "ALTER TABLE telemetry_data ADD COLUMN session_id TEXT"
+                    )
+                except:
+                    pass  # Ya existía la columna
+
         self.conn.commit()
+        self.conn_hist.commit()
 
     def insert_data(self, d):
         """
@@ -123,6 +151,29 @@ class TelemetryDB:
         self.cursor.executemany(query, self.batch_data)
         self.conn.commit()
         self.batch_data.clear()
+
+    def save_to_history(self, session_name):
+        self.commit_batch()
+
+        # lectura de la tabla vólatil
+        self.cursor.execute("SELECT * FROM telemetry_data")
+        rows = self.cursor.fetchall()
+
+        # se agrega el session id
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+        full_session_id = f"{session_name} ({timestamp})"
+
+        history_rows = [row[1:] + (full_session_id,) for row in rows]
+
+        query_hist = """
+        INSERT INTO telemetry_data (
+            Time, G, Steer, Accel, Brake, FL, FR, RL, RR, TFI, TFD, TTI, TTD, session_id
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        """
+        self.cursor_hist.executemany(query_hist, history_rows)
+        self.conn_hist.commit()
+
+        return full_session_id
 
     def export_csv(self, filename="telemetry_data.csv"):
         """

@@ -11,6 +11,10 @@
  */
 function connect() {
   if (isDemoRunning) stopDemo();
+
+  // Ocultar slider si conectamos hardware
+  const sliderContainer = document.getElementById('timeline-container');
+  if (sliderContainer) sliderContainer.style.display = 'none';
   
   const ip = document.getElementById("ipInput").value;
   if (ws) ws.close();
@@ -51,6 +55,7 @@ function connect() {
  * Gestiona el temporizador visual y las llamadas a la API de inicio/parada de grabación.
  */
 function toggleRecord() {
+  // Verificamos que el puente con Python esté vivo
   if (!window.pywebview || !window.pywebview.api) {
     console.error("Error: La API de Python no está conectada.");
     return;
@@ -60,6 +65,8 @@ function toggleRecord() {
   const recTimer = document.getElementById("rec-timer");
 
   if (!isRecording) {
+    // --- INICIO DE GRABACIÓN ---
+    // Limpiamos la tabla temporal en el backend
     window.pywebview.api.start_record().then(console.log);
     
     isRecording = true;
@@ -69,6 +76,7 @@ function toggleRecord() {
     btnRec.classList.add("recording");
     recTimer.style.display = "block";
     
+    // Timer visual cada segundo
     recTimerInt = setInterval(() => {
       const s = Math.floor((performance.now() - startTime) / 1000);
       const m = Math.floor(s / 60);
@@ -76,14 +84,23 @@ function toggleRecord() {
       recTimer.innerText = `${m}:${ss.toString().padStart(2, "0")}`;
     }, 1000);
 
-  }  else {
+  } else {
+    // Ya no pedimos nombre, Python lo genera solo
     window.pywebview.api.stop_record().then((response) => {
        const modal = document.getElementById('csvModal');
        const msg = document.getElementById('csvModalMsg');
-       msg.innerHTML = `Se guardaron ${response.total} registros en:<br>${response.path}`; 
-       modal.style.display = 'block';
+       
+       if (modal && msg) {
+           msg.innerHTML = `
+             <b>Sesión:</b> ${response.session_id}<br>
+             <b>Registros:</b> ${response.total}<br>
+             <b>Ruta CSV:</b> ${response.path}
+           `; 
+           modal.style.display = 'block';
+       }
     });
     
+    // Limpieza de estados visuales
     isRecording = false;
     clearInterval(recTimerInt);
     btnRec.innerHTML = "REC";
@@ -91,38 +108,6 @@ function toggleRecord() {
     recTimer.style.display = "none";
   }
 }
-
-  const btnRec = document.getElementById("btnRec");
-  const recTimer = document.getElementById("rec-timer");
-
-  if (!isRecording) {
-    window.pywebview.api.start_record().then(console.log);
-    
-    isRecording = true;
-    startTime = performance.now();
-    
-    btnRec.innerHTML = "STOP";
-    btnRec.classList.add("recording");
-    recTimer.style.display = "block";
-    
-    recTimerInt = setInterval(() => {
-      const s = Math.floor((performance.now() - startTime) / 1000);
-      const m = Math.floor(s / 60);
-      const ss = s % 60;
-      recTimer.innerText = `${m}:${ss.toString().padStart(2, "0")}`;
-    }, 1000);
-  } else {
-    window.pywebview.api.stop_record().then((mensaje) => {
-       alert(mensaje); 
-    });
-    
-    isRecording = false;
-    clearInterval(recTimerInt);
-    btnRec.innerHTML = "REC";
-    btnRec.classList.remove("recording");
-    recTimer.style.display = "none";
-  }
-
 
 /**
  * Realiza el polling asíncrono de datos cuando el modo simulación (Demo) está activo.
@@ -167,6 +152,11 @@ function toggleDemo() {
  * Inicializa el modo de demostración a través de la API de Python.
  */
 function startDemo() {
+  isHistoryMode = false;
+  // Ocultar slider si volvemos a vivo
+  const sliderContainer = document.getElementById('timeline-container');
+  if (sliderContainer) sliderContainer.style.display = 'none';
+
   if (window.pywebview && window.pywebview.api) {
     if (!isRecording) startTime = performance.now();
     window.pywebview.api.start_demo().then(() => {

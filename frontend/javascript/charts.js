@@ -84,26 +84,28 @@ function chartOptions() {
     maintainAspectRatio: false,
     animation: false,
     parsing: false,
+    interaction: {
+      mode: 'nearest',
+      axis: 'x',
+      intersect: false
+    },
     scales: {
       x: {
         type: "linear",
-        title: { display: true, text: "TIME (s, ascendente)", color: "#d0d0d0" },
+        title: { display: true, text: "TIEMPO (s)", color: "#d0d0d0" },
         ticks: { color: "#adadad" },
-        grid: { color: "#222" },
+        grid: { color: "#222" }
       },
       y: {
         title: { display: true, text: "Valor", color: "#d0d0d0" },
         ticks: { color: "#adadad" },
-        grid: { color: "#222" },
+        grid: { color: "#222" }
       },
     },
     plugins: {
-      legend: { labels: { color: "#f2f2f2" } },
-      zoom: {
-        pan: { enabled: true, mode: "xy" },
-        zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: "xy" },
-      },
-    },
+      legend: { labels: { color: "#f2f2f2" } }
+      // Hemos eliminado la configuración de zoom para cederle el control absoluto al slider nativo
+    }
   };
 }
 
@@ -154,6 +156,9 @@ function refreshCharts() {
  * @param {number} timeSeconds - Tiempo transcurrido en segundos.
  */
 function addTelemetrySample(d, timeSeconds) {
+  // Si estamos viendo el historial, NO movemos las escalas automáticamente
+  if (isHistoryMode) return;
+
   // 1. Guardamos el dato en el historial global (esto no cambia)
   telemetrySeries.push({ time: timeSeconds, ...d });
   if (telemetrySeries.length > 2800) telemetrySeries.shift();

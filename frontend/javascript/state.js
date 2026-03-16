@@ -47,6 +47,8 @@ let telemetrySeries = [];
  */
 let trail = [];            
 
+/** * Indica si estamos visualizando datos históricos (bloquea el auto-scroll). */
+let isHistoryMode = false;
 // --- CONSTANTES DE CONFIGURACIÓN ESTÁTICA ---
 
 /**

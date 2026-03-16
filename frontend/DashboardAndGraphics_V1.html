@@ -22,7 +22,27 @@
     <div style="width: 1px; height: 20px; background: #444; margin: 0 5px"></div>
     <button id="btn-tab-telemetry" class="tab-button active" onclick="switchTab('telemetry')">ANÁLISIS</button>
     <button id="btn-tab-charts" class="tab-button" onclick="switchTab('charts')">GRÁFICAS</button>
+    <button id="btn-history" onclick="toggleHistoryModal()" style="margin-left: 5px;">HISTORIAL</button>
+    <div id="timeline-container" style="display: none; flex: 1; align-items: center; gap: 0; margin: 0 10px;">
+        <!-- <div style="width: 1px; height: 20px; background: #444; margin: 0 15px;"></div> -->
+        
+        <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
+            
+            <span style="color: var(--color-muted); font-family: 'Roboto Mono'; font-size: 0.7rem; font-weight: bold; white-space: nowrap;">
+                TIEMPO
+            </span>
+            
+            <input type="range" id="historySlider" min="0" value="0" step="0.5" style="flex: 1; cursor: pointer; accent-color: var(--color-tab); height: 4px; background: #333; border: none; outline: none; border-radius: 5px; margin: 0;">
+            
+            <span style="color: #fff; font-family: 'Roboto Mono'; font-size: 0.7rem; white-space: nowrap; width: 100px; text-align: right;">
+                <span id="timeline-val">0.0 - 60.0</span>s
+            </span>
+            
+        </div>
 
+        <!-- <div style="width: 1px; height: 20px; background: #444; margin: 0 15px;"></div> -->
+    </div>
+    
     <button class="btn-info" onclick="toggleModal()">ⓘ</button>
   </div>
 
@@ -108,7 +128,8 @@
                 </div>
               </div>
             </div> </div> </div> </div> <div id="tab-charts" class="tab-content">
-      <div class="charts-panel">
+      
+        <!-- <div class="charts-grid"> -->
         <div class="charts-grid">
           <section class="chart-section">
             <div class="section-header" style="margin-bottom: 0">Gráfica 1</div>
@@ -174,6 +195,33 @@
         </div>
         <button onclick="toggleModal()" style="margin-top: 20px;">CERRAR</button>
       </div>
+  </div>
+
+  <div id="modalHistory" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 420px; background: #ffffff; color: #000000; border-radius: 8px; padding: 25px;">
+      
+      <h2 class="modal-gradient-title">HISTORIAL DE REGISTROS</h2>
+      
+      <div style="margin-bottom: 20px; text-align: left;">
+        <label style="font-size: 0.8rem; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Seleccionar registro:</label>
+        <select id="historySessionSelect" style="width: 100%; background: #f9f9f9; color: #333; border: 1px solid #ddd; padding: 10px; border-radius: 4px; font-family: 'Roboto Mono'; font-size: 0.75rem;">
+          <option value="">Cargando sesiones...</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 25px; text-align: left;">
+        <label style="font-size: 0.8rem; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Cargar archivo externo (CSV):</label>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <input type="file" id="csvFileInput" accept=".csv" style="flex: 1;">
+          <button class="btn-modal-history clear" onclick="clearCSVSelection()" title="Quitar archivo">✕</button>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+        <button class="btn-modal-history" onclick="loadHistoryData()">CARGAR</button>
+        <button class="btn-modal-history cancel" onclick="toggleHistoryModal()">CANCELAR</button>
+      </div>
+    </div>
   </div>
 
   <div id="csvModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6);">

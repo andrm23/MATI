@@ -496,3 +496,132 @@ button:hover { background: #555; }
   filter: drop-shadow(0 0 5px rgba(255, 26, 125, 0.6));
   padding-left: 1px; 
 }
+
+#modalHistory .modal-content{
+  background: #151515;
+  border: 1px solid #333;
+  color: #fff;
+  max-width: 450px;
+  padding: 25px;
+}
+
+#modalHistory select:focus,
+#modalHistory input[type="text"]:focus{
+  border-color: var(--color-tab);
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 71, 171, 0.3);
+}
+
+#modalHistory input[type="file"]{
+  background: #111;
+  padding: 12px;
+  border: 1px dashed #444; /* Un borde punteado indica que se puede "soltar" un archivo */
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#modalHistory input[type="file"]::-webkit-file-upload-button {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-right: 10px;
+  font-weight: 500;
+}
+
+#modalHistory input[type="file"]::-webkit-file-upload-button:hover {
+  background: #444;
+}
+
+/* Título con gradiente (Estilo UAMOTORS) */
+.modal-gradient-title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+    background: linear-gradient(180deg, #FF0000 0%, #FF1A7D 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Botones del historial (Iguales al botón CERRAR del panel info) */
+/* Botón base (estilo CERRAR del panel info) */
+.btn-modal-history {
+    background: #333; /* Color exacto del botón CERRAR */
+    color: #fff;
+    border: none;
+    padding: 6px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 0.75rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover para el botón CARGAR (y base) */
+.btn-modal-history:hover {
+    background: #555;
+}
+
+/* Estilo específico para CANCELAR */
+.btn-modal-history.cancel {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.btn-modal-history.cancel:hover {
+    background: #e0e0e0; /* Gris un poco más oscuro al pasar el mouse */
+    color: #333;
+}
+
+/* Estilo específico para la X (Borrar) */
+.btn-modal-history.clear {
+    background: #ff4d4d;
+    padding: 6px 10px; /* Un poco más angosto para que sea cuadrada */
+}
+
+.btn-modal-history.clear:hover {
+    background: #b71c1c; /* Rojo oscuro en hover */
+}
+
+/* CORRECCIÓN: Color del texto del archivo CSV */
+#modalHistory input[type="file"] {
+    color: #333 !important; /* Forzamos color oscuro para el nombre del archivo */
+    background: #f9f9f9;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+/* Estilo para el slider integrado de MATI */
+#historySlider {
+    -webkit-appearance: none; /* Para Chrome y Safari antiguos */
+    appearance: none;         /* La propiedad estándar que tu IDE está pidiendo */
+    background: #333;
+    height: 4px;
+    border-radius: 5px;
+}
+#historySlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-tab); /* Tu azul cobalto */
+    cursor: pointer;
+    border: 2px solid #fff; /* Aro blanco para que resalte */
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
