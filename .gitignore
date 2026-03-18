@@ -23,6 +23,10 @@ database/
 *.csv
 *.log
 *.db
+# Base de datos de MATI
+DB_HISTORY_NAME
+*.mati
+*.sqlite
 
 
 # Excepciones (si tienes un CSV de prueba base que SÍ quieres subir, quítale el #)
