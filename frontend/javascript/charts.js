@@ -211,7 +211,21 @@ function resetZoom(chartInstance) {
  */
 function clearChartData() {
   telemetrySeries.length = 0;
-  refreshCharts();
+
+  // limpiar las 4 gráficas
+  charts.forEach(chart => {
+    chart.data.datasets.forEach(dataset => {
+      dataset.data = [];
+    });
+    chart.update('none');
+  })
+
+  // reset del radar
+  if (window.gChart) {
+        window.gChart.data.datasets[0].data = [{x: 0, y: 0}];
+        window.gChart.update();
+  }
+  //refreshCharts();
 }
 
 /**

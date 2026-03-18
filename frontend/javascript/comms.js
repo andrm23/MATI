@@ -11,6 +11,8 @@
  */
 function connect() {
   if (isDemoRunning) stopDemo();
+  clearChartData(); // limpia todo antes de conectarse al ESP32
+
 
   // Ocultar slider si conectamos hardware
   const sliderContainer = document.getElementById('timeline-container');
