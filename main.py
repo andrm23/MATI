@@ -1,43 +1,47 @@
 import webview
 import platform
+import sys  # Agregamos sys para emergencias
 from telemetry_api import TelemetryAPI
 from core.bridge import handle_on_loaded
 from core.utils import get_resource_path
 from compat import apply_fixes
 
-# parches de compatibilidad
+# 1. PARCHES DE COMPATIBILIDAD (Siempre al mero inicio)
 apply_fixes()
-
-# ruta del HTML
-html_path = get_resource_path("frontend/DashboardAndGraphics_V1.html")
-TITULO_APP = "MATI"
 
 
 def app_inicializacion():
-
     try:
-        # instancia del API de telemetría
+        # 2. Definimos la ruta AQUÍ adentro para asegurar que el entorno esté listo
+        html_path = get_resource_path("frontend/DashboardAndGraphics_V1.html")
+        TITULO_APP = "MATI - UAMOTORS"
+
+        # Instancia del API
         api = TelemetryAPI()
 
-        # creación de la ventana
-        pantalla = webview.screens[0]
+        screens = webview.screens
+        if not screens:
+            width, height = 1280, 800
+        else:
+            width, height = screens[0].width, screens[0].height
 
         ventana = webview.create_window(
             TITULO_APP,
             str(html_path),
             js_api=api,
-            width=pantalla.width,
-            height=pantalla.height,
+            width=width,
+            height=height,
             resizable=True,
         )
 
-        # arranque de motor de renderizado
+        # Arranque de motor
         api.set_window(ventana)
         ventana.events.closed += api.on_closing
         webview.start(handle_on_loaded, ventana, debug=False)
 
     except Exception as e:
-        print(f"Error al iniciar la app: {e}")
+        # Esto te dirá el error real en la terminal si vuelve a fallar
+        print(f"Error crítico en el arranque del MATI: {e}")
 
 
 if __name__ == "__main__":

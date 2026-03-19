@@ -3,7 +3,7 @@ import json
 import ssl
 
 # Asegúrate de que este número sea el que quieres para tu versión local
-ACTUAL_VERSION = "1.3.5"
+ACTUAL_VERSION = "1.3.6"
 
 
 def check_update():
