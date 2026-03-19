@@ -161,7 +161,7 @@ class TelemetryAPI:
         Sustituye al hardware físico generando datos sintéticos mediante funciones trigonométricas para
         probar el renderizado de gráficas y el radar de gráficas G.
 
-        Opera a una frecuencia de 20GHz (sleep de 0.005s). Además, esta función evalúa si la grabación
+        Opera a una frecuencia de 20Hz (sleep de 0.005s). Además, esta función evalúa si la grabación
         está activa para enviarlos a la base de datos y actualiza el playload global para que el frontend
         los consuma vía IPC.
 

@@ -21,7 +21,7 @@ def check_update():
 
         req = urllib.request.Request(url, headers={"User-Agent": "MATI-Updater"})
 
-        with urllib.request.urlopen(req, timeout=5, context=ctx) as response:
+        with urllib.request.urlopen(req, timeout=3, context=ctx) as response:
             data = json.loads(response.read().decode())
 
         latest_version_tag = data.get("tag_name", "")
@@ -51,7 +51,11 @@ def check_update():
             datos_reales = {"version": latest_version, "changelog": changelog}
             return (True, datos_reales)
 
+    except urllib.error.HTTPError as e:
+        print(f"[*] ERROR: GitHub respondió con código {e.code}")
+    except urllib.error.URLError as e:
+        print(f"[*] INFO: Sin conexión a internet o DNS fallido. Modo offline activo.")
     except Exception as e:
-        print(f"Error al conectar con GitHub para buscar actualizaciones: {e}")
+        print(f"[*] ERROR inesperado en updater: {e}")
 
     return None
