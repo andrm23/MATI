@@ -1,0 +1,14 @@
+/* Definición de la fuente variable local */
+@font-face {
+  font-family: 'Roboto';
+  src: url('../fonts/Roboto-VariableFont_wdth,wght.ttf') format('truetype-variations');
+  font-weight: 100 900; 
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto Mono';
+  src: url('../fonts/RobotoMono-VariableFont_wght.ttf') format('truetype-variations');
+  font-weight: 100 700;
+  font-style: normal;
+}
