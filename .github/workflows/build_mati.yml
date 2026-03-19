@@ -42,8 +42,8 @@ jobs:
       - name: Build Mac
         if: matrix.os == 'macos-latest'
         run: |
-          # Agregamos --onefile para que sea un solo ejecutable sólido
-          pyinstaller --noconfirm --windowed --onefile --name "MATI" \
+          # Eliminamos --onefile para evitar problemas de descompresión y permisos
+          pyinstaller --noconfirm --windowed --name "MATI" \
           --icon="frontend/assets/icon.icns" \
           --target-arch universal2 \
           --add-data "frontend:frontend" \
