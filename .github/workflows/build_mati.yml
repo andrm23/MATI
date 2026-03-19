@@ -3,7 +3,7 @@ name: Build and Public Release
 on:
   push:
     tags:
-      - 'v*' # Se activa al subir tags como v1.1.3
+      - 'v*' # Se activa al subir tags como v1.3.5
   workflow_dispatch:
 
 jobs:
@@ -21,12 +21,19 @@ jobs:
           python-version: '3.10'
           
       - name: Install dependencies
-        run: pip install pyinstaller pywebview
+        run: |
+          pip install pyinstaller pywebview
+          # Agregamos dependencias si tu compat.py o utils.py las necesitan
       
-      # --- BUILD WINDOWS ---
+      # --- BUILD WINDOWS (Para Andrés) ---
       - name: Build Windows
         if: matrix.os == 'windows-latest'
-        run: pyinstaller --windowed --onefile --name "MATI" --add-data "frontend;frontend" --add-data "core;core" main.py
+        run: |
+          pyinstaller --noconfirm --windowed --onefile --name "MATI" \
+          --icon="frontend/assets/icon.ico" \
+          --add-data "frontend;frontend" \
+          --add-data "core;core" \
+          main.py
         
       - name: Upload Windows to Release
         if: matrix.os == 'windows-latest'
@@ -38,10 +45,17 @@ jobs:
           tag_name: ${{ github.ref_name }}
           files: dist/MATI.exe
 
-      # --- BUILD MAC ---
+      # --- BUILD MAC (Para tu Mac M1) ---
       - name: Build Mac
         if: matrix.os == 'macos-latest'
-        run: pyinstaller --windowed --name "MATI" --add-data "frontend:frontend" --add-data "core:core" main.py
+        run: |
+          # El flag --target-arch universal2 es la clave para que abra en tu M1
+          pyinstaller --noconfirm --windowed --name "MATI" \
+          --icon="frontend/assets/icon.icns" \
+          --target-arch universal2 \
+          --add-data "frontend:frontend" \
+          --add-data "core:core" \
+          main.py
 
       - name: Zip Mac App
         if: matrix.os == 'macos-latest'
