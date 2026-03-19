@@ -3,7 +3,7 @@ name: Build and Public Release
 on:
   push:
     tags:
-      - 'v*' # Se activa al subir tags como v1.3.5
+      - 'v*' # Se activa con tags como v1.3.5
   workflow_dispatch:
 
 jobs:
@@ -21,19 +21,13 @@ jobs:
           python-version: '3.10'
           
       - name: Install dependencies
-        run: |
-          pip install pyinstaller pywebview
-          # Agregamos dependencias si tu compat.py o utils.py las necesitan
+        run: pip install pyinstaller pywebview
       
       # --- BUILD WINDOWS (Para Andrés) ---
       - name: Build Windows
         if: matrix.os == 'windows-latest'
-        run: |
-          pyinstaller --noconfirm --windowed --onefile --name "MATI" \
-          --icon="frontend/assets/icon.ico" \
-          --add-data "frontend;frontend" \
-          --add-data "core;core" \
-          main.py
+        # Todo en una sola línea para evitar errores de sintaxis en PowerShell
+        run: pyinstaller --noconfirm --windowed --onefile --name "MATI" --icon="frontend/assets/icon.ico" --add-data "frontend;frontend" --add-data "core;core" main.py
         
       - name: Upload Windows to Release
         if: matrix.os == 'windows-latest'
@@ -45,11 +39,11 @@ jobs:
           tag_name: ${{ github.ref_name }}
           files: dist/MATI.exe
 
-      # --- BUILD MAC (Para tu Mac M1) ---
+      # --- BUILD MAC (Para tu Mac Air M1) ---
       - name: Build Mac
         if: matrix.os == 'macos-latest'
         run: |
-          # El flag --target-arch universal2 es la clave para que abra en tu M1
+          # Usamos universal2 para que corra nativo en tu procesador M1
           pyinstaller --noconfirm --windowed --name "MATI" \
           --icon="frontend/assets/icon.icns" \
           --target-arch universal2 \
