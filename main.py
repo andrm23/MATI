@@ -1,26 +1,15 @@
-from compat import apply_fixes
-
-apply_fixes()
-
 import webview
-import sys
-from db_manager import TelemetryDB
-from pathlib import Path
+import platform
 from telemetry_api import TelemetryAPI
 from core.bridge import handle_on_loaded
+from core.utils import get_resource_path
+from compat import apply_fixes
 
+# parches de compatibilidad
+apply_fixes()
 
-def obtencion_ruta_html(ruta_relativa):
-    """Obtención de la ruta absoluta del archivo .html"""
-    try:
-        base_path = Path(sys._MEIPASS)
-    except:
-        base_path = Path(__file__).resolve().parent
-
-    return base_path / ruta_relativa
-
-
-html_path = obtencion_ruta_html("frontend/DashboardAndGraphics_V1.html")
+# ruta del HTML
+html_path = get_resource_path("frontend/DashboardAndGraphics_V1.html")
 TITULO_APP = "MATI"
 
 
@@ -40,7 +29,6 @@ def app_inicializacion():
             width=pantalla.width,
             height=pantalla.height,
             resizable=True,
-            min_size=(800, 600),
         )
 
         # arranque de motor de renderizado
