@@ -47,8 +47,3 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-
-# imágenes
-.jpg
-.png
-.jpeg
