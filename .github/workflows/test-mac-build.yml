@@ -12,15 +12,15 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12' #3.12 para asegurar compatibilidad
+          python-version: '3.12' 
           
       - name: Install dependencies
         run: |
-          pip install pyinstaller pywebview pysqlcipher3-binary
+          pip install pyinstaller pywebview
       
       - name: Build Mac (DEBUG Mode)
         run: |
-          # Incluimos el icono y las carpetas de datos
+          # Empaquetado con ícono y carpetas de recursos
           pyinstaller --noconfirm --windowed --name "MATI-Test" \
           --icon="frontend/assets/icon.icns" \
           --target-arch universal2 \
