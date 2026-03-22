@@ -6,7 +6,7 @@ from pathlib import Path
 def get_resource_path(ruta_relativa):
     """Busca la ruta absoluta del recurso (HTML, iconos, fuentes)"""
     try:
-        if getattr("sys", "froze", False):
+        if getattr(sys, "frozen", False):
             base_path = Path(sys._MEIPASS)
         else:
             base_path = Path(os.path.abspath(__file__)).parent.parent
