@@ -1,0 +1,39 @@
+name: MacOS Test Build (No release)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' 
+          
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller pywebview
+      
+      - name: Build Mac (DEBUG Mode)
+        run: |
+          # Empaquetado con ícono y carpetas de recursos
+          pyinstaller --noconfirm --windowed --name "MATI-Test" \
+          --icon="frontend/assets/icon.icns" \
+          --target-arch universal2 \
+          --add-data "frontend:frontend" \
+          --add-data "core:core" \
+          main.py
+
+      - name: Zip Mac App
+        run: cd dist && zip -r MATI-macOS-Test.zip MATI-Test.app
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MATI-Mac-M1-Debug
+          path: dist/MATI-macOS-Test.zip
+          retention-days: 5
