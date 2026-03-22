@@ -48,7 +48,7 @@ class TelemetryDB:
         self.cursor = self.conn.cursor()
 
         # conexión con DB persistente y cifrado
-        self.conn_hist = sqlite3.connect("DB_HISTORY_NAME", check_same_thread=False)
+        self.conn_hist = sqlite3.connect(DB_HISTORY_NAME, check_same_thread=False)
         self.cursor_hist = self.conn_hist.cursor()
         self.cursor_hist.execute("PRAGMA key = 'UAMOTORS_gotera'")
 
