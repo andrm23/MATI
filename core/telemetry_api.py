@@ -4,7 +4,7 @@ import math
 import json
 import os
 import webbrowser
-from db_manager import TelemetryDB
+from core.db_manager import TelemetryDB
 from datetime import datetime
 
 
