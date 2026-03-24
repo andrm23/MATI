@@ -13,7 +13,7 @@ apply_fixes()
 def app_inicializacion():
     try:
         # Se define la ruta para asegurar que el entorno esté listo
-        html_path = get_resource_path("frontend/DashboardAndGraphics_V1.html")
+        html_path = get_resource_path("frontend/index.html")
         TITULO_APP = "MATI - UAMOTORS"
 
         # Instancia del API
