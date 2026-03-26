@@ -12,17 +12,28 @@
 <body>
   <div class="controls-bar">
     <input type="text" id="ipInput" value="192.168.4.1" size="12" />
-    <button onclick="connect()">CONECTAR</button>
-    <button onclick="toggleDemo()">DEMO</button>
+    <button onclick="connect()" class="tab-button" title="CONECTAR">
+      <img src="assets/menu-bar/connect-icon.svg" alt="Conectar" class="menu-icon">
+    </button>
+
+    <button id="btn-demo" onclick="toggleDemo()" class="tab-button" title="DEMO">
+      <img src="assets/menu-bar/demo-icon.svg" alt="Demo" class="menu-icon">
+    </button>
     <div style="width: 1px; height: 20px; background: #444; margin: 0 5px"></div>
-    <button id="btnRec" class="btn-rec" onclick="toggleRecord()">REC</button>
+    <button id="btnRec" onclick="toggleRecord()" class="tab-button" title="GRABAR">REC</button>
     <button id="btnDown" class="btn-download" onclick="downloadCSV()">CSV</button>
     <span id="rec-timer" style="font-family: 'Roboto Mono'; font-size: 0.8rem; display: none">00:00</span>
     
     <div style="width: 1px; height: 20px; background: #444; margin: 0 5px"></div>
-    <button id="btn-tab-telemetry" class="tab-button active" onclick="switchTab('telemetry')">ANÁLISIS</button>
-    <button id="btn-tab-charts" class="tab-button" onclick="switchTab('charts')">GRÁFICAS</button>
-    <button id="btn-history" onclick="toggleHistoryModal()" style="margin-left: 5px;">HISTORIAL</button>
+    <button id="btn-tab-telemetry" class="tab-button active" onclick="switchTab('telemetry')">
+      <img src="assets/menu-bar/analisys-icon.svg" alt="Análisis" class="menu-icon">
+    </button>
+    <button id="btn-tab-charts" class="tab-button" onclick="switchTab('charts')">
+      <img src="assets/menu-bar/charts-icon.svg" alt="Gráficas" class="menu-icon">
+    </button>
+    <button id="btn-history" onclick="toggleHistoryModal()" class="tab-button" title="HISTORIAL">
+      <img src="assets/menu-bar/history-icon.svg" alt="Historial" class="menu-icon">
+    </button>
     <div id="timeline-container" style="display: none; flex: 1; align-items: center; gap: 0; margin: 0 10px;">
         <!-- <div style="width: 1px; height: 20px; background: #444; margin: 0 15px;"></div> -->
         

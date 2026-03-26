@@ -440,17 +440,21 @@ button:hover { background: #555; }
   /* display: block; */
 }
 
-.tab-button{
-  background: transparent;
-  border: 1px solid #444;
-  color: var(--text-muted);
-  transition: all 0.3s ease;
+.tab-button {
+  width: 36px; 
+  height: 36px; 
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem; 
+  font-weight: bold;
 }
 
 .tab-button:hover {
-  background: rgba(0, 71, 171, 0.15); /* Un toque del azul cobalto que elegiste */
-  color: #fff;                        /* Forzamos el texto a blanco para que resalte */
-  border-color: var(--color-tab);     /* El borde se ilumina con tu azul */
+  background: rgba(0, 71, 171, 0.15); 
+  color: #fff;                        
+  border-color: var(--color-tab);    
   cursor: pointer;
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
 }
@@ -624,4 +628,31 @@ button:hover { background: #555; }
     cursor: pointer;
     border: 2px solid #fff; /* Aro blanco para que resalte */
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+.menu-icon {
+  width: 18px;
+  height: 18px;
+  filter: invert(0.8); 
+  vertical-align: middle;
+}
+
+#btnRec {
+  color: var(--color-neg); 
+  border: 1px solid #444;
+}
+
+#btnRec:hover {
+  background: rgba(255, 51, 51, 0.15); 
+  border-color: var(--color-neg);     
+  color: #fff;
+  text-shadow: 0 0 8px rgba(255, 51, 51, 0.3);
+  box-shadow: 0 0 10px rgba(255, 51, 51, 0.2);
+}
+
+#btnRec.active {
+  background: var(--color-neg) !important; 
+  border-color: var(--color-neg) !important;
+  color: #fff;
+  animation: pulse 1.5s infinite;
 }
