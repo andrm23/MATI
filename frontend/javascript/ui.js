@@ -344,3 +344,14 @@ function clearCSVSelection() {
     console.log("Selección de CSV limpiada.");
   }
 }
+
+function resetUiIndicators(){
+  const zeros = {
+    g: 0, phi: 0, acel: 0, fren: 0,
+    fi: 0, fd: 0, ti: 0, td: 0,
+    tfi: 0, tfd: 0, tti: 0, ttd: 0,
+    rpmFi: 0, rpmFd: 0, rpmTi: 0, rpmTd: 0
+  }
+  updateUI(zeros);
+  // clearChartData();
+}

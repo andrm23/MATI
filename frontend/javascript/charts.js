@@ -156,18 +156,14 @@ function refreshCharts() {
  * @param {number} timeSeconds - Tiempo transcurrido en segundos.
  */
 function addTelemetrySample(d, timeSeconds) {
-  // Si estamos viendo el historial, NO movemos las escalas automáticamente
   if (isHistoryMode) return;
 
-  // 1. Guardamos el dato en el historial global (esto no cambia)
   telemetrySeries.push({ time: timeSeconds, ...d });
   if (telemetrySeries.length > 2800) telemetrySeries.shift();
 
   charts.forEach((chart, idx) => {
-      // CAMBIO 1: El "Seguro de vida". Si la gráfica no existe, sáltatela.
       if (!chart) return;
 
-      // CAMBIO 2: Solo intentamos meter datos si hay "datasets" (líneas) creadas
       if (chart.data.datasets && chart.data.datasets.length > 0) {
           chart.data.datasets.forEach((dataset) => {
             const key = dataset.metricKey;
@@ -178,22 +174,17 @@ function addTelemetrySample(d, timeSeconds) {
           });
       }
 
-      // CAMBIO 3: La "Independencia del eje X". 
-      // Calculamos el máximo y mínimo de tiempo IGUAL para todas.
       let xMax, xMin;
       if (timeSeconds <= 10) { 
           xMax = 10; xMin = 0; 
       } else { 
-          // Ajustamos para que se mueva de 10 en 10 segundos
           xMax = Math.ceil(timeSeconds / 10) * 10; 
           xMin = Math.max(0, xMax - 60); // Ventana de 60 segundos
       }
 
-      // CAMBIO 4: Aplicar el movimiento sí o sí
       chart.options.scales.x.max = xMax;
       chart.options.scales.x.min = xMin;
       
-      // Esto es lo que hace que la gráfica "fluya" continuamente
       chart.update("none"); 
   });
 }
@@ -212,20 +203,24 @@ function resetZoom(chartInstance) {
 function clearChartData() {
   telemetrySeries.length = 0;
 
-  // limpiar las 4 gráficas
   charts.forEach(chart => {
+    if (!chart) return;
+
+    // vaciado del dataset
     chart.data.datasets.forEach(dataset => {
       dataset.data = [];
     });
-    chart.update('none');
-  })
 
-  // reset del radar
-  if (window.gChart) {
-        window.gChart.data.datasets[0].data = [{x: 0, y: 0}];
-        window.gChart.update();
-  }
-  //refreshCharts();
+    // Reinicio del eje X
+    chart.options.scales.x.min = 0;
+    chart.options.scales.x.max = 10; // Rango inicial de 10 segundos
+
+    chart.update('none');
+  });
+
+  // 4. Reset del radar de Gs
+  trail.length = 0;
+  draw(0, 0);
 }
 
 /**

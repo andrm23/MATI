@@ -14,7 +14,7 @@ def app_inicializacion():
     try:
         # Se define la ruta para asegurar que el entorno esté listo
         html_path = get_resource_path("frontend/index.html")
-        TITULO_APP = "MATI - UAMOTORS"
+        TITULO_APP = "MATI"
 
         # Instancia del API
         api = TelemetryAPI()

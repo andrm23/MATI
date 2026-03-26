@@ -10,8 +10,13 @@
  * Procesa los paquetes JSON entrantes, actualiza la UI y despacha datos a la API de Python.
  */
 function connect() {
-  if (isDemoRunning) stopDemo();
-  clearChartData(); // limpia todo antes de conectarse al ESP32
+  if (isDemoRunning) {
+    stopDemo();
+    toggleDemo();
+  }
+  clearChartData();
+  resetUiIndicators();
+  
 
 
   // Ocultar slider si conectamos hardware
@@ -57,7 +62,7 @@ function connect() {
  * Gestiona el temporizador visual y las llamadas a la API de inicio/parada de grabación.
  */
 function toggleRecord() {
-  // Verificamos que el puente con Python esté vivo
+  // Verifica que el puente con Python funcione
   if (!window.pywebview || !window.pywebview.api) {
     console.error("Error: La API de Python no está conectada.");
     return;
@@ -68,7 +73,6 @@ function toggleRecord() {
 
   if (!isRecording) {
     // --- INICIO DE GRABACIÓN ---
-    // Limpiamos la tabla temporal en el backend
     window.pywebview.api.start_record().then(console.log);
     
     isRecording = true;
@@ -87,7 +91,6 @@ function toggleRecord() {
     }, 1000);
 
   } else {
-    // Ya no pedimos nombre, Python lo genera solo
     window.pywebview.api.stop_record().then((response) => {
        const modal = document.getElementById('csvModal');
        const msg = document.getElementById('csvModalMsg');
@@ -155,7 +158,10 @@ function toggleDemo() {
  */
 function startDemo() {
   isHistoryMode = false;
-  // Ocultar slider si volvemos a vivo
+  clearChartData();
+  resetUiIndicators();
+
+  // Ocultar slider si hay conexión con el  hardware
   const sliderContainer = document.getElementById('timeline-container');
   if (sliderContainer) sliderContainer.style.display = 'none';
 
