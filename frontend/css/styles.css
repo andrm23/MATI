@@ -449,28 +449,41 @@ button:hover { background: #555; }
   justify-content: center;
   font-size: 0.65rem; 
   font-weight: bold;
+  border: 1px solid #333;   
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
 .tab-button:hover {
   background: rgba(0, 71, 171, 0.15); 
-  color: #fff;                        
+  color: var(--color-tab);                        
   border-color: var(--color-tab);    
   cursor: pointer;
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
 }
 
+.tab-button:hover .menu-icon {
+  filter: invert(24%) sepia(91%) saturate(2256%) hue-rotate(211deg) brightness(93%) contrast(105%);
+}
+
 .tab-button.active{
   background: var(--color-tab);
-  color: #fff;
+  color: #a0a0a0;
   border-color: var(--color-tab);
   font-weight: bold;
 }
 
 .tab-button.active:hover {
-  background: var(--color-tab);
-  cursor: default;
+  background-color: #1a5bc0 !important; 
+  border-color: #000 !important;      
+  box-shadow: 0 0 12px rgba(0, 71, 171, 0.6);
+  cursor: pointer;
 }
 
+.tab-button.active:hover .menu-icon {
+  /* Forzamos a que el icono se mantenga blanco y brille más */
+  filter: brightness(2) !important; 
+}
 .main-container{
   display: block;
 }
