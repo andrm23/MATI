@@ -91,10 +91,8 @@ function toggleRecord() {
     recTimer.style.display = "block";
     
     recTimerInt = setInterval(() => {
-      const s = Math.floor((performance.now() - startTime) / 1000);
-      const m = Math.floor(s / 60);
-      const ss = s % 60;
-      recTimer.innerText = `${m}:${ss.toString().padStart(2, "0")}`;
+      const totalSeconds = (performance.now() - startTime) / 1000;
+      recTimer.innerText = formatTelemetryTime(totalSeconds);
     }, 1000);
 
   } else {

@@ -6,6 +6,20 @@
  */
 
 /**
+ * Formatea el tiempo siempre como MM:SS
+ * @param {number} seconds - Segundos brutos
+ */
+function formatTelemetryTime(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  
+  // padStart(2, "0") asegura que el 5 se vea como 05
+  const ss = s.toString().padStart(2, "0");
+  
+  return `${m}:${ss}`;
+}
+
+/**
  * Caché interna para almacenar referencias a elementos del DOM.
  * @type {Object.<string, HTMLElement>}
  */
@@ -222,11 +236,10 @@ function toggleHistoryModal() {
 
   if (modal.style.display === 'none' || modal.style.display === '') {
       modal.style.display = 'flex';
-      btnHistory.classList.add("active"); // Se pone azul al abrir
+      btnHistory.classList.add("active"); 
       updateHistoryList(); 
   } else {
       modal.style.display = 'none';
-      // Solo quitamos el azul si NO estamos visualizando datos históricos
       if (!isHistoryMode) {
           btnHistory.classList.remove("active");
       }
@@ -322,13 +335,14 @@ function displayHistoricalData(data) {
     
     slider.max = Math.max(0, maxTime - 60); 
     slider.value = 0;
-    timeLabel.innerText = "0.0 - 60.0";
+
+    timeLabel.innerText = `${formatTelemetryTime(0)} - ${formatTelemetryTime(60)}`;
 
     slider.oninput = function() {
       const start = parseFloat(this.value);
       const end = start + 60;
       
-      timeLabel.innerText = `${start.toFixed(1)} - ${end.toFixed(1)}`;
+      timeLabel.innerText = `${formatTelemetryTime(start)} - ${formatTelemetryTime(end)}`;
       
       charts.forEach(chart => {
         chart.options.scales.x.min = start;

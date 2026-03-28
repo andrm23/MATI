@@ -92,8 +92,21 @@ function chartOptions() {
     scales: {
       x: {
         type: "linear",
-        title: { display: true, text: "TIEMPO (s)", color: "#d0d0d0" },
-        ticks: { color: "#adadad" },
+        title: { 
+          display: true, 
+          text: "TIEMPO ᴍᴍ:ss",
+          color: "#d0d0d0" 
+        },
+        ticks: { 
+          color: "#adadad",
+          callback: function(value) {
+            return formatTelemetryTime(value);
+          },
+          font: {
+            family: "'Roboto Mono', monospace", 
+            size: 10
+          }
+        },
         grid: { color: "#222" }
       },
       y: {
