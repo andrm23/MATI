@@ -34,11 +34,12 @@
     <button id="btn-history" onclick="toggleHistoryModal()" class="tab-button" title="HISTORIAL">
       <img src="assets/menu-bar/history-icon.svg" alt="Historial" class="menu-icon">
     </button>
+    
     <div id="timeline-container" style="display: none; flex: 1; align-items: center; gap: 0; margin: 0 10px;">
         <!-- <div style="width: 1px; height: 20px; background: #444; margin: 0 15px;"></div> -->
         
         <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
-            
+            <div style="width: 1px; height: 20px; background: #444; margin: 0 5px"></div>
             <span style="color: var(--color-muted); font-family: 'Roboto Mono'; font-size: 0.9rem; font-weight: bold; white-space: nowrap;">
                 TIEMPO
             </span>
@@ -48,12 +49,16 @@
             <span style="color: #fff; font-family: 'Roboto Mono'; font-size: 0.9rem; white-space: nowrap; width: 100px; text-align: right;">
                 <span id="timeline-val">0.0 - 60.0</span>
             </span>
-            
+            <div style="width: 1px; height: 20px; background: #444; margin: 0 5px"></div>
         </div>
 
-        <!-- <div style="width: 1px; height: 20px; background: #444; margin: 0 15px;"></div> -->
     </div>
     
+    
+    <button id="btn-clear" onclick="clearChartData()" class="tab-button" title="LIMPIAR TODO">
+      <img src="assets/menu-bar/trash-icon.svg" alt="Limpiar" class="menu-icon">
+    </button>
+    <div style="width: 1px; height: 20px; background: #444; margin: 0 5px"></div>
     <button class="btn-info" onclick="toggleModal()">ⓘ</button>
   </div>
 
@@ -143,29 +148,29 @@
         <!-- <div class="charts-grid"> -->
         <div class="charts-grid">
           <section class="chart-section">
-            <div class="section-header" style="margin-bottom: 0">Gráfica 1</div>
+            <div class="section-header" style="margin-bottom: 0">Gráfica 1<br></div>
             <div class="metric-controls" id="metricControls1"></div>
-            <div><button onclick="resetZoom(charts[0])">Reset Zoom</button></div>
+            <!-- <div><button onclick="resetZoom(charts[0])">Reset Zoom</button></div> -->
             <div class="chartWrap"><canvas id="telemetryChart1"></canvas></div>
           </section>
           <section class="chart-section">
-            <div class="section-header" style="margin-bottom: 0">Gráfica 2</div>
+            <div class="section-header" style="margin-bottom: 0">Gráfica 2<br></div>
             <div class="metric-controls" id="metricControls2"></div>
-            <div><button onclick="resetZoom(charts[1])">Reset Zoom</button></div>
+            <!-- <div><button onclick="resetZoom(charts[1])">Reset Zoom</button></div> -->
             <div class="chartWrap"><canvas id="telemetryChart2"></canvas></div>
           </section>
           <section class="chart-section">
-            <div class="section-header" style="margin-bottom: 0">Gráfica 3</div>
+            <div class="section-header" style="margin-bottom: 0">Gráfica 3<br></div>
             <div class="metric-controls" id="metricControls3"></div>
-            <div><button onclick="resetZoom(charts[2])">Reset Zoom</button></div>
+            <!-- <div><button onclick="resetZoom(charts[2])">Reset Zoom</button></div> -->
             <div class="chartWrap"><canvas id="telemetryChart3"></canvas></div>
           </section>
           <section class="chart-section">
-            <div class="section-header" style="margin-bottom: 0">Gráfica 4</div>
+            <div class="section-header" style="margin-bottom: 0">Gráfica 4<br></div>
             <div class="metric-controls" id="metricControls4"></div>
             <div>
-              <button onclick="resetZoom(charts[3])">Reset Zoom</button>
-              <button onclick="clearChartData()">Limpiar datos</button>
+              <!-- <button onclick="resetZoom(charts[3])">Reset Zoom</button> -->
+              <!-- <button onclick="clearChartData()">Limpiar datos</button> -->
             </div>
             <div class="chartWrap"><canvas id="telemetryChart4"></canvas></div>
           </section>

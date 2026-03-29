@@ -326,7 +326,7 @@ button:hover { background: #555; }
 .btn-download { background: #2e7d32; display: none; }
 
 .btn-info{
-  margin-left: auto;
+  margin-left: 0 !important;
   background: transparent;
   border: 2px solid var(--text-main);
   color: var(--text-main);
@@ -668,4 +668,69 @@ button:hover { background: #555; }
   border-color: var(--color-neg) !important;
   color: #fff;
   animation: pulse 1.5s infinite;
+}
+
+.metric-btn {
+  background: #1a1a1a;
+  color: #888;
+  border: 1px solid #333;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.8rem;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+  transition: all 0.2s ease; 
+}
+
+.metric-btn:hover {
+  opacity: 1;
+  border-color: var(--btn-color) !important;
+  box-shadow: 0 0 8px var(--btn-color);
+  color: #eee;
+}
+
+.metric-btn.active {
+  color: #fff;
+  font-weight: bold;
+  opacity: 1;
+}
+
+.metric-controls {
+  display: flex;
+  flex-wrap: wrap; /* Permite el salto al segundo renglón */
+  gap: 8px 12px;   /* 8px vertical entre filas, 12px horizontal entre grupos */
+  padding: 5px 0;
+  max-width: 100%;
+}
+
+.metric-group {
+  display: flex;
+  gap: 1px; 
+  border: 1px solid #222;
+  border-radius: 4px;
+  overflow: hidden; 
+}
+
+.metric-btn {
+ 
+  min-width: 58px; 
+  padding: 4px 2px;
+  font-size: 0.8rem; 
+  text-shadow: 0 0 4px rgba(0,0,0,0.7);
+}
+
+#btn-clear {
+  margin-left: auto;
+  border-color: #444;
+}
+
+#btn-clear:hover {
+  background: rgba(255, 122, 0, 0.15) !important;
+  border-color: #ff7a00 !important;
+  box-shadow: 0 0 10px rgba(255, 122, 0, 0.3);
+}
+
+#btn-clear:hover .menu-icon {
+  filter: invert(53%) sepia(91%) saturate(2852%) hue-rotate(3deg) brightness(103%) contrast(106%) !important;
 }

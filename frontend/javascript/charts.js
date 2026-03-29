@@ -116,7 +116,7 @@ function chartOptions() {
       },
     },
     plugins: {
-      legend: { labels: { color: "#f2f2f2" } }
+      legend: { display: false }
       // Hemos eliminado la configuración de zoom para cederle el control absoluto al slider nativo
     }
   };
@@ -243,20 +243,52 @@ function clearChartData() {
  */
 function buildMetricControls(containerId, selectedMetrics) {
   const container = document.getElementById(containerId);
-  METRICS.forEach((metric) => {
-    const id = `${containerId}-${metric.key}`;
-    const label = document.createElement("label");
-    const input = document.createElement("input");
-    input.type = "checkbox";
-    input.id = id;
-    input.checked = selectedMetrics.has(metric.key);
-    input.onchange = () => {
-      if (input.checked) selectedMetrics.add(metric.key);
-      else selectedMetrics.delete(metric.key);
-      refreshCharts();
-    };
-    label.appendChild(input);
-    label.append(metric.label);
-    container.appendChild(label);
+  container.innerHTML = "";
+
+  const categorias = {
+    din: "DIN",
+    ctrl: "CTRL",
+    susp: "SUSP",
+    temp: "TEMP"
+  };
+
+  Object.keys(categorias).forEach(catKey => {
+    const groupDiv = document.createElement("div");
+    groupDiv.className = "metric-group";
+    
+    const catMetrics = METRICS.filter(m => m.cat === catKey);
+    
+    catMetrics.forEach(metric => {
+      const btn = document.createElement("button");
+      btn.innerText = metric.label;
+      btn.className = "metric-btn";
+      
+      const metricColor = COLORS[metric.key] || "#444";
+      btn.style.setProperty('--btn-color', metricColor);
+
+      if (selectedMetrics.has(metric.key)) {
+        btn.classList.add("active");
+        btn.style.backgroundColor = metricColor;
+        btn.style.borderColor = metricColor;
+      }
+
+      btn.onclick = () => {
+        if (selectedMetrics.has(metric.key)) {
+          selectedMetrics.delete(metric.key);
+          btn.classList.remove("active");
+          btn.style.backgroundColor = "";
+          btn.style.borderColor = "";
+        } else {
+          selectedMetrics.add(metric.key);
+          btn.classList.add("active");
+          btn.style.backgroundColor = metricColor;
+          btn.style.borderColor = metricColor;
+        }
+        refreshCharts();
+      };
+      groupDiv.appendChild(btn);
+    });
+
+    if (catMetrics.length > 0) container.appendChild(groupDiv);
   });
 }
