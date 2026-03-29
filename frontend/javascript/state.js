@@ -68,14 +68,25 @@ const COLORS = {
  * @constant {Array<{key: string, label: string}>}
  */
 const METRICS = [
-  { key: "g", label: "Fuerza g" }, { key: "phi", label: "Giro" },
-  { key: "acel", label: "Acelerador" }, { key: "fren", label: "Freno" },
-  { key: "fi", label: "Suspensión FI" }, { key: "fd", label: "Suspensión FD" },
-  { key: "ti", label: "Suspensión TI" }, { key: "td", label: "Suspensión TD" },
-  { key: "tfi", label: "Temp FI" }, { key: "tfd", label: "Temp FD" },
-  { key: "tti", label: "Temp TI" }, { key: "ttd", label: "Temp TD" },
-  // { key: "pfi", label: "Pres FI" }, { key: "pfd", label: "Pres FD" },
-  // { key: "pti", label: "Pres TI" }, { key: "ptd", label: "Pres TD" },
+  // --- DINÁMICA VEHICULAR ---
+  { key: "g",    label: "Gs",      cat: "din" },
+  { key: "phi",  label: "STR",     cat: "din" },
+  
+  // --- CONTROLES (PEDALES) ---
+  { key: "acel", label: "TPS",     cat: "ctrl" },
+  { key: "fren", label: "BRK",     cat: "ctrl" },
+  
+  // --- SUSPENSIÓN ---
+  { key: "fi",   label: "SUSP FI", cat: "susp" },
+  { key: "fd",   label: "SUSP FD", cat: "susp" },
+  { key: "ti",   label: "SUSP TI", cat: "susp" },
+  { key: "td",   label: "SUSP TD", cat: "susp" },
+  
+  // --- TEMPERATURAS ---
+  { key: "tfi",  label: "TMP FI",  cat: "temp" },
+  { key: "tfd",  label: "TMP FD",  cat: "temp" },
+  { key: "tti",  label: "TMP TI",  cat: "temp" },
+  { key: "ttd",  label: "TMP TD",  cat: "temp" }
 ];
 
 /**

@@ -669,3 +669,53 @@ button:hover { background: #555; }
   color: #fff;
   animation: pulse 1.5s infinite;
 }
+
+.metric-btn {
+  background: #1a1a1a;
+  color: #888;
+  border: 1px solid #333;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.8rem;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+  transition: all 0.2s ease; 
+}
+
+.metric-btn:hover {
+  opacity: 1;
+  border-color: var(--btn-color) !important;
+  box-shadow: 0 0 8px var(--btn-color);
+  color: #eee;
+}
+
+.metric-btn.active {
+  color: #fff;
+  font-weight: bold;
+  opacity: 1;
+}
+
+.metric-controls {
+  display: flex;
+  flex-wrap: wrap; /* Permite el salto al segundo renglón */
+  gap: 8px 12px;   /* 8px vertical entre filas, 12px horizontal entre grupos */
+  padding: 5px 0;
+  max-width: 100%;
+}
+
+.metric-group {
+  display: flex;
+  gap: 1px; 
+  border: 1px solid #222;
+  border-radius: 4px;
+  overflow: hidden; 
+}
+
+.metric-btn {
+ 
+  min-width: 58px; 
+  padding: 4px 2px;
+  font-size: 0.8rem; 
+  text-shadow: 0 0 4px rgba(0,0,0,0.7);
+}
