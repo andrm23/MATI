@@ -13,6 +13,7 @@ function connect() {
   document.getElementById("btn-history").classList.remove("active");
   isHistoryMode = false; 
   const btnConnect = document.getElementById("btn-connect");
+  const connIcon = document.getElementById("connect-status-icon");
 
   if (isDemoRunning) {
     stopDemo();
@@ -34,15 +35,19 @@ function connect() {
   ws.onopen = () => {
     console.log("Conectado al ESP32/Hardware");
     btnConnect.classList.add("active"); 
+
+    if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg"
   };
 
   ws.onclose = () => {
     btnConnect.classList.remove("active");
+    if (connIcon) connIcon.src = "assets/menu-bar/connect-icon.svg"
   };
 
 
   ws.onerror = () => {
     btnConnect.classList.remove("active");
+    if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg"
   };
 
   ws.onmessage = (e) => {
@@ -89,6 +94,8 @@ function toggleRecord() {
     
     btnRec.classList.add("active"); 
     recTimer.style.display = "block";
+
+    if (recIcon) recIcon.src = "assets/menu-bar/stop-icon.svg";
     
     recTimerInt = setInterval(() => {
       const totalSeconds = (performance.now() - startTime) / 1000;
@@ -111,6 +118,7 @@ function toggleRecord() {
     
     btnRec.classList.remove("active"); 
     recTimer.style.display = "none";
+    
   }
 }
 
@@ -142,15 +150,17 @@ function pollData() {
  */
 function toggleDemo() {
   const btnDemo = document.getElementById("btn-demo");
+  const demoIcon = document.getElementById("demo-icon");
+
 
   if (isDemoRunning) {
     stopDemo();
-    // Quitamos el color azul (estado activo)
     btnDemo.classList.remove("active");
+    if (demoIcon) demoIcon.src = "assets/menu-bar/start-icon.svg";
   } else {
     startDemo();
-    // Ponemos el color azul (estado activo)
     btnDemo.classList.add("active");
+    if (demoIcon) demoIcon.src = "assets/menu-bar/stop-icon.svg";
   }
 }
 

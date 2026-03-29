@@ -13,11 +13,11 @@
   <div class="controls-bar">
     <input type="text" id="ipInput" value="192.168.4.1" size="12" />
     <button onclick="connect()" class="tab-button" title="CONECTAR">
-      <img src="assets/menu-bar/connect-icon.svg" alt="Conectar" class="menu-icon">
+      <img src="assets/menu-bar/connect-icon.svg" alt="CONECTAR" class="menu-icon" id="connect-status-icon">
     </button>
 
-    <button id="btn-demo" onclick="toggleDemo()" class="tab-button" title="DEMO">
-      <img src="assets/menu-bar/demo-icon.svg" alt="Demo" class="menu-icon">
+    <button id="btn-demo" onclick="toggleDemo()" class="tab-button" title="MODO DEMO">
+      <img src="assets/menu-bar/start-icon.svg" alt="Demo" class="menu-icon" id="demo-icon">
     </button>
     <div style="width: 1px; height: 20px; background: #444; margin: 0 5px"></div>
     <button id="btnRec" onclick="toggleRecord()" class="tab-button" title="GRABAR">REC</button>
@@ -59,7 +59,10 @@
       <img src="assets/menu-bar/trash-icon.svg" alt="Limpiar" class="menu-icon">
     </button>
     <div style="width: 1px; height: 20px; background: #444; margin: 0 5px"></div>
-    <button class="btn-info" onclick="toggleModal()">ⓘ</button>
+    <button class="tab-button btn-info" onclick="toggleModal()" title="INFORMACIÓN">
+      <img src="assets/menu-bar/info-icon.svg" alt="Info" class="menu-icon">
+    </button>
+  </div>
   </div>
 
   <div class="main-container">
