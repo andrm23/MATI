@@ -326,7 +326,7 @@ button:hover { background: #555; }
 .btn-download { background: #2e7d32; display: none; }
 
 .btn-info{
-  margin-left: auto;
+  margin-left: 0 !important;
   background: transparent;
   border: 2px solid var(--text-main);
   color: var(--text-main);
@@ -718,4 +718,19 @@ button:hover { background: #555; }
   padding: 4px 2px;
   font-size: 0.8rem; 
   text-shadow: 0 0 4px rgba(0,0,0,0.7);
+}
+
+#btn-clear {
+  margin-left: auto;
+  border-color: #444;
+}
+
+#btn-clear:hover {
+  background: rgba(255, 122, 0, 0.15) !important;
+  border-color: #ff7a00 !important;
+  box-shadow: 0 0 10px rgba(255, 122, 0, 0.3);
+}
+
+#btn-clear:hover .menu-icon {
+  filter: invert(53%) sepia(91%) saturate(2852%) hue-rotate(3deg) brightness(103%) contrast(106%) !important;
 }
