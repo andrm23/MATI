@@ -10,13 +10,12 @@ import sqlite3
 import os
 import csv
 from datetime import datetime
+from core.env import CARPETA_SEGURA
+
 
 # --- CONFIGURACIÓN PRINCIPAL (Rutas Absolutas) ---
-CARPETA_SEGURA = os.path.join(os.path.expanduser("~"), "Documents", "TelemetriaApp")
-DB_NAME = os.path.join(CARPETA_SEGURA, "telemetry_data.db")  # DB vólatil (tiempo real)
-DB_HISTORY_NAME = os.path.join(
-    CARPETA_SEGURA, "telemetry_history.mati"
-)  # DB persistente
+DB_NAME = os.path.join(CARPETA_SEGURA, "telemetry.db")
+DB_HISTORY_NAME = os.path.join(CARPETA_SEGURA, "telemetry_history.mati")
 BATCH_SIZE = 20  # Frecuencia de 20Hz
 
 
@@ -159,9 +158,7 @@ class TelemetryDB:
         self.cursor.execute("SELECT * FROM telemetry_data")
         rows = self.cursor.fetchall()
 
-        # se agrega el session id
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
-        full_session_id = f"{session_name} ({timestamp})"
+        full_session_id = session_name
 
         history_rows = [row[1:] + (full_session_id,) for row in rows]
 

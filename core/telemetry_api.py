@@ -28,6 +28,7 @@ class TelemetryAPI:
         self.window = None
         self.is_recording = False
         self.latest_payload = None
+        self.rec_start_time = 0
 
     def open_external_link(self, url):
         """Abre una URL en el navegador predeterminado del sistema."""
@@ -96,6 +97,7 @@ class TelemetryAPI:
         almacenamiento de datos de telemetría.
         """
         self.is_recording = True
+        self.rec_start_time = time.time()
         self.db.create_table()  # borrado de la DB y reset del PK
 
     def stop_record(self):
@@ -109,11 +111,23 @@ class TelemetryAPI:
             str: Mensaje que indica el path en el que se exportó el archivo csv.
         """
         self.is_recording = False
+
+        duracion_segundos = int(time.time() - self.rec_start_time)
+        m, s = divmod(duracion_segundos, 60)
+        duracion_str = f"{m:02d}-{s:02d}"
+
+        fecha_iso = datetime.now().strftime("%Y-%m-%d")
+        nombre_final = f"MATI_{fecha_iso}_{duracion_str}"
+
+        full_id = self.db.save_to_history(nombre_final)
+
         desktop_path = os.path.join(
-            os.path.expanduser("~"), "Desktop", "telemetry_data.csv"
+            os.path.expanduser("~"), "Desktop", f"{nombre_final}.csv"
         )
+
         total_registros = self.db.export_csv(desktop_path)
-        return {"total": total_registros, "path": desktop_path}
+
+        return {"total": total_registros, "path": desktop_path, "session_id": full_id}
 
     def push_real_data(self, data):
         """
@@ -324,25 +338,3 @@ class TelemetryAPI:
         except Exception as e:
             print(f"Error al cargar sesión: {e}")
             return []
-
-    def stop_record(self):
-        """
-        Detiene la grabación, genera un nombre automático por fecha/hora
-        y realiza el volcado al historial persistente (.mati).
-        """
-        self.is_recording = False
-
-        # Generar nombre automático: mati_2026-03-16_1240
-        timestamp = datetime.now().strftime("%Y-%m-%d_%H%M")
-        auto_name = f"mati_{timestamp}"
-
-        # 1. Volcado a la base de datos segura .mati
-        full_id = self.db.save_to_history(auto_name)
-
-        # 2. Exportación de CSV al Escritorio
-        desktop_path = os.path.join(
-            os.path.expanduser("~"), "Desktop", f"{auto_name}.csv"
-        )
-        total_registros = self.db.export_csv(desktop_path)
-
-        return {"total": total_registros, "path": desktop_path, "session_id": full_id}

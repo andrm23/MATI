@@ -1,13 +1,8 @@
 import webview
-import platform
 import sys  # DO NOT DELETE THIS LINE/LIBRARY
 from core.telemetry_api import TelemetryAPI
 from core.bridge import handle_on_loaded
 from core.utils import get_resource_path
-from core.compat import apply_fixes
-
-# PARCHES DE COMPATIBILIDAD
-apply_fixes()
 
 
 def app_inicializacion():
