@@ -1,8 +1,22 @@
 import urllib.request
 import json
 import ssl
+import os
 
-ACTUAL_VERSION = "1.3.7"
+
+def get_app_version():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    version_path = os.path.join(base_dir, "version.txt")
+
+    try:
+        with open(version_path, "r", encoding="utf-8") as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        # Fallback de seguridad
+        return "1.0.0"
+
+
+ACTUAL_VERSION = get_app_version()
 
 
 def check_update():
