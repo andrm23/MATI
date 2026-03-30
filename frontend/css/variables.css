@@ -1,0 +1,32 @@
+/* variables.css */
+:root {
+    /* Paleta de Fondos (Grises Mate) */
+    --bg-color: #0b0b0b;
+    --panel-bg: #111;
+    --card-bg: #141414;
+    --track-bg: #000;
+
+    /* Tipografía y Textos */
+    --text-main: #e0e0e0;
+    --text-muted: #666;
+
+    /* Colores de estado */
+    --color-pos: #00cc66;
+    --color-neg: #ff3333;
+    --color-tab: #0047AB;
+    --color-tab: #0047AB;
+    --btn-color: var(--color-tab);
+
+    /* Bordes y líneas */
+    --border-main: #333;       
+    --border-muted: #222;      
+    --border-bright: #444;
+
+    /* Estados y hovers */
+    --bg-hover: #555;
+    --shadow-modal: rgba(0, 0, 0, 0.4);
+
+    /* Geometría */
+    --radius-std: 4px;
+    --radius-round: 8px;    
+}

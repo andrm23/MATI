@@ -1,0 +1,93 @@
+.controls-bar {
+  position: sticky;
+  top: 0;
+  background: rgba(10, 10, 10, 0.95);
+  border-bottom: 1px solid var(--border-main);
+  padding: 10px 12px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  z-index: 100;
+  flex-wrap: wrap;
+}
+
+.main-container {
+  flex: 1;
+  height: calc(100vh - 60px);
+  display: block;
+  overflow: hidden;
+}
+
+.left-panel {
+  position: relative;
+  background: radial-gradient(circle at center, #1a1a1a 0%, var(--track-bg) 100%);
+  border-right: 1px solid var(--border-main);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+.telemetry-panel {
+  height: 100%;
+  padding: 40px 20px 15px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  background-color: var(--panel-bg);
+  border-right: 1px solid var(--border-main);
+  box-sizing: border-box;
+  overflow-y: hidden;
+}
+
+.charts-panel {
+  height: 100%;
+  padding: 10px 15px;
+  background: var(--bg-color);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.tab-content {
+  display: none;
+  width: 100%;
+}
+
+#tab-telemetry.active {
+  display: grid;
+  grid-template-columns: minmax(460px, 0.8fr) 1.2fr;
+  height: 100%;
+}
+
+#tab-charts.active {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+@media (max-width: 1850px) {
+  .main-container {
+    grid-template-columns: minmax(460px, 1fr) minmax(760px, 1fr);
+  }
+  .charts-panel {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--border-main);
+  }
+}
+
+@media (max-width: 1300px) {
+  .main-container {
+    grid-template-columns: 1fr;
+  }
+  .left-panel {
+    border-right: 0;
+    border-bottom: 1px solid var(--border-main);
+  }
+  .telemetry-panel {
+    border-right: 0;
+    border-bottom: 1px solid var(--border-main);
+  }
+}

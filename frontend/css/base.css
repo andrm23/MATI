@@ -1,0 +1,45 @@
+/* Configuración global del body (cuerpo) */
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Estilo base para inputs */
+input {
+  background: #222;
+  border: 1px solid var(--border-bright);
+  color: #fff;
+  padding: 5px;
+  border-radius: var(--radius-std);
+  text-align: center;
+}
+
+/* Estilo base para botones */
+button {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: var(--radius-std);
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+/* Hover general */
+button:hover { 
+    background: var(--bg-hover); 
+}
+
+/* Animaciones globales */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}

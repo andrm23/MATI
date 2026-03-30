@@ -1,0 +1,248 @@
+.section-header {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.sensors-grid > div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.col-header {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.sensor-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.sensor-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 60px;
+}
+
+.unit-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+  font-weight: bold;
+}
+
+.capsule-fill {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  background: var(--bg-hover);
+  transition: all 0.08s;
+  border-radius: var(--radius-std);
+  height: 0%;
+}
+
+.unit-val,
+.pedal-val-text {
+  font-size: 0.9rem;
+  font-family: "Roboto Mono";
+  color: #fff;
+  margin-top: 5px;
+  width: 60px;
+  text-align: center;
+  display: inline-block;
+}
+
+.rpm-value {
+  font-family: "Roboto Mono";
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.pedals-container {
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+}
+
+.pedal-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pedal-fill {
+  width: 100%;
+  bottom: 0;
+  position: absolute;
+  border-radius: var(--radius-std);
+  height: 0%;
+}
+
+.metric-controls {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 8px 12px;  
+  padding: 5px 0;
+  max-width: 100%;
+}
+
+.metric-controls label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-main);
+  padding: 5px 7px;
+  border-radius: var(--radius-std);
+  font-size: 0.78rem;
+}
+
+.metric-btn {
+  background: #1a1a1a;
+  color: #888;
+  border: 1px solid var(--border-main); 
+  padding: 4px 2px;
+  border-radius: var(--radius-std);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.8rem;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 58px;
+}
+
+.metric-btn:hover {
+  opacity: 1;
+  border-color: var(--color-tab) !important;
+  box-shadow: 0 0 8px var(--color-tab);
+  color: #eee;
+}
+
+.metric-btn.active {
+  color: #fff;
+  font-weight: bold;
+  opacity: 1;
+}
+
+.g-value-display {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-family: "Roboto Mono", monospace;
+}
+
+.g-value-display .number {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.g-value-display .unit {
+  font-size: 1.3rem;
+  color: var(--text-muted);
+}
+
+.steering-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100px;
+  justify-content: center;
+}
+
+.steering-val {
+  font-family: "Roboto Mono", monospace;
+  margin-top: 33px;
+  font-size: 1rem;
+  font-width: bold;
+}
+
+.sensors-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 15px;          
+  width: 100%;         
+  flex: 2;            
+  min-height: 0;
+  margin-top: 20px;
+}
+
+.sensor-column-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-muted);
+  border-radius: var(--radius-std);
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 5px;
+  height: 100%;
+}
+
+.capsule-track {
+  width: 28px;
+  height: 100px;
+  background: var(--track-bg);
+  border-radius: 1px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-muted);
+}
+
+.pedals-wrapper {
+  background: var(--card-bg);
+  border: 1px solid var(--border-muted);
+  border-radius: var(--radius-std);
+  padding: 10px;
+}
+
+.pedal-track {
+  width: 30px;
+  height: 80px;
+  background: var(--track-bg);
+  border-radius: var(--radius-std);
+  position: relative;
+  overflow: hidden;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 12px; 
+  flex: 1;  
+  min-height: 0;
+  width: 100%;
+  height: 100%; 
+  box-sizing: border-box;
+}
+
+.chart-section {
+  background: #111;
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-round);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chartWrap {
+  flex: 1;
+  min-height: 0;
+  background: #090909;
+  border-radius: var(--radius-std);
+  padding: 5px;
+}
