@@ -29,7 +29,7 @@ def get_app_version():
             except Exception:
                 continue
 
-    return "1.4.0"
+    return "1.4.1"
 
 
 ACTUAL_VERSION = get_app_version()
