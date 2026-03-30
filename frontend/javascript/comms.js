@@ -85,6 +85,7 @@ function toggleRecord() {
 
   const btnRec = document.getElementById("btnRec");
   const recTimer = document.getElementById("rec-timer");
+  const recIcon = document.getElementById("rec-icon");
 
   if (!isRecording) {
     window.pywebview.api.start_record().then(console.log);
