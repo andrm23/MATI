@@ -2,18 +2,34 @@ import urllib.request
 import json
 import ssl
 import os
+import sys
 
 
 def get_app_version():
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    version_path = os.path.join(base_dir, "version.txt")
+    if getattr(sys, "frozen", False):
+        base_path = (
+            sys._MEIPASS
+            if hasattr(sys, "_MEIPASS")
+            else os.path.dirname(sys.executable)
+        )
+    else:
+        base_path = os.path.dirname(os.path.abspath(__file__))
 
-    try:
-        with open(version_path, "r", encoding="utf-8") as f:
-            return f.read().strip()
-    except FileNotFoundError:
-        # Fallback de seguridad
-        return "1.0.0"
+    posibles_rutas = [
+        os.path.join(base_path, "version.txt"),
+        os.path.join(base_path, "..", "version.txt"),
+        os.path.join(os.getcwd(), "version.txt"),
+    ]
+
+    for ruta in posibles_rutas:
+        if os.path.exists(ruta):
+            try:
+                with open(ruta, "r", encoding="utf-8") as f:
+                    return f.read().strip()
+            except Exception:
+                continue
+
+    return "1.0.0"
 
 
 ACTUAL_VERSION = get_app_version()
