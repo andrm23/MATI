@@ -48,3 +48,6 @@ __pycache__/
 *.pyo
 *.pyd
 mativ142-path-tree.md
+
+# Arquitectura de MATI
+MATI_architechture.md
