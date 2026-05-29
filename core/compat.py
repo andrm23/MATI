@@ -7,7 +7,7 @@ def apply_fixes():
     """Aplica parches de entorno para asegurar compatibilidad multiplataforma."""
     sistema = platform.system()
 
-    # --- PARCHE PARA MACOS (Modo Windowed) ---
+    # PARCHE PARA MACOS (Modo Windowed)
     if sistema == "Darwin":  # Identificador de macOS
         # if sys.stdout is None:
         #     sys.stdout = open(os.devnull, "w")
@@ -15,7 +15,7 @@ def apply_fixes():
         #     sys.stderr = open(os.devnull, "w")
         print("[COMPAT] Parches de salida para macOS aplicados.")
 
-    # --- PARCHES PARA LINUX (Andrés / Xilinx / WebKit) ---
+    # PARCHES PARA LINUX (Andrés / Xilinx / WebKit)
     elif sistema == "Linux":
         # Forzar desactivación de aceleración para evitar ventana estática
         os.environ["WEBKIT_DISABLE_COMPOSITING_MODE"] = "1"

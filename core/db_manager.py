@@ -13,7 +13,7 @@ from datetime import datetime
 from core.env import CARPETA_SEGURA
 
 
-# --- CONFIGURACIÓN PRINCIPAL (Rutas Absolutas) ---
+# CONFIGURACIÓN PRINCIPAL (Rutas Absolutas)
 DB_NAME = os.path.join(CARPETA_SEGURA, "telemetry.db")
 DB_HISTORY_NAME = os.path.join(CARPETA_SEGURA, "telemetry_history.mati")
 BATCH_SIZE = 20  # Frecuencia de 20Hz

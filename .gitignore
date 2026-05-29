@@ -1,9 +1,9 @@
-# 1. Archivos del sistema operativo (macOS)
+# Archivos del sistema operativo (macOS)
 .DS_Store
 .AppleDouble
 .LSOverride
 
-# 2. Archivos de Python
+# Archivos de Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -14,10 +14,10 @@ venv/
 env/
 .venv/
 
-# 3. Configuración local del editor (VS Code)
+# Configuración local del editor (VS Code)
 .vscode/
 
-# 4. Datos generados por tu simulador/telemetría
+# Datos generados por tu simulador/telemetría
 # Ignoramos todos los CSV para no saturar el repositorio con miles de registros
 database/
 *.csv

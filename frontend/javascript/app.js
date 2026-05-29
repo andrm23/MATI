@@ -12,7 +12,7 @@
  */
 document.addEventListener("DOMContentLoaded", () => {
   
-  // --- Lógica de filtrado para el historial (v1.3.0) ---
+  // Lógica de filtrado para el historial (v1.3.0)
   const historySearch = document.getElementById('historySearchInput');
   const historySelect = document.getElementById('historySessionSelect');
 

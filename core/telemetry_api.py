@@ -298,7 +298,7 @@ class TelemetryAPI:
 
         return ACTUAL_VERSION
 
-    # --- NUEVOS MÉTODOS PARA v1.3.0 ---
+    # NUEVOS MÉTODOS PARA v1.3.0
 
     def get_history_sessions(self):
         """Consulta la base de datos segura (.mati) y devuelve las sesiones únicas."""

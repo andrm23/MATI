@@ -5,7 +5,7 @@
  * visual de sensores y los límites operacionales del hardware.
  */
 
-// --- VARIABLES GLOBALES DINÁMICAS ---
+// VARIABLES GLOBALES DINÁMICAS
 
 /** * Instancia del WebSocket para la comunicación con el hardware (ESP32).
  * @type {WebSocket|null} 
@@ -49,7 +49,7 @@ let trail = [];
 
 /** * Indica si estamos visualizando datos históricos (bloquea el auto-scroll). */
 let isHistoryMode = false;
-// --- CONSTANTES DE CONFIGURACIÓN ESTÁTICA ---
+// CONSTANTES DE CONFIGURACIÓN ESTÁTICA
 
 /**
  * Mapeo de colores hexadecimales por tipo de métrica.
@@ -68,21 +68,21 @@ const COLORS = {
  * @constant {Array<{key: string, label: string}>}
  */
 const METRICS = [
-  // --- DINÁMICA VEHICULAR ---
+  // DINÁMICA VEHICULAR
   { key: "g",    label: "Gs",      cat: "din" },
   { key: "phi",  label: "STR",     cat: "din" },
   
-  // --- CONTROLES (PEDALES) ---
+  // CONTROLES (PEDALES)
   { key: "acel", label: "TPS",     cat: "ctrl" },
   { key: "fren", label: "BRK",     cat: "ctrl" },
   
-  // --- SUSPENSIÓN ---
+  // SUSPENSIÓN
   { key: "fi",   label: "SUSP FI", cat: "susp" },
   { key: "fd",   label: "SUSP FD", cat: "susp" },
   { key: "ti",   label: "SUSP TI", cat: "susp" },
   { key: "td",   label: "SUSP TD", cat: "susp" },
   
-  // --- TEMPERATURAS ---
+  // TEMPERATURAS
   { key: "tfi",  label: "TMP FI",  cat: "temp" },
   { key: "tfd",  label: "TMP FD",  cat: "temp" },
   { key: "tti",  label: "TMP TI",  cat: "temp" },

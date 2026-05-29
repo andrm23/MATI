@@ -231,7 +231,7 @@ function clearChartData() {
     chart.update('none');
   });
 
-  // 4. Reset del radar de Gs
+  // Reset del radar de Gs
   trail.length = 0;
   draw(0, 0);
 }
