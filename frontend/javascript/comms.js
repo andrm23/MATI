@@ -36,12 +36,12 @@ function connect() {
     console.log("Conectado al ESP32/Hardware");
     btnConnect.classList.add("active"); 
 
-    if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg"
+    if (connIcon) connIcon.src = "assets/menu-bar/connect-icon.svg"
   };
 
   ws.onclose = () => {
     btnConnect.classList.remove("active");
-    if (connIcon) connIcon.src = "assets/menu-bar/connect-icon.svg"
+    if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg"
   };
 
 
