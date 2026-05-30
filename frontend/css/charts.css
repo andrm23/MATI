@@ -48,7 +48,7 @@
   bottom: 0;
   background: var(--bg-hover);
   transition: all 0.08s;
-  border-radius: var(--radius-std);
+  border-radius: 1px;
   height: 0%;
 }
 
@@ -86,7 +86,7 @@
   width: 100%;
   bottom: 0;
   position: absolute;
-  border-radius: var(--radius-std);
+  border-radius: 1px;
   height: 0%;
 }
 
@@ -212,7 +212,7 @@
   width: 30px;
   height: 80px;
   background: var(--track-bg);
-  border-radius: var(--radius-std);
+  border-radius: 1px;
   position: relative;
   overflow: hidden;
 }
