@@ -20,12 +20,12 @@
     <button id="btn-demo" onclick="toggleDemo()" class="tab-button" data-tooltip="MODO DEMO">
       <img src="assets/menu-bar/start-icon.svg" alt="Demo" class="menu-icon" id="demo-icon">
     </button>
-    <div style="width: 1px; height: 20px; background: #444; margin: 0 5px"></div>
+    <div class="menu-divider"></div>
     <button id="btnRec" onclick="toggleRecord()" class="tab-button" data-tooltip="GRABAR">REC</button>
     <button id="btnDown" class="btn-download" onclick="downloadCSV()">CSV</button>
     <span id="rec-timer" style="font-family: 'Roboto Mono'; font-size: 0.8rem; display: none">00:00</span>
 
-    <div style="width: 1px; height: 20px; background: #444; margin: 0 5px"></div>
+    <div class="menu-divider"></div>
     <button id="btn-tab-telemetry" class="tab-button active" onclick="switchTab('telemetry')" data-tooltip="ANÁLISIS">
       <img src="assets/menu-bar/analisys-icon.svg" alt="Análisis" class="menu-icon">
     </button>
@@ -38,7 +38,7 @@
 
     <div id="timeline-container" style="display: none; flex: 1; align-items: center; gap: 0; margin: 0 10px;">
       <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
-        <div style="width: 1px; height: 20px; background: #444; margin: 0 5px"></div>
+        <div class="menu-divider"></div>
         <span
           style="color: var(--color-muted); font-family: 'Roboto Mono'; font-size: 0.9rem; font-weight: bold; white-space: nowrap;">
           TIEMPO
@@ -51,7 +51,7 @@
           style="color: #fff; font-family: 'Roboto Mono'; font-size: 0.9rem; white-space: nowrap; width: 100px; text-align: right;">
           <span id="timeline-val">0.0 - 60.0</span>
         </span>
-        <div style="width: 1px; height: 20px; background: #444; margin: 0 5px"></div>
+        <div class="menu-divider"></div>
       </div>
 
     </div>
@@ -60,7 +60,7 @@
     <button id="btn-clear" onclick="clearChartData()" class="tab-button" data-tooltip="LIMPIAR TODO">
       <img src="assets/menu-bar/trash-icon.svg" alt="Limpiar" class="menu-icon">
     </button>
-    <div style="width: 1px; height: 20px; background: #444; margin: 0 5px"></div>
+    <div class="menu-divider"></div>
     <button class="tab-button btn-info" onclick="toggleModal()" data-tooltip="INFORMACIÓN">
       <img src="assets/menu-bar/info-icon.svg" alt="Info" class="menu-icon">
     </button>
