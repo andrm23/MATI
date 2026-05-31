@@ -19,6 +19,7 @@
   color: var(--text-muted);
   text-transform: uppercase;
   text-align: center;
+  letter-spacing: 1px;
   margin-bottom: 10px;
 }
 
@@ -39,6 +40,7 @@
   font-size: 0.65rem;
   color: var(--text-muted);
   margin-bottom: 2px;
+  letter-spacing: 0.5px;
   font-weight: bold;
 }
 
@@ -47,8 +49,8 @@
   position: absolute;
   bottom: 0;
   background: var(--bg-hover);
-  transition: all 0.08s;
-  border-radius: var(--radius-std);
+  transition: height 0.12s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border-radius: 1px;
   height: 0%;
 }
 
@@ -86,7 +88,8 @@
   width: 100%;
   bottom: 0;
   position: absolute;
-  border-radius: var(--radius-std);
+  transition: height 0.12s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border-radius: 1px;
   height: 0%;
 }
 
@@ -125,15 +128,18 @@
 
 .metric-btn:hover {
   opacity: 1;
-  border-color: var(--color-tab) !important;
-  box-shadow: 0 0 8px var(--color-tab);
-  color: #eee;
+  border-color: var(--btn-color) !important;
+  box-shadow: 0 0 8px var(--btn-color);
+  color: var(--btn-color);
 }
 
 .metric-btn.active {
-  color: #fff;
+  color: var(--btn-color) !important;
+  border-color: var(--btn-color) !important;
   font-weight: bold;
   opacity: 1;
+  background: #111 !important;
+  box-shadow: 0 0 6px var(--btn-color), inset 0 0 4px var(--btn-color);
 }
 
 .g-value-display {
@@ -212,7 +218,7 @@
   width: 30px;
   height: 80px;
   background: var(--track-bg);
-  border-radius: var(--radius-std);
+  border-radius: 1px;
   position: relative;
   overflow: hidden;
 }

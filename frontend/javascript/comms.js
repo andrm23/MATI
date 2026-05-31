@@ -35,18 +35,21 @@ function connect() {
   ws.onopen = () => {
     console.log("Conectado al ESP32/Hardware");
     btnConnect.classList.add("active"); 
+    document.querySelector('.main-container').classList.remove('disconnected-state');
 
-    if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg"
+    if (connIcon) connIcon.src = "assets/menu-bar/connect-icon.svg"
   };
 
   ws.onclose = () => {
     btnConnect.classList.remove("active");
-    if (connIcon) connIcon.src = "assets/menu-bar/connect-icon.svg"
+    if (!isDemoRunning && !isHistoryMode) document.querySelector('.main-container').classList.add('disconnected-state');
+    if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg"
   };
 
 
   ws.onerror = () => {
     btnConnect.classList.remove("active");
+    if (!isDemoRunning && !isHistoryMode) document.querySelector('.main-container').classList.add('disconnected-state');
     if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg"
   };
 
@@ -157,10 +160,14 @@ function toggleDemo() {
   if (isDemoRunning) {
     stopDemo();
     btnDemo.classList.remove("active");
+    if (typeof ws === 'undefined' || !ws || ws.readyState !== WebSocket.OPEN) {
+      document.querySelector('.main-container').classList.add('disconnected-state');
+    }
     if (demoIcon) demoIcon.src = "assets/menu-bar/start-icon.svg";
   } else {
     startDemo();
     btnDemo.classList.add("active");
+    document.querySelector('.main-container').classList.remove('disconnected-state');
     if (demoIcon) demoIcon.src = "assets/menu-bar/stop-icon.svg";
   }
 }

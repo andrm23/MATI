@@ -8,13 +8,12 @@
 
     /* Tipografía y Textos */
     --text-main: #e0e0e0;
-    --text-muted: #666;
+    --text-muted: #a0a0a0;
 
     /* Colores de estado */
     --color-pos: #00cc66;
     --color-neg: #ff3333;
-    --color-tab: #0047AB;
-    --color-tab: #0047AB;
+    --color-tab: #42a5f5;
     --btn-color: var(--color-tab);
 
     /* Bordes y líneas */
