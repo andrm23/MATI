@@ -127,15 +127,18 @@
 
 .metric-btn:hover {
   opacity: 1;
-  border-color: var(--color-tab) !important;
-  box-shadow: 0 0 8px var(--color-tab);
-  color: #eee;
+  border-color: var(--btn-color) !important;
+  box-shadow: 0 0 8px var(--btn-color);
+  color: var(--btn-color);
 }
 
 .metric-btn.active {
-  color: #fff;
+  color: var(--btn-color) !important;
+  border-color: var(--btn-color) !important;
   font-weight: bold;
   opacity: 1;
+  background: #111 !important;
+  box-shadow: 0 0 6px var(--btn-color), inset 0 0 4px var(--btn-color);
 }
 
 .g-value-display {

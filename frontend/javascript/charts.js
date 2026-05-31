@@ -268,21 +268,15 @@ function buildMetricControls(containerId, selectedMetrics) {
 
       if (selectedMetrics.has(metric.key)) {
         btn.classList.add("active");
-        btn.style.backgroundColor = metricColor;
-        btn.style.borderColor = metricColor;
       }
 
       btn.onclick = () => {
         if (selectedMetrics.has(metric.key)) {
           selectedMetrics.delete(metric.key);
           btn.classList.remove("active");
-          btn.style.backgroundColor = "";
-          btn.style.borderColor = "";
         } else {
           selectedMetrics.add(metric.key);
           btn.classList.add("active");
-          btn.style.backgroundColor = metricColor;
-          btn.style.borderColor = metricColor;
         }
         refreshCharts();
       };
