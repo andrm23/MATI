@@ -17,8 +17,8 @@ def get_app_version():
 
     posibles_rutas = [
         os.path.join(base_path, "version.txt"),
-        os.path.join(base_path, "..", "version.txt"),
-        os.path.join(os.getcwd(), "version.txt"),
+        os.path.join(base_path, "core", "version.txt"),
+        os.path.join(os.getcwd(), "core", "version.txt"),
     ]
 
     for ruta in posibles_rutas:
@@ -29,7 +29,7 @@ def get_app_version():
             except Exception:
                 continue
 
-    return "1.4.2"
+    return "1.5.0"
 
 
 ACTUAL_VERSION = get_app_version()
