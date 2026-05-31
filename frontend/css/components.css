@@ -397,3 +397,34 @@
   filter: drop-shadow(0 0 5px rgba(255, 26, 125, 0.6));
   padding-left: 1px; 
 }
+
+/* Custom Tooltips */
+[data-tooltip] {
+  position: relative;
+}
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: 110%; 
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+  background: rgba(20, 20, 20, 0.95);
+  color: #A0A0A0; 
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-family: 'Roboto Mono', monospace;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+  z-index: 1000;
+  border: 1px solid #333;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+[data-tooltip]:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
