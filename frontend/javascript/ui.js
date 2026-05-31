@@ -242,6 +242,9 @@ function toggleHistoryModal() {
       modal.style.display = 'none';
       if (!isHistoryMode) {
           btnHistory.classList.remove("active");
+          if (!isDemoRunning && (typeof ws === 'undefined' || !ws || ws.readyState !== WebSocket.OPEN)) {
+            document.querySelector('.main-container').classList.add('disconnected-state');
+          }
       }
   }
 }
@@ -313,6 +316,7 @@ function displayHistoricalData(data) {
   isHistoryMode = true; 
   telemetrySeries.length = 0;
   data.forEach(d => telemetrySeries.push(d));
+  document.querySelector('.main-container').classList.remove('disconnected-state');
 
   const maxTime = data[data.length - 1].time;
 

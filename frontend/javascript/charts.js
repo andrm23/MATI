@@ -234,6 +234,8 @@ function clearChartData() {
   // Reset del radar de Gs
   trail.length = 0;
   draw(0, 0);
+
+  if (typeof resetUiIndicators === 'function') resetUiIndicators();
 }
 
 /**

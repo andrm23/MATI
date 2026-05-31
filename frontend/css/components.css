@@ -436,3 +436,25 @@
   background: var(--border-bright, #444);
   margin: 0 5px;
 }
+
+/* Empty State (Disconnected) */
+.disconnected-state .unit-val,
+.disconnected-state .pedal-val-text,
+.disconnected-state .rpm-value,
+.disconnected-state .steering-val,
+.disconnected-state .number {
+  opacity: 0.15;
+}
+.disconnected-state .capsule-track,
+.disconnected-state .pedal-track,
+.disconnected-state #steering-wheel svg,
+.disconnected-state #gPlot {
+  opacity: 0.08;
+}
+.disconnected-state .chartWrap {
+  opacity: 0.05;
+}
+.unit-val, .pedal-val-text, .rpm-value, .steering-val, .number,
+.capsule-track, .pedal-track, #steering-wheel svg, #gPlot, .chartWrap {
+  transition: opacity 0.5s ease;
+}
