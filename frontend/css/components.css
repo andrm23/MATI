@@ -349,20 +349,19 @@
   background: #1a1a1a;
   color: #888;
   border: 1px solid var(--border-main); 
-  padding: 4px 2px;
+  padding: 2px 4px;
   border-radius: var(--radius-std);
   font-family: 'Roboto Mono', monospace;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
   cursor: pointer;
   transition: all 0.2s ease;
-  min-width: 58px;
+  min-width: 42px;
 }
 
 .metric-btn:hover {
   opacity: 1;
   border-color: var(--color-tab) !important;
-  box-shadow: 0 0 8px var(--color-tab);
   color: #eee;
 }
 
