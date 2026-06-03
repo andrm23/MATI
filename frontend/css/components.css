@@ -30,6 +30,7 @@
   border: 1px solid var(--border-main);   
   border-radius: var(--radius-std);
   transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
 .tab-button:hover {
@@ -45,25 +46,26 @@
 }
 
 .tab-button.active {
-  background: var(--color-tab);
-  color: #111;
-  border-color: var(--color-tab);
+  background: var(--color-tab) !important;
+  color: #ffffff;
+  border: 1.5px solid var(--color-tab) !important;
+  box-sizing: border-box;
   font-weight: bold;
 }
 
 .tab-button.active .menu-icon {
-  filter: brightness(0) !important;
+  filter: drop-shadow(0.5px 0 0 black) drop-shadow(-0.5px 0 0 black) drop-shadow(0 0.5px 0 black) drop-shadow(0 -0.5px 0 black) invert(1) !important;
 }
 
 .tab-button.active:hover {
   background-color: var(--color-tab) !important; 
-  border-color: var(--track-bg) !important;      
-  box-shadow: 0 0 12px rgba(66, 165, 245, 0.6);
+  border-color: var(--color-tab) !important;      
+  box-sizing: border-box;
   cursor: pointer;
 }
 
 .tab-button.active:hover .menu-icon {
-  filter: invert(0) brightness(0) !important; 
+  filter: drop-shadow(0.5px 0 0 black) drop-shadow(-0.5px 0 0 black) drop-shadow(0 0.5px 0 black) drop-shadow(0 -0.5px 0 black) invert(1) !important; 
 }
 
 #btnRec {
@@ -349,20 +351,19 @@
   background: #1a1a1a;
   color: #888;
   border: 1px solid var(--border-main); 
-  padding: 4px 2px;
+  padding: 2px 4px;
   border-radius: var(--radius-std);
   font-family: 'Roboto Mono', monospace;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
   cursor: pointer;
   transition: all 0.2s ease;
-  min-width: 58px;
+  min-width: 42px;
 }
 
 .metric-btn:hover {
   opacity: 1;
   border-color: var(--color-tab) !important;
-  box-shadow: 0 0 8px var(--color-tab);
   color: #eee;
 }
 

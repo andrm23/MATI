@@ -68,10 +68,9 @@ function draw(x, y) {
 
   // Punto indicador de posición actual
   ctx.beginPath();
-  ctx.shadowBlur = 100;
+  ctx.fillStyle = "#f0f0f0";
   ctx.arc(sx, sy, 8, 0, Math.PI * 2);
   ctx.fill();
-  ctx.shadowBlur = 0;
 }
 
 /**
@@ -92,18 +91,18 @@ function chartOptions() {
     scales: {
       x: {
         type: "linear",
-        title: { 
-          display: true, 
+        title: {
+          display: true,
           text: "TIEMPO ᴍᴍ:ss",
-          color: "#d0d0d0" 
+          color: "#d0d0d0"
         },
-        ticks: { 
+        ticks: {
           color: "#adadad",
-          callback: function(value) {
+          callback: function (value) {
             return formatTelemetryTime(value);
           },
           font: {
-            family: "'Roboto Mono', monospace", 
+            family: "'Roboto Mono', monospace",
             size: 10
           }
         },
@@ -117,7 +116,7 @@ function chartOptions() {
     },
     plugins: {
       legend: { display: false }
-      // Hemos eliminado la configuración de zoom para cederle el control absoluto al slider nativo
+
     }
   };
 }
@@ -175,30 +174,30 @@ function addTelemetrySample(d, timeSeconds) {
   if (telemetrySeries.length > 2800) telemetrySeries.shift();
 
   charts.forEach((chart, idx) => {
-      if (!chart) return;
+    if (!chart) return;
 
-      if (chart.data.datasets && chart.data.datasets.length > 0) {
-          chart.data.datasets.forEach((dataset) => {
-            const key = dataset.metricKey;
-            if (key && d[key] !== undefined) {
-              dataset.data.push({ x: timeSeconds, y: d[key] });
-              if (dataset.data.length > 2800) dataset.data.shift(); 
-            }
-          });
-      }
+    if (chart.data.datasets && chart.data.datasets.length > 0) {
+      chart.data.datasets.forEach((dataset) => {
+        const key = dataset.metricKey;
+        if (key && d[key] !== undefined) {
+          dataset.data.push({ x: timeSeconds, y: d[key] });
+          if (dataset.data.length > 2800) dataset.data.shift();
+        }
+      });
+    }
 
-      let xMax, xMin;
-      if (timeSeconds <= 10) { 
-          xMax = 10; xMin = 0; 
-      } else { 
-          xMax = Math.ceil(timeSeconds / 10) * 10; 
-          xMin = Math.max(0, xMax - 60); // Ventana de 60 segundos
-      }
+    let xMax, xMin;
+    if (timeSeconds <= 10) {
+      xMax = 10; xMin = 0;
+    } else {
+      xMax = Math.ceil(timeSeconds / 10) * 10;
+      xMin = Math.max(0, xMax - 60); // Ventana de 60 segundos
+    }
 
-      chart.options.scales.x.max = xMax;
-      chart.options.scales.x.min = xMin;
-      
-      chart.update("none"); 
+    chart.options.scales.x.max = xMax;
+    chart.options.scales.x.min = xMin;
+
+    chart.update("none");
   });
 }
 
@@ -257,14 +256,14 @@ function buildMetricControls(containerId, selectedMetrics) {
   Object.keys(categorias).forEach(catKey => {
     const groupDiv = document.createElement("div");
     groupDiv.className = "metric-group";
-    
+
     const catMetrics = METRICS.filter(m => m.cat === catKey);
-    
+
     catMetrics.forEach(metric => {
       const btn = document.createElement("button");
       btn.innerText = metric.label;
       btn.className = "metric-btn";
-      
+
       const metricColor = COLORS[metric.key] || "#444";
       btn.style.setProperty('--btn-color', metricColor);
 

@@ -49,7 +49,6 @@
   position: absolute;
   bottom: 0;
   background: var(--bg-hover);
-  transition: height 0.12s cubic-bezier(0.2, 0.8, 0.2, 1);
   border-radius: 1px;
   height: 0%;
 }
@@ -67,7 +66,7 @@
 
 .rpm-value {
   font-family: "Roboto Mono";
-  font-size: 1.1rem;
+  font-size: 1.6rem;
   font-weight: bold;
   color: #fff;
 }
@@ -88,7 +87,6 @@
   width: 100%;
   bottom: 0;
   position: absolute;
-  transition: height 0.12s cubic-bezier(0.2, 0.8, 0.2, 1);
   border-radius: 1px;
   height: 0%;
 }
@@ -96,7 +94,7 @@
 .metric-controls {
   display: flex;
   flex-wrap: wrap; 
-  gap: 8px 12px;  
+  gap: 4px 6px;  
   padding: 5px 0;
   max-width: 100%;
 }
@@ -116,20 +114,19 @@
   background: #1a1a1a;
   color: #888;
   border: 1px solid var(--border-main); 
-  padding: 4px 2px;
+  padding: 2px 4px;
   border-radius: var(--radius-std);
   font-family: 'Roboto Mono', monospace;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
   cursor: pointer;
   transition: all 0.2s ease;
-  min-width: 58px;
+  min-width: 42px;
 }
 
 .metric-btn:hover {
   opacity: 1;
   border-color: var(--btn-color) !important;
-  box-shadow: 0 0 8px var(--btn-color);
   color: var(--btn-color);
 }
 
@@ -139,7 +136,6 @@
   font-weight: bold;
   opacity: 1;
   background: #111 !important;
-  box-shadow: 0 0 6px var(--btn-color), inset 0 0 4px var(--btn-color);
 }
 
 .g-value-display {
@@ -198,8 +194,8 @@
 }
 
 .capsule-track {
-  width: 28px;
-  height: 100px;
+  width: 34px;
+  height: 130px;
   background: var(--track-bg);
   border-radius: 1px;
   position: relative;
@@ -227,7 +223,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 12px; 
+  gap: 3px; 
   flex: 1;  
   min-height: 0;
   width: 100%;

@@ -69,12 +69,12 @@ const COLORS = {
  */
 const METRICS = [
   // DINÁMICA VEHICULAR
-  { key: "g",    label: "Gs",      cat: "din" },
-  { key: "phi",  label: "STR",     cat: "din" },
+  { key: "g",    label: "FG",      cat: "din" },
+  { key: "phi",  label: "DIR",     cat: "din" },
   
   // CONTROLES (PEDALES)
-  { key: "acel", label: "TPS",     cat: "ctrl" },
-  { key: "fren", label: "BRK",     cat: "ctrl" },
+  { key: "acel", label: "ACEL",    cat: "ctrl" },
+  { key: "fren", label: "FREN",    cat: "ctrl" },
   
   // SUSPENSIÓN
   { key: "fi",   label: "SUSP FI", cat: "susp" },
@@ -83,10 +83,10 @@ const METRICS = [
   { key: "td",   label: "SUSP TD", cat: "susp" },
   
   // TEMPERATURAS
-  { key: "tfi",  label: "TMP FI",  cat: "temp" },
-  { key: "tfd",  label: "TMP FD",  cat: "temp" },
-  { key: "tti",  label: "TMP TI",  cat: "temp" },
-  { key: "ttd",  label: "TMP TD",  cat: "temp" }
+  { key: "tfi",  label: "TEMP FI", cat: "temp" },
+  { key: "tfd",  label: "TEMP FD", cat: "temp" },
+  { key: "tti",  label: "TEMP TI", cat: "temp" },
+  { key: "ttd",  label: "TEMP TD", cat: "temp" }
 ];
 
 /**

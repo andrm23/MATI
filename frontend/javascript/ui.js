@@ -217,7 +217,7 @@ window.addEventListener('pywebviewready', function() {
 
 function switchTab(tabName){
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('#btn-tab-telemetry, #btn-tab-charts').forEach(el => el.classList.remove('active'));
 
   document.getElementById(`tab-${tabName}`).classList.add('active');
   document.getElementById(`btn-tab-${tabName}`).classList.add('active');
