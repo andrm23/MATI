@@ -17,7 +17,6 @@ function connect() {
 
   if (isDemoRunning) {
     stopDemo();
-    toggleDemo(); 
   }
   
   clearChartData();
@@ -134,6 +133,7 @@ function pollData() {
   if (!isDemoRunning) return;
   
   window.pywebview.api.get_latest_data().then((response) => {
+    if (!isDemoRunning) return;
     if (response) {
       let payload = JSON.parse(response);
       if (payload && payload.d) {
@@ -145,52 +145,47 @@ function pollData() {
     setTimeout(pollData, 50);
   }).catch((err) => {
     console.error("Error IPC:", err);
-    setTimeout(pollData, 50);
+    if (isDemoRunning) {
+      setTimeout(pollData, 50);
+    }
   });
 }
 
-/**
- * Alterna el estado de la simulación de telemetría (Demo).
- */
 function toggleDemo() {
-  const btnDemo = document.getElementById("btn-demo");
-  const demoIcon = document.getElementById("demo-icon");
-
-
   if (isDemoRunning) {
     stopDemo();
-    btnDemo.classList.remove("active");
-    if (typeof ws === 'undefined' || !ws || ws.readyState !== WebSocket.OPEN) {
-      document.querySelector('.main-container').classList.add('disconnected-state');
-    }
-    if (demoIcon) demoIcon.src = "assets/menu-bar/start-icon.svg";
   } else {
     startDemo();
-    btnDemo.classList.add("active");
-    document.querySelector('.main-container').classList.remove('disconnected-state');
-    if (demoIcon) demoIcon.src = "assets/menu-bar/stop-icon.svg";
   }
 }
 
-/**
- * Inicializa el modo de demostración a través de la API de Python.
- */
 function startDemo() {
+  isDemoRunning = true;
   document.getElementById("btn-history").classList.remove("active");
   isHistoryMode = false; 
   isHistoryMode = false;
+  
+  if (ws) {
+    ws.close();
+    ws = null;
+  }
+  
   clearChartData();
   resetUiIndicators();
 
-  // Ocultar slider si hay conexión con el  hardware
   const sliderContainer = document.getElementById('timeline-container');
   if (sliderContainer) sliderContainer.style.display = 'none';
+
+  const btnDemo = document.getElementById("btn-demo");
+  const demoIcon = document.getElementById("demo-icon");
+  if (btnDemo) btnDemo.classList.add("active");
+  document.querySelector('.main-container').classList.remove('disconnected-state');
+  if (demoIcon) demoIcon.src = "assets/menu-bar/stop-icon.svg";
 
   if (window.pywebview && window.pywebview.api) {
     if (!isRecording) startTime = performance.now();
     window.pywebview.api.start_demo().then(() => {
-      isDemoRunning = true;
-      if (!loopActive) {
+      if (!loopActive && isDemoRunning) {
         loopActive = true;
         pollData(); 
       }
@@ -200,14 +195,19 @@ function startDemo() {
   }
 }
 
-/**
- * Finaliza el modo de demostración.
- */
 function stopDemo() {
+  isDemoRunning = false;
+  loopActive = false;
+  
+  const btnDemo = document.getElementById("btn-demo");
+  const demoIcon = document.getElementById("demo-icon");
+  if (btnDemo) btnDemo.classList.remove("active");
+  if (demoIcon) demoIcon.src = "assets/menu-bar/start-icon.svg";
+  if (typeof ws === 'undefined' || !ws || ws.readyState !== WebSocket.OPEN) {
+    document.querySelector('.main-container').classList.add('disconnected-state');
+  }
+
   if (window.pywebview && window.pywebview.api) {
-    window.pywebview.api.stop_demo().then(() => {
-      isDemoRunning = false;
-      loopActive = false;
-    });
+    window.pywebview.api.stop_demo();
   }
 }
