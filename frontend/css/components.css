@@ -54,7 +54,7 @@
 }
 
 .tab-button.active .menu-icon {
-  filter: drop-shadow(0.5px 0 0 black) drop-shadow(-0.5px 0 0 black) drop-shadow(0 0.5px 0 black) drop-shadow(0 -0.5px 0 black) invert(1) !important;
+  filter: invert(1) !important;
 }
 
 .tab-button.active:hover {
@@ -65,7 +65,7 @@
 }
 
 .tab-button.active:hover .menu-icon {
-  filter: drop-shadow(0.5px 0 0 black) drop-shadow(-0.5px 0 0 black) drop-shadow(0 0.5px 0 black) drop-shadow(0 -0.5px 0 black) invert(1) !important; 
+  filter: invert(1) !important; 
 }
 
 #btnRec {
