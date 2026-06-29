@@ -97,10 +97,15 @@ function chartOptions() {
           const range = max - min;
           if (range <= 0) return;
           
-          let numTicks = 6;
-          if (range <= 15) numTicks = 5;
+          let dataRange = range;
+          if (typeof isHistoryMode !== 'undefined' && !isHistoryMode) {
+            dataRange = range / 1.025;
+          }
           
-          const step = range / numTicks;
+          let numTicks = 6;
+          if (dataRange <= 15) numTicks = 5;
+          
+          const step = dataRange / numTicks;
           
           scale.ticks = [];
           for (let i = 0; i <= numTicks; i++) {
@@ -297,12 +302,14 @@ function addTelemetrySample(d, timeSeconds) {
       }
     }
 
+    const paddingRight = windowSize * 0.025; // 2.5% de espacio visual a la derecha
+
     let xMax, xMin;
     if (timeSeconds <= windowSize) {
-      xMax = windowSize; 
+      xMax = windowSize + paddingRight; 
       xMin = 0;
     } else {
-      xMax = timeSeconds;
+      xMax = timeSeconds + paddingRight;
       xMin = timeSeconds - windowSize;
     }
 
