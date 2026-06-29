@@ -91,6 +91,22 @@ function chartOptions() {
     scales: {
       x: {
         type: "linear",
+        afterBuildTicks: function(scale) {
+          const min = scale.min;
+          const max = scale.max;
+          const range = max - min;
+          if (range <= 0) return;
+          
+          let numTicks = 6;
+          if (range <= 15) numTicks = 5;
+          
+          const step = range / numTicks;
+          
+          scale.ticks = [];
+          for (let i = 0; i <= numTicks; i++) {
+            scale.ticks.push({ value: min + i * step });
+          }
+        },
         title: {
           display: true,
           text: "TIEMPO ᴍᴍ:ss",
@@ -266,23 +282,36 @@ function addTelemetrySample(d, timeSeconds) {
       });
     }
 
+    let defaultWindow = 60;
+    if (timeSeconds < 60) {
+      defaultWindow = Math.max(15, timeSeconds);
+    }
+
+    let windowSize = defaultWindow;
+    if (chart.isZoomedOrPanned && chart.isZoomedOrPanned()) {
+      if (chart.options.scales.x.max !== undefined && chart.options.scales.x.min !== undefined) {
+        const currentWindow = chart.options.scales.x.max - chart.options.scales.x.min;
+        if (currentWindow > 0 && currentWindow <= 60) {
+          windowSize = currentWindow;
+        }
+      }
+    }
+
     let xMax, xMin;
-    if (timeSeconds <= 60) {
-      xMax = 60; 
+    if (timeSeconds <= windowSize) {
+      xMax = windowSize; 
       xMin = 0;
     } else {
       xMax = timeSeconds;
-      xMin = timeSeconds - 60; // Ventana estricta de 60 segundos
+      xMin = timeSeconds - windowSize;
     }
 
     if (chart.options.plugins && chart.options.plugins.zoom) {
-      chart.options.plugins.zoom.limits.x.max = xMax;
+      chart.options.plugins.zoom.limits.x.max = Math.max(60, xMax);
     }
 
-    if (!chart.isZoomedOrPanned || !chart.isZoomedOrPanned()) {
-      chart.options.scales.x.max = xMax;
-      chart.options.scales.x.min = xMin;
-    }
+    chart.options.scales.x.max = xMax;
+    chart.options.scales.x.min = xMin;
 
     chart.update("none");
   });
