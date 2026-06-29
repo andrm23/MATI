@@ -1,3 +1,4 @@
 # Dependencias principales para MATI (Measurement And Telemetry Insights)
 pywebview==6.1
 sqlcipher3==0.6.2
+watchdog>=4.0.0
