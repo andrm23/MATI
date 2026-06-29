@@ -151,47 +151,45 @@
               </div>
             </div>
           </div> -->
-
-          <div style="display: flex; flex-direction: column; gap: 15px; height: 100%;">
-            <div style="flex: 1; display: flex; flex-direction: column;">
-              <div class="col-header">RPM</div>
-              <div class="sensor-column-card" style="flex: 1;">
-                <div class="sensor-row">
-                  <div class="sensor-unit"><span class="unit-label">FI</span><span class="rpm-value"
-                      id="rpm-fi">0</span></div>
-                  <div class="sensor-unit"><span class="unit-label">FD</span><span class="rpm-value"
-                      id="rpm-fd">0</span></div>
-                </div>
-                <div class="sensor-row">
-                  <div class="sensor-unit"><span class="unit-label">TI</span><span class="rpm-value"
-                      id="rpm-ti">0</span></div>
-                  <div class="sensor-unit"><span class="unit-label">TD</span><span class="rpm-value"
-                      id="rpm-td">0</span></div>
-                </div>
-              </div>
-            </div>
-
-            <div style="flex: 1; display: flex; flex-direction: column;">
-              <div class="col-header">Freno / Acelerador</div>
-              <div class="pedals-wrapper"
-                style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
-                <div class="pedals-container">
-                  <div class="pedal-group">
-                    <div class="pedal-track">
-                      <div id="bar-brake" class="pedal-fill" style="background: var(--color-neg)"></div>
-                    </div>
-                    <div id="val-brake" class="pedal-val-text">0.0</div>
+          <div style="flex: 1; display: flex; flex-direction: column; height: 100%;">
+            <div class="col-header">Freno / Acelerador</div>
+            <div class="pedals-wrapper"
+              style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+              <div class="pedals-container">
+                <div class="pedal-group">
+                  <div class="pedal-track">
+                    <div id="bar-brake" class="pedal-fill" style="background: var(--color-neg)"></div>
                   </div>
-                  <div class="pedal-group">
-                    <div class="pedal-track">
-                      <div id="bar-throttle" class="pedal-fill" style="background: var(--color-pos)"></div>
-                    </div>
-                    <div id="val-throttle" class="pedal-val-text">0.0</div>
+                  <div id="val-brake" class="pedal-val-text">0.0</div>
+                </div>
+                <div class="pedal-group">
+                  <div class="pedal-track">
+                    <div id="bar-throttle" class="pedal-fill" style="background: var(--color-pos)"></div>
                   </div>
+                  <div id="val-throttle" class="pedal-val-text">0.0</div>
                 </div>
               </div>
             </div>
           </div>
+
+          <div style="flex: 1; display: flex; flex-direction: column; height: 100%;">
+            <div class="col-header">RPM</div>
+            <div class="sensor-column-card" style="flex: 1;">
+              <div class="sensor-row">
+                <div class="sensor-unit"><span class="unit-label">FI</span><span class="rpm-value" id="rpm-fi">0</span>
+                </div>
+                <div class="sensor-unit"><span class="unit-label">FD</span><span class="rpm-value" id="rpm-fd">0</span>
+                </div>
+              </div>
+              <div class="sensor-row">
+                <div class="sensor-unit"><span class="unit-label">TI</span><span class="rpm-value" id="rpm-ti">0</span>
+                </div>
+                <div class="sensor-unit"><span class="unit-label">TD</span><span class="rpm-value" id="rpm-td">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
