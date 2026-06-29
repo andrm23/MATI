@@ -7,7 +7,7 @@
   font-weight: 600;
 }
 
-.sensors-grid > div {
+.sensors-grid>div {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -26,13 +26,16 @@
 .sensor-row {
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  flex: 1;
+  padding: 10px 0;
+  /* align-items: center; */
 }
 
 .sensor-unit {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 60px;
 }
 
@@ -75,12 +78,15 @@
   display: flex;
   justify-content: center;
   gap: 80px;
+  flex: 1;
+  padding: 10px 0;
 }
 
 .pedal-group {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
 }
 
 .pedal-fill {
@@ -93,8 +99,8 @@
 
 .metric-controls {
   display: flex;
-  flex-wrap: wrap; 
-  gap: 4px 6px;  
+  flex-wrap: wrap;
+  gap: 4px 6px;
   padding: 5px 0;
   max-width: 100%;
 }
@@ -113,7 +119,7 @@
 .metric-btn {
   background: #1a1a1a;
   color: #888;
-  border: 1px solid var(--border-main); 
+  border: 1px solid var(--border-main);
   padding: 2px 4px;
   border-radius: var(--radius-std);
   font-family: 'Roboto Mono', monospace;
@@ -173,10 +179,10 @@
 
 .sensors-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); 
-  gap: 15px;          
-  width: 100%;         
-  flex: 2;            
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  width: 100%;
+  flex: 2;
   min-height: 0;
   margin-top: 20px;
 }
@@ -195,7 +201,7 @@
 
 .capsule-track {
   width: 34px;
-  height: 130px;
+  flex: 1;
   background: var(--track-bg);
   border-radius: 1px;
   position: relative;
@@ -212,7 +218,7 @@
 
 .pedal-track {
   width: 30px;
-  height: 80px;
+  flex: 1;
   background: var(--track-bg);
   border-radius: 1px;
   position: relative;
@@ -223,11 +229,11 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 3px; 
-  flex: 1;  
+  gap: 3px;
+  flex: 1;
   min-height: 0;
   width: 100%;
-  height: 100%; 
+  height: 100%;
   box-sizing: border-box;
 }
 
