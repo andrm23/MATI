@@ -94,11 +94,10 @@ const METRICS = [
  * @constant {Array<Set<string>>}
  */
 const chartMetricSets = [
-  new Set(["g", "phi", "acel", "fren"]),
+  new Set(["g", "phi"]),
+  new Set(["acel", "fren"]),
   new Set(["fi", "fd", "ti", "td"]),
-  // new Set(["tfi", "tfd", "tti", "ttd"]),
   new Set([])
-  // new Set(["pfi", "pfd", "pti", "ptd"]),
 ];
 
 /**
