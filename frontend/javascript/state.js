@@ -40,12 +40,12 @@ let loopActive = false;
 /** * Almacén de series temporales para la renderización de gráficas.
  * @type {Array<Object>} 
  */
-let telemetrySeries = []; 
+let telemetrySeries = [];
 
 /** * Estela de puntos para la visualización del radar de fuerzas G.
  * @type {Array<Object>} 
  */
-let trail = [];            
+let trail = [];
 
 /** * Indica si estamos visualizando datos históricos (bloquea el auto-scroll). */
 let isHistoryMode = false;
@@ -69,24 +69,24 @@ const COLORS = {
  */
 const METRICS = [
   // DINÁMICA VEHICULAR
-  { key: "g",    label: "FG",      cat: "din" },
-  { key: "phi",  label: "DIR",     cat: "din" },
-  
+  { key: "g", label: "FG", cat: "din" },
+  { key: "phi", label: "DIR", cat: "din" },
+
   // CONTROLES (PEDALES)
-  { key: "acel", label: "ACEL",    cat: "ctrl" },
-  { key: "fren", label: "FREN",    cat: "ctrl" },
-  
+  { key: "acel", label: "ACEL", cat: "ctrl" },
+  { key: "fren", label: "FREN", cat: "ctrl" },
+
   // SUSPENSIÓN
-  { key: "fi",   label: "SUSP FI", cat: "susp" },
-  { key: "fd",   label: "SUSP FD", cat: "susp" },
-  { key: "ti",   label: "SUSP TI", cat: "susp" },
-  { key: "td",   label: "SUSP TD", cat: "susp" },
-  
+  { key: "fi", label: "SUSP FI", cat: "susp" },
+  { key: "fd", label: "SUSP FD", cat: "susp" },
+  { key: "ti", label: "SUSP TI", cat: "susp" },
+  { key: "td", label: "SUSP TD", cat: "susp" },
+
   // TEMPERATURAS
-  { key: "tfi",  label: "TEMP FI", cat: "temp" },
-  { key: "tfd",  label: "TEMP FD", cat: "temp" },
-  { key: "tti",  label: "TEMP TI", cat: "temp" },
-  { key: "ttd",  label: "TEMP TD", cat: "temp" }
+  // { key: "tfi",  label: "TEMP FI", cat: "temp" },
+  // { key: "tfd",  label: "TEMP FD", cat: "temp" },
+  // { key: "tti",  label: "TEMP TI", cat: "temp" },
+  // { key: "ttd",  label: "TEMP TD", cat: "temp" }
 ];
 
 /**
@@ -96,7 +96,7 @@ const METRICS = [
 const chartMetricSets = [
   new Set(["g", "phi", "acel", "fren"]),
   new Set(["fi", "fd", "ti", "td"]),
-  new Set(["tfi", "tfd", "tti", "ttd"]),
+  // new Set(["tfi", "tfd", "tti", "ttd"]),
   new Set([])
   // new Set(["pfi", "pfd", "pti", "ptd"]),
 ];
