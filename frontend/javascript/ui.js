@@ -10,12 +10,17 @@
  * @param {number} seconds - Segundos brutos
  */
 function formatTelemetryTime(seconds) {
-  const m = Math.floor(seconds / 60);
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
   const s = Math.floor(seconds % 60);
 
-  // padStart(2, "0") asegura que el 5 se vea como 05
   const ss = s.toString().padStart(2, "0");
-
+  
+  if (h > 0) {
+    const mm = m.toString().padStart(2, "0");
+    return `${h}:${mm}:${ss}`;
+  }
+  
   return `${m}:${ss}`;
 }
 
@@ -321,6 +326,9 @@ function displayHistoricalData(data) {
   const maxTime = data[data.length - 1].time;
 
   charts.forEach(chart => {
+    if (chart.options.plugins.zoom) {
+      chart.options.plugins.zoom.limits.x.max = maxTime;
+    }
     chart.options.scales.x.min = 0;
     chart.options.scales.x.max = 60;
     chart.update('none');
@@ -344,7 +352,13 @@ function displayHistoricalData(data) {
 
     slider.oninput = function () {
       const start = parseFloat(this.value);
-      const end = start + 60;
+      
+      let windowSize = 60;
+      if (typeof charts !== 'undefined' && charts.length > 0 && charts[0].options.scales.x.max !== undefined) {
+          windowSize = charts[0].options.scales.x.max - charts[0].options.scales.x.min;
+      }
+      
+      const end = start + windowSize;
 
       timeLabel.innerText = `${formatTelemetryTime(start)} - ${formatTelemetryTime(end)}`;
 
