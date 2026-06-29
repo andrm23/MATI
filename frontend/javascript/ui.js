@@ -12,10 +12,10 @@
 function formatTelemetryTime(seconds) {
   const m = Math.floor(seconds / 60);
   const s = Math.floor(seconds % 60);
-  
+
   // padStart(2, "0") asegura que el 5 se vea como 05
   const ss = s.toString().padStart(2, "0");
-  
+
   return `${m}:${ss}`;
 }
 
@@ -69,9 +69,9 @@ function mixHex(c1, c2, t) {
 function temperatureColor(value) {
   const v = clamp(value, 0, SENSOR_LIMITS.MAX_TEMP);
   if (v <= 80) {
-    return mixHex("1e90ff", "ff9800", v / 80); 
+    return mixHex("1e90ff", "ff9800", v / 80);
   }
-  return mixHex("ff9800", "ff1f1f", (v - 80) / 40); 
+  return mixHex("ff9800", "ff1f1f", (v - 80) / 40);
 }
 
 /**
@@ -144,7 +144,7 @@ function updatePedal(barId, txtId, val) {
 
 function toggleModal() {
   const modal = document.getElementById("modalInfo");
-   if (modal.style.display === "none") {
+  if (modal.style.display === "none") {
     modal.style.display = "flex";
   } else {
     modal.style.display = "none";
@@ -172,10 +172,10 @@ function updateUI(d) {
   updateSuspCapsule("bar-rr", "val-rr", d.td);
 
   // Temperaturas
-  updatePositiveCapsule("bar-tfi", "val-tfi", d.tfi, SENSOR_LIMITS.MAX_TEMP, temperatureColor);
-  updatePositiveCapsule("bar-tfd", "val-tfd", d.tfd, SENSOR_LIMITS.MAX_TEMP, temperatureColor);
-  updatePositiveCapsule("bar-tti", "val-tti", d.tti, SENSOR_LIMITS.MAX_TEMP, temperatureColor);
-  updatePositiveCapsule("bar-ttd", "val-ttd", d.ttd, SENSOR_LIMITS.MAX_TEMP, temperatureColor);
+  // updatePositiveCapsule("bar-tfi", "val-tfi", d.tfi, SENSOR_LIMITS.MAX_TEMP, temperatureColor);
+  // updatePositiveCapsule("bar-tfd", "val-tfd", d.tfd, SENSOR_LIMITS.MAX_TEMP, temperatureColor);
+  // updatePositiveCapsule("bar-tti", "val-tti", d.tti, SENSOR_LIMITS.MAX_TEMP, temperatureColor);
+  // updatePositiveCapsule("bar-ttd", "val-ttd", d.ttd, SENSOR_LIMITS.MAX_TEMP, temperatureColor);
 
   // Presiones
   // updatePositiveCapsule("bar-pfi", "val-pfi", d.pfi, SENSOR_LIMITS.MAX_PRESSURE, pressureColor);
@@ -194,35 +194,35 @@ function updateUI(d) {
   updatePedal("bar-throttle", "val-throttle", d.acel);
 }
 
-function showUpdateNotification(data){
+function showUpdateNotification(data) {
   const version = data.version;
   const notes = data.changelog || "Mejoras generales de MATI.";
 
   const userChoice = confirm(`Nueva versión disponible: v${version}`);
 
-  if (userChoice){
+  if (userChoice) {
     window.pywebview.api.open_releases_page();
   }
 }
 
 // Solicita la versión a Python y la pinta en el modal de información
-window.addEventListener('pywebviewready', function() {
-    window.pywebview.api.get_app_version().then(function(version) {
-        const versionEl = document.getElementById('app-version');
-        if (versionEl) {
-            versionEl.innerText = "v" + version;
-        }
-    });
+window.addEventListener('pywebviewready', function () {
+  window.pywebview.api.get_app_version().then(function (version) {
+    const versionEl = document.getElementById('app-version');
+    if (versionEl) {
+      versionEl.innerText = "v" + version;
+    }
+  });
 });
 
-function switchTab(tabName){
+function switchTab(tabName) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('#btn-tab-telemetry, #btn-tab-charts').forEach(el => el.classList.remove('active'));
 
   document.getElementById(`tab-${tabName}`).classList.add('active');
   document.getElementById(`btn-tab-${tabName}`).classList.add('active');
 
-  if(tabName == 'charts'){
+  if (tabName == 'charts') {
     charts.forEach(chart => {
       chart.resize();
       chart.update('none');
@@ -235,17 +235,17 @@ function toggleHistoryModal() {
   const btnHistory = document.getElementById('btn-history');
 
   if (modal.style.display === 'none' || modal.style.display === '') {
-      modal.style.display = 'flex';
-      btnHistory.classList.add("active"); 
-      updateHistoryList(); 
+    modal.style.display = 'flex';
+    btnHistory.classList.add("active");
+    updateHistoryList();
   } else {
-      modal.style.display = 'none';
-      if (!isHistoryMode) {
-          btnHistory.classList.remove("active");
-          if (!isDemoRunning && (typeof ws === 'undefined' || !ws || ws.readyState !== WebSocket.OPEN)) {
-            document.querySelector('.main-container').classList.add('disconnected-state');
-          }
+    modal.style.display = 'none';
+    if (!isHistoryMode) {
+      btnHistory.classList.remove("active");
+      if (!isDemoRunning && (typeof ws === 'undefined' || !ws || ws.readyState !== WebSocket.OPEN)) {
+        document.querySelector('.main-container').classList.add('disconnected-state');
       }
+    }
   }
 }
 
@@ -254,9 +254,9 @@ function toggleHistoryModal() {
  */
 async function updateHistoryList() {
   const select = document.getElementById('historySessionSelect');
- 
+
   const sessions = await window.pywebview.api.get_history_sessions();
-  
+
   select.innerHTML = '<option value="">Selecciona una carrera...</option>';
   sessions.forEach(s => {
     const opt = document.createElement('option');
@@ -268,7 +268,7 @@ async function updateHistoryList() {
 
 async function loadHistoryData() {
   if (isDemoRunning) stopDemo(); // Detener demo antes de cargar
-    isHistoryMode = true; 
+  isHistoryMode = true;
   const session = document.getElementById('historySessionSelect').value;
   const fileInput = document.getElementById('csvFileInput');
 
@@ -313,7 +313,7 @@ function displayHistoricalData(data) {
   document.getElementById("btn-history").classList.add("active");
   if (data.length === 0) return alert("No hay datos en el archivo.");
 
-  isHistoryMode = true; 
+  isHistoryMode = true;
   telemetrySeries.length = 0;
   data.forEach(d => telemetrySeries.push(d));
   document.querySelector('.main-container').classList.remove('disconnected-state');
@@ -323,10 +323,10 @@ function displayHistoricalData(data) {
   charts.forEach(chart => {
     chart.options.scales.x.min = 0;
     chart.options.scales.x.max = 60;
-    chart.update('none'); 
+    chart.update('none');
   });
 
-  refreshCharts(); 
+  refreshCharts();
   switchTab('charts');
   toggleHistoryModal();
 
@@ -336,22 +336,22 @@ function displayHistoricalData(data) {
 
   if (sliderContainer && slider) {
     sliderContainer.style.display = 'block';
-    
-    slider.max = Math.max(0, maxTime - 60); 
+
+    slider.max = Math.max(0, maxTime - 60);
     slider.value = 0;
 
     timeLabel.innerText = `${formatTelemetryTime(0)} - ${formatTelemetryTime(60)}`;
 
-    slider.oninput = function() {
+    slider.oninput = function () {
       const start = parseFloat(this.value);
       const end = start + 60;
-      
+
       timeLabel.innerText = `${formatTelemetryTime(start)} - ${formatTelemetryTime(end)}`;
-      
+
       charts.forEach(chart => {
         chart.options.scales.x.min = start;
         chart.options.scales.x.max = end;
-        chart.update('none'); 
+        chart.update('none');
       });
     };
   }
@@ -368,7 +368,7 @@ function clearCSVSelection() {
   }
 }
 
-function resetUiIndicators(){
+function resetUiIndicators() {
   const zeros = {
     g: 0, phi: 0, acel: 0, fren: 0,
     fi: 0, fd: 0, ti: 0, td: 0,
