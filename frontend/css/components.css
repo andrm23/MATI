@@ -298,9 +298,21 @@
 #historySlider {
     -webkit-appearance: none; 
     appearance: none;    
-    background: var(--border-main);
+    width: 100%;
+    flex: 1;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    height: 14px;
+    cursor: pointer;
+    outline: none;
+}
+
+#historySlider::-webkit-slider-runnable-track {
+    width: 100%;
     height: 4px;
-    border-radius: var(--radius-round);
+    background: linear-gradient(to right, var(--color-tab) var(--slider-progress, 0%), #333 var(--slider-progress, 0%));
+    border-radius: 5px;
 }
 
 #historySlider::-webkit-slider-thumb {
@@ -311,8 +323,19 @@
     border-radius: 50%;
     background: var(--color-tab); 
     cursor: pointer;
-    border: 2px solid #fff; 
+    border: 1px solid #666; 
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    margin-top: -5px; 
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+#historySlider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+#historySlider:active::-webkit-slider-thumb {
+    transform: scale(1.3);
+    box-shadow: 0 0 8px var(--color-tab);
 }
 
 .app-branding {

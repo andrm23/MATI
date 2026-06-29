@@ -347,6 +347,7 @@ function displayHistoricalData(data) {
 
     slider.max = Math.max(0, maxTime - 60);
     slider.value = 0;
+    slider.style.setProperty('--slider-progress', '0%');
 
     timeLabel.innerText = `${formatTelemetryTime(0)} - ${formatTelemetryTime(60)}`;
 
@@ -358,6 +359,9 @@ function displayHistoricalData(data) {
           windowSize = charts[0].options.scales.x.max - charts[0].options.scales.x.min;
       }
       
+      const percent = (this.max > 0) ? (this.value / this.max) * 100 : 0;
+      this.style.setProperty('--slider-progress', `${percent}%`);
+
       const end = start + windowSize;
 
       timeLabel.innerText = `${formatTelemetryTime(start)} - ${formatTelemetryTime(end)}`;

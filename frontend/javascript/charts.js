@@ -162,7 +162,15 @@ function syncCharts({ chart }) {
   const slider = document.getElementById('historySlider');
   const timeLabel = document.getElementById('timeline-val');
   if (slider && slider.parentElement.style.display !== 'none') {
+    const windowSize = max - min;
+    const absMax = chart.options.plugins.zoom.limits.x.max;
+    if (absMax !== undefined) {
+      slider.max = Math.max(0, absMax - windowSize);
+    }
     slider.value = min;
+    const percent = (slider.max > 0) ? (slider.value / slider.max) * 100 : 0;
+    slider.style.setProperty('--slider-progress', `${percent}%`);
+    
     if (typeof formatTelemetryTime === 'function') {
       timeLabel.innerText = `${formatTelemetryTime(min)} - ${formatTelemetryTime(max)}`;
     }
