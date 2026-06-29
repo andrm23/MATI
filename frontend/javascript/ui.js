@@ -296,12 +296,12 @@ function processExternalCSV(text) {
 
   for (let i = 1; i < lines.length; i++) {
     const cols = lines[i].split(',').map(c => c.trim());
-    if (cols.length < 13) continue;
+    if (cols.length < 9) continue;
     data.push({
       time: parseFloat(cols[0]), g: parseFloat(cols[1]), phi: parseFloat(cols[2]),
       acel: parseFloat(cols[3]), fren: parseFloat(cols[4]), fi: parseFloat(cols[5]),
       fd: parseFloat(cols[6]), ti: parseFloat(cols[7]), td: parseFloat(cols[8]),
-      tfi: parseFloat(cols[9]), tfd: parseFloat(cols[10]), tti: parseFloat(cols[11]), ttd: parseFloat(cols[12])
+      // tfi: parseFloat(cols[9]), tfd: parseFloat(cols[10]), tti: parseFloat(cols[11]), ttd: parseFloat(cols[12])
     });
   }
   displayHistoricalData(data);

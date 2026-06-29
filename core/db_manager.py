@@ -68,16 +68,15 @@ class TelemetryDB:
         CREATE TABLE telemetry_data (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             Time REAL, G REAL, Steer REAL, Accel REAL, Brake REAL,
-            FL REAL, FR REAL, RL REAL, RR REAL,
-            TFI REAL, TFD REAL, TTI REAL, TTD REAL
+            FL REAL, FR REAL, RL REAL, RR REAL
         )
         """
         self.cursor.execute(query_base)
 
         # tabla historial
         query_history = query_base.replace("CREATE TABLE", "CREATE TABLE IF NOT EXISTS")
-        query_history = query_base.replace("id INTEGER", "id INTEGER", 1).replace(
-            "TTD REAL", "TTD REAL, session_id TEXT"
+        query_history = query_history.replace("id INTEGER", "id INTEGER", 1).replace(
+            "RR REAL", "RR REAL, session_id TEXT"
         )
 
         try:
@@ -114,11 +113,11 @@ class TelemetryDB:
             round(float(d.get("fi", 0.0)), 4),
             round(float(d.get("fd", 0.0)), 4),
             round(float(d.get("ti", 0.0)), 4),
-            round(float(d.get("td", 0.0)), 4),
-            round(float(d.get("tfi", 0.0)), 4),
-            round(float(d.get("tfd", 0.0)), 4),
-            round(float(d.get("tti", 0.0)), 4),
-            round(float(d.get("ttd", 0.0)), 4),
+            round(float(d.get("td", 0.0)), 4)
+            # round(float(d.get("tfi", 0.0)), 4),
+            # round(float(d.get("tfd", 0.0)), 4),
+            # round(float(d.get("tti", 0.0)), 4),
+            # round(float(d.get("ttd", 0.0)), 4),
             # float(d.get("pfi", 0.0)),
             # float(d.get("pfd", 0.0)),
             # float(d.get("pti", 0.0)),
@@ -143,9 +142,8 @@ class TelemetryDB:
         query = """
         INSERT INTO telemetry_data (
             Time, G, Steer, Accel, Brake, 
-            FL, FR, RL, RR, 
-            TFI, TFD, TTI, TTD
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            FL, FR, RL, RR
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
         self.cursor.executemany(query, self.batch_data)
         self.conn.commit()
@@ -164,8 +162,8 @@ class TelemetryDB:
 
         query_hist = """
         INSERT INTO telemetry_data (
-            Time, G, Steer, Accel, Brake, FL, FR, RL, RR, TFI, TFD, TTI, TTD, session_id
-        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+            Time, G, Steer, Accel, Brake, FL, FR, RL, RR, session_id
+        ) VALUES (?,?,?,?,?,?,?,?,?,?)
         """
         self.cursor_hist.executemany(query_hist, history_rows)
         self.conn_hist.commit()
@@ -185,7 +183,7 @@ class TelemetryDB:
 
         self.commit_batch()
         self.cursor.execute(
-            "SELECT Time, G, Steer, Accel, Brake, FL, FR, RL, RR, TFI, TFD, TTI, TTD FROM telemetry_data ORDER BY id ASC"
+            "SELECT Time, G, Steer, Accel, Brake, FL, FR, RL, RR FROM telemetry_data ORDER BY id ASC"
         )
         registros = self.cursor.fetchall()
 
@@ -198,11 +196,7 @@ class TelemetryDB:
             "FL",
             "FR",
             "RL",
-            "RR",
-            "TFI",
-            "TFD",
-            "TTI",
-            "TTD",
+            "RR"
         ]
 
         # creación del archivo .csv

@@ -11,29 +11,29 @@
  */
 function connect() {
   document.getElementById("btn-history").classList.remove("active");
-  isHistoryMode = false; 
+  isHistoryMode = false;
   const btnConnect = document.getElementById("btn-connect");
   const connIcon = document.getElementById("connect-status-icon");
 
   if (isDemoRunning) {
     stopDemo();
   }
-  
+
   clearChartData();
   resetUiIndicators();
 
- 
+
   const sliderContainer = document.getElementById('timeline-container');
   if (sliderContainer) sliderContainer.style.display = 'none';
-  
+
   const ip = document.getElementById("ipInput").value;
   if (ws) ws.close();
-  
+
   ws = new WebSocket(`ws://${ip}:81`);
-  
+
   ws.onopen = () => {
     console.log("Conectado al ESP32/Hardware");
-    btnConnect.classList.add("active"); 
+    btnConnect.classList.add("active");
     document.querySelector('.main-container').classList.remove('disconnected-state');
 
     if (connIcon) connIcon.src = "assets/menu-bar/connect-icon.svg"
@@ -59,22 +59,22 @@ function connect() {
         g: j.g || 0, x: j.x || 0, y: j.y || 0, phi: j.phi || 0,
         acel: j.acel || 0, fren: j.fren || 0,
         fi: j.fi || 0, fd: j.fd || 0, ti: j.ti || 0, td: j.td || 0,
-        tfi: Math.max(0, j.tfi || 0), tfd: Math.max(0, j.tfd || 0),
-        tti: Math.max(0, j.tti || 0), ttd: Math.max(0, j.ttd || 0),
+        // tfi: Math.max(0, j.tfi || 0), tfd: Math.max(0, j.tfd || 0),
+        // tti: Math.max(0, j.tti || 0), ttd: Math.max(0, j.ttd || 0),
         rpmFi: j.rpmFi || 0, rpmFd: j.rpmFd || 0, rpmTi: j.rpmTi || 0, rpmTd: j.rpmTd || 0,
       };
-      
+
       updateUI(d);
       draw(d.x, d.y);
-      
+
       const t_now = isRecording ? (performance.now() - startTime) / 1000 : performance.now() / 1000;
       addTelemetrySample(d, t_now);
 
       if (isRecording && !isDemoRunning && window.pywebview) {
-         d.Time = t_now; 
-         window.pywebview.api.push_real_data(d);
+        d.Time = t_now;
+        window.pywebview.api.push_real_data(d);
       }
-    } catch (_) {}
+    } catch (_) { }
   };
 }
 
@@ -91,15 +91,15 @@ function toggleRecord() {
 
   if (!isRecording) {
     window.pywebview.api.start_record().then(console.log);
-    
+
     isRecording = true;
     startTime = performance.now();
-    
-    btnRec.classList.add("active"); 
+
+    btnRec.classList.add("active");
     recTimer.style.display = "block";
 
     if (recIcon) recIcon.src = "assets/menu-bar/stop-icon.svg";
-    
+
     recTimerInt = setInterval(() => {
       const totalSeconds = (performance.now() - startTime) / 1000;
       recTimer.innerText = formatTelemetryTime(totalSeconds);
@@ -108,20 +108,20 @@ function toggleRecord() {
   } else {
 
     window.pywebview.api.stop_record().then((response) => {
-       const modal = document.getElementById('csvModal');
-       const msg = document.getElementById('csvModalMsg');
-       if (modal && msg) {
-           msg.innerHTML = `<b>Sesión:</b> ${response.session_id}<br><b>Ruta:</b> ${response.path}`; 
-           modal.style.display = 'block';
-       }
+      const modal = document.getElementById('csvModal');
+      const msg = document.getElementById('csvModalMsg');
+      if (modal && msg) {
+        msg.innerHTML = `<b>Sesión:</b> ${response.session_id}<br><b>Ruta:</b> ${response.path}`;
+        modal.style.display = 'block';
+      }
     });
-    
+
     isRecording = false;
     clearInterval(recTimerInt);
-    
-    btnRec.classList.remove("active"); 
+
+    btnRec.classList.remove("active");
     recTimer.style.display = "none";
-    
+
   }
 }
 
@@ -131,7 +131,7 @@ function toggleRecord() {
  */
 function pollData() {
   if (!isDemoRunning) return;
-  
+
   window.pywebview.api.get_latest_data().then((response) => {
     if (!isDemoRunning) return;
     if (response) {
@@ -162,14 +162,14 @@ function toggleDemo() {
 function startDemo() {
   isDemoRunning = true;
   document.getElementById("btn-history").classList.remove("active");
-  isHistoryMode = false; 
   isHistoryMode = false;
-  
+  isHistoryMode = false;
+
   if (ws) {
     ws.close();
     ws = null;
   }
-  
+
   clearChartData();
   resetUiIndicators();
 
@@ -187,7 +187,7 @@ function startDemo() {
     window.pywebview.api.start_demo().then(() => {
       if (!loopActive && isDemoRunning) {
         loopActive = true;
-        pollData(); 
+        pollData();
       }
     });
   } else {
@@ -198,7 +198,7 @@ function startDemo() {
 function stopDemo() {
   isDemoRunning = false;
   loopActive = false;
-  
+
   const btnDemo = document.getElementById("btn-demo");
   const demoIcon = document.getElementById("demo-icon");
   if (btnDemo) btnDemo.classList.remove("active");

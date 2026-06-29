@@ -199,48 +199,48 @@ class TelemetryAPI:
                 "fd": math.cos(t * 3) * 8,
                 "ti": -math.sin(t * 3) * 8,
                 "td": -math.cos(t * 3) * 8,
-                "tfi": self.clamp(
-                    58 + math.sin(t * 0.9) * 20 + abs(math.sin(t * 0.35)) * 32, 0, 120
-                ),
-                "tfd": self.clamp(
-                    61
-                    + math.sin(t * 0.95 + 0.4) * 19
-                    + abs(math.sin(t * 0.4 + 0.3)) * 30,
-                    0,
-                    120,
-                ),
-                "tti": self.clamp(
-                    56
-                    + math.sin(t * 0.88 + 0.9) * 18
-                    + abs(math.sin(t * 0.31 + 0.5)) * 34,
-                    0,
-                    120,
-                ),
-                "ttd": self.clamp(
-                    59
-                    + math.sin(t * 0.92 + 1.2) * 20
-                    + abs(math.sin(t * 0.37 + 0.8)) * 31,
-                    0,
-                    120,
-                ),
-                "pfi": self.clamp(
-                    12 + abs(math.sin(t * 1.8)) * 22 + math.sin(t * 0.3) * 4, 0, 40
-                ),
-                "pfd": self.clamp(
-                    11 + abs(math.sin(t * 1.75 + 0.4)) * 23 + math.sin(t * 0.33) * 4,
-                    0,
-                    40,
-                ),
-                "pti": self.clamp(
-                    10 + abs(math.sin(t * 1.7 + 0.7)) * 21 + math.sin(t * 0.28) * 4,
-                    0,
-                    40,
-                ),
-                "ptd": self.clamp(
-                    10 + abs(math.sin(t * 1.72 + 1.1)) * 24 + math.sin(t * 0.25) * 4,
-                    0,
-                    40,
-                ),
+                # "tfi": self.clamp(
+                #     58 + math.sin(t * 0.9) * 20 + abs(math.sin(t * 0.35)) * 32, 0, 120
+                # ),
+                # "tfd": self.clamp(
+                #     61
+                #     + math.sin(t * 0.95 + 0.4) * 19
+                #     + abs(math.sin(t * 0.4 + 0.3)) * 30,
+                #     0,
+                #     120,
+                # ),
+                # "tti": self.clamp(
+                #     56
+                #     + math.sin(t * 0.88 + 0.9) * 18
+                #     + abs(math.sin(t * 0.31 + 0.5)) * 34,
+                #     0,
+                #     120,
+                # ),
+                # "ttd": self.clamp(
+                #     59
+                #     + math.sin(t * 0.92 + 1.2) * 20
+                #     + abs(math.sin(t * 0.37 + 0.8)) * 31,
+                #     0,
+                #     120,
+                # ),
+                # "pfi": self.clamp(
+                #     12 + abs(math.sin(t * 1.8)) * 22 + math.sin(t * 0.3) * 4, 0, 40
+                # ),
+                # "pfd": self.clamp(
+                #     11 + abs(math.sin(t * 1.75 + 0.4)) * 23 + math.sin(t * 0.33) * 4,
+                #     0,
+                #     40,
+                # ),
+                # "pti": self.clamp(
+                #     10 + abs(math.sin(t * 1.7 + 0.7)) * 21 + math.sin(t * 0.28) * 4,
+                #     0,
+                #     40,
+                # ),
+                # "ptd": self.clamp(
+                #     10 + abs(math.sin(t * 1.72 + 1.1)) * 24 + math.sin(t * 0.25) * 4,
+                #     0,
+                #     40,
+                # ),
                 "rpmFi": 3200 + abs(math.sin(t * 1.1)) * 2400,
                 "rpmFd": 3300 + abs(math.sin(t * 1.09 + 0.4)) * 2350,
                 "rpmTi": 3150 + abs(math.sin(t * 1.12 + 0.9)) * 2250,
@@ -314,7 +314,7 @@ class TelemetryAPI:
     def get_session_data(self, session_id):
         """Recupera todos los registros de una sesión específica del historial."""
         try:
-            query = "SELECT Time, G, Steer, Accel, Brake, FL, FR, RL, RR, TFI, TFD, TTI, TTD FROM telemetry_data WHERE session_id = ? ORDER BY id ASC"
+            query = "SELECT Time, G, Steer, Accel, Brake, FL, FR, RL, RR FROM telemetry_data WHERE session_id = ? ORDER BY id ASC"
             self.db.cursor_hist.execute(query, (session_id,))
             rows = self.db.cursor_hist.fetchall()
 
@@ -328,11 +328,11 @@ class TelemetryAPI:
                 "fi",
                 "fd",
                 "ti",
-                "td",
-                "tfi",
-                "tfd",
-                "tti",
-                "ttd",
+                "td"
+                # "tfi",
+                # "tfd",
+                # "tti",
+                # "ttd",
             ]
             return [dict(zip(columnas, r)) for r in rows]
         except Exception as e:
