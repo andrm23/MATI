@@ -1,6 +1,6 @@
 /**
  * @file csv_parser.js
- * @description Gestión del historial de telemetría y parseo de archivos CSV.
+ * @description Gestión del historial de telemetría y parseo de archivos CSV. 
  */
 
 async function updateHistoryList() {
@@ -18,7 +18,7 @@ async function updateHistoryList() {
 }
 
 async function loadHistoryData() {
-  if (isDemoRunning) stopDemo(); // Detener demo antes de cargar
+  if (isDemoRunning) stopDemo(); // Detener demo antes de cargar 
   isHistoryMode = true;
   const session = document.getElementById('historySessionSelect').value;
   const fileInput = document.getElementById('csvFileInput');
@@ -119,7 +119,7 @@ function displayHistoricalData(data) {
 function clearCSVSelection() {
   const fileInput = document.getElementById('csvFileInput');
   if (fileInput) {
-    fileInput.value = ""; 
+    fileInput.value = "";
     console.log("Selección de CSV limpiada.");
   }
 }
