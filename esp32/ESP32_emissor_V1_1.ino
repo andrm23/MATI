@@ -1,17 +1,17 @@
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+// #include <Adafruit_GFX.h>
+// #include <Adafruit_SSD1306.h>
 #include <WebServer.h>
 #include <WebSocketsServer.h>
 #include <WiFi.h>
-#include <Wire.h>
+// #include <Wire.h>
 #include <math.h>
 
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
-#define OLED_RESET -1
-#define I2C_SDA 21
-#define I2C_SCL 22
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+// #define SCREEN_WIDTH 128
+// #define SCREEN_HEIGHT 64
+// #define OLED_RESET -1
+// #define I2C_SDA 21
+// #define I2C_SCL 22
+// Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 // --- PINOUT
 #define PIN_FD 36   // ADC1
@@ -42,28 +42,30 @@ float readPotentiometer(int pin) {
   return value;
 }
 
-float readPhi() { return map(analogRead(PIN_PHI), 0, POT_MAX, -10.0, 10.0); }
+float readPhi() {
+  return map(analogRead(PIN_PHI), 0, POT_MAX, -100, 100) / 10.0;
+}
 
 /////////////////////////////// --- FUNCIONES DE LECTURA ---
 float readAccel() {
   // Mapeo de 0 a 10 positivos
-  return map(analogRead(PIN_ACEL), 0, POT_MAX, 0, 10);
+  return map(analogRead(PIN_ACEL), 0, POT_MAX, 0, 100) / 10.0;
 }
 
 float readBrake() {
   // Mapeo de 0 a -10 negativos
-  return map(analogRead(PIN_FREN), 0, POT_MAX, 0, -10);
+  return map(analogRead(PIN_FREN), 0, POT_MAX, 0, -100) / 10.0;
 }
 
 void setup() {
   Serial.begin(115200);
 
-  Wire.begin(I2C_SDA, I2C_SCL);
-  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
-    Serial.println(F("Error en pantalla SSD1306"));
-    for (;;)
-      ;
-  }
+  // Wire.begin(I2C_SDA, I2C_SCL);
+  // if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+  //   Serial.println(F("Error en pantalla SSD1306"));
+  //   for (;;)
+  //     ;
+  // }
   /////////////////////////////////////// --- INICIO DE ACCESS POINT
   Serial.println("\nCreando red WiFi...");
   WiFi.mode(WIFI_AP);
@@ -74,14 +76,14 @@ void setup() {
   Serial.print("IP para conectar: ");
   Serial.println(WiFi.softAPIP());
 
-  display.clearDisplay();
-  display.setTextSize(1);
-  display.setTextColor(SSD1306_WHITE);
-  display.setCursor(0, 0);
-  display.println("MODO FISICA");
-  display.print("IP: ");
-  display.println(WiFi.softAPIP());
-  display.display();
+  // display.clearDisplay();
+  // display.setTextSize(1);
+  // display.setTextColor(SSD1306_WHITE);
+  // display.setCursor(0, 0);
+  // display.println("MODO FISICA");
+  // display.print("IP: ");
+  // display.println(WiFi.softAPIP());
+  // display.display();
   webSocket.begin();
   webSocket.onEvent(webSocketEvent);
 }
