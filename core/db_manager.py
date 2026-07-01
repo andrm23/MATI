@@ -9,6 +9,7 @@ telemetría capturadas y su posterior exportación a formatos estándar.
 import sqlite3
 import os
 import csv
+import threading
 from datetime import datetime
 from core.env import CARPETA_SEGURA
 
@@ -40,7 +41,7 @@ class TelemetryDB:
             try:
                 os.remove(DB_NAME)
             except Exception as e:
-                print(f"[DEBUG] No se pudo borrar la DB temporal: {e}")
+                print(f"[ERROR] No se pudo borrar la DB temporal: {e}")
 
         # Conexión con la DB
         self.conn = sqlite3.connect(DB_NAME, check_same_thread=False)
@@ -49,6 +50,10 @@ class TelemetryDB:
         # conexión con DB persistente y cifrado
         self.conn_hist = sqlite3.connect(DB_HISTORY_NAME, check_same_thread=False)
         self.cursor_hist = self.conn_hist.cursor()
+        self.cursor_hist.execute("PRAGMA key = 'UAMOTORS_gotera'")
+
+        # lock para evitar ace conditions entre hilos
+        self.lock = threading.RLock()
         self.cursor_hist.execute("PRAGMA key = 'UAMOTORS_gotera'")
 
         # lote de datos temporales
@@ -123,31 +128,30 @@ class TelemetryDB:
             # float(d.get("pti", 0.0)),
             # float(d.get("ptd", 0.0)),
         )
-        self.batch_data.append(row)
+        
+        with self.lock:
+            self.batch_data.append(row)
 
-        if len(self.batch_data) >= BATCH_SIZE:
-            self.commit_batch()
+            if len(self.batch_data) >= BATCH_SIZE:
+                self.commit_batch()
 
     def commit_batch(self):
         """
         Realiza la inserción masiva de los datos encolados en la base de datos.
-
-        Utiliza executemany para optimizar el rendimiento de escritura y
-        limpia el búfer temporal tras confirmar la transacción.
         """
+        with self.lock:
+            if not self.batch_data:
+                return
 
-        if not self.batch_data:
-            return
-
-        query = """
-        INSERT INTO telemetry_data (
-            Time, G, Steer, Accel, Brake, 
-            FL, FR, RL, RR
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """
-        self.cursor.executemany(query, self.batch_data)
-        self.conn.commit()
-        self.batch_data.clear()
+            query = """
+            INSERT INTO telemetry_data (
+                Time, G, Steer, Accel, Brake, 
+                FL, FR, RL, RR
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """
+            self.cursor.executemany(query, self.batch_data)
+            self.conn.commit()
+            self.batch_data.clear()
 
     def save_to_history(self, session_name):
         self.commit_batch()

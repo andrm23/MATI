@@ -56,7 +56,7 @@ def check_update():
         latest_version_tag = data.get("tag_name", "")
 
         # INFO para consola
-        print(f"[*] INFO: GitHub dice que la última versión es: '{latest_version_tag}'")
+        print(f"[*] INFO: La última versión en GitHub es: '{latest_version_tag}'")
 
         latest_version = latest_version_tag.replace("v", "").strip(" .")
 
