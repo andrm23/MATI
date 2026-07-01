@@ -33,6 +33,7 @@ function connect() {
 
   ws.onopen = () => {
     console.log("Conectado al ESP32/Hardware");
+    if (!isRecording) startTime = performance.now();
     btnConnect.classList.add("active");
     document.querySelector('.main-container').classList.remove('disconnected-state');
 
@@ -67,7 +68,7 @@ function connect() {
       updateUI(d);
       draw(d.x, d.y);
 
-      const t_now = isRecording ? (performance.now() - startTime) / 1000 : performance.now() / 1000;
+      const t_now = (performance.now() - startTime) / 1000;
       addTelemetrySample(d, t_now);
 
       if (isRecording && !isDemoRunning && window.pywebview) {
@@ -94,6 +95,7 @@ function toggleRecord() {
 
     isRecording = true;
     startTime = performance.now();
+    clearChartData();
 
     btnRec.classList.add("active");
     recTimer.style.display = "block";
