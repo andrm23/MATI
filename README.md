@@ -51,7 +51,8 @@ MATI
 │  ├─ env.py
 │  ├─ telemetry_api.py
 │  ├─ updater.py
-│  └─ utils.py
+│  ├─ utils.py
+│  └─ version.txt
 ├─ frontend
 │  ├─ assets
 │  │  ├─ csv-icon.svg
@@ -91,10 +92,15 @@ MATI
 │     ├─ chartjs-zoom.min.js
 │     ├─ charts.js
 │     ├─ comms.js
+│     ├─ csv_parser.js
+│     ├─ hammer.min.js
 │     ├─ state.js
 │     └─ ui.js
+├─ .gitignore
 ├─ main.py
-└─ version.txt
+├─ README.md
+├─ requirements.txt
+└─ run_dev.sh
 ```
 
 ## 👥 Créditos y Autores
