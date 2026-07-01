@@ -302,7 +302,7 @@ function addTelemetrySample(d, timeSeconds) {
       }
     }
 
-    const paddingRight = windowSize * 0.025; // 2.5% de espacio visual a la derecha
+    const paddingRight = windowSize * 0.025;
 
     let xMax, xMin;
     if (timeSeconds <= windowSize) {
@@ -322,15 +322,29 @@ function addTelemetrySample(d, timeSeconds) {
   });
 }
 
-// Bucle de renderizado desacoplado (optimización)
+// Bucle de renderizado desacoplado
 let isRenderLoopRunning = false;
-function renderChartsLoop() {
-  if (isHistoryMode) return; // En historial el update es manual
-  
+let lastFpsTime = 0;
+let frames = 0;
+let fpsEl = null;
+
+function renderChartsLoop(timestamp) {
+  if (isHistoryMode) return;
+
+  if (!fpsEl) fpsEl = document.getElementById("fps-counter");
+  if (fpsEl && timestamp) {
+    frames++;
+    if (timestamp - lastFpsTime >= 1000) {
+      fpsEl.innerText = `FPS: ${frames}`;
+      frames = 0;
+      lastFpsTime = timestamp;
+    }
+  }
+
   charts.forEach(chart => {
     if (chart) chart.update("none");
   });
-  
+
   if (isRenderLoopRunning) {
     requestAnimationFrame(renderChartsLoop);
   }
@@ -339,6 +353,8 @@ function renderChartsLoop() {
 function startRenderLoop() {
   if (!isRenderLoopRunning) {
     isRenderLoopRunning = true;
+    lastFpsTime = performance.now();
+    frames = 0;
     requestAnimationFrame(renderChartsLoop);
   }
 }
@@ -362,8 +378,8 @@ function clearChartData() {
   telemetrySeries.length = 0;
 
   // Reiniciar el temporizador para que las gráficas empiecen en 0
-  if (typeof isRecording !== 'undefined' && !isRecording && 
-      typeof isHistoryMode !== 'undefined' && !isHistoryMode) {
+  if (typeof isRecording !== 'undefined' && !isRecording &&
+    typeof isHistoryMode !== 'undefined' && !isHistoryMode) {
     if (typeof startTime !== 'undefined') {
       startTime = performance.now();
     }
