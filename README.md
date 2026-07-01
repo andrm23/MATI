@@ -4,7 +4,7 @@
 
 # MATI (Measurement And Telemetry Insights)
 
-**MATI** (palabra que significa "saber/conocer" en Náhuatl) es una aplicación de escritorio diseñada como un **Dashboard de Telemetría** para los monoplaza **"OP"** del equipo **UAMOTORS** (Universidad Autónoma Metropolitana).
+**MATI** (palabra que significa "saber/conocer" en Náhuatl) es una aplicación de escritorio diseñada como un **Dashboard de Telemetría** para los monoplaza **"OP"** del equipo de **UAMOTORS** de la Universidad Autónoma Metropolitana.
 
 ## 🏎️ Sobre el Proyecto
 
@@ -17,21 +17,20 @@ A nivel técnico, el proyecto consta de un núcleo (*backend*) desarrollado en P
 ### 📊 Datos Analizados
 MATI es capaz de recibir y procesar diversos parámetros del monoplaza, incluyendo:
 *   Suspensión
-*   Temperaturas
 *   Freno y acelerador
 *   RPM
 *   Posición de giro (volante)
-*   Fuerzas G (Radar de puntos GG / Diagrama de fricción)
+*   Radar de fuerzas G
 
 ### ⚙️ Características Principales
-*   **Pestaña de Telemetría:** Visualización en vivo de los datos arrojados por los sensores.
+*   **Pestaña de Telemetría (Dashboard):** Visualización en vivo de los datos arrojados por los sensores.
 *   **Pestaña de Gráficas:** Representación visual de los datos donde se pueden comparar múltiples variables al mismo tiempo.
 *   **Historial de Datos:** Opción para revisar y cargar registros guardados internamente.
 *   **Carga de Archivos `.csv`:** Posibilidad de importar datos de otras competencias o pruebas pasadas para analizarlos detalladamente mediante las gráficas integradas de forma post-competencia.
 
 ## 📦 Descarga e Instalación
 
-Para obtener la versión más reciente y lista para usarse, ve a la sección de **Releases** en nuestro repositorio oficial de distribución y descarga el archivo correspondiente a tu sistema operativo (`.exe` para Windows y `.zip` para macOS):
+Para obtener la versión más reciente, ve a la sección de **Releases** en nuestro repositorio oficial de distribución y descarga el archivo correspondiente a tu sistema operativo (`.exe` para Windows y `.zip` para macOS):
 
 👉 **[MATI-Releases](https://github.com/lexrammart/MATI-Releases)**
 
@@ -105,7 +104,9 @@ MATI
 
 ## 👥 Créditos y Autores
 
-El desarrollo y concepto de este software es propiedad de **UAMOTORS**, diseñado y desarrollado por el **Departamento de Electrónica**.
+> El desarrollo y concepto de este software es propiedad de **UAMOTORS**. 
+> 
+> Diseñado y desarrollado por el **Departamento de Electronics** de UAMOTORS.
 
 **Equipo de desarrollo**:
 *   **Andrés Montiel** - [@andrm23](https://github.com/andrm23)
