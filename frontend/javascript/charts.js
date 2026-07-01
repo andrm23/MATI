@@ -319,9 +319,32 @@ function addTelemetrySample(d, timeSeconds) {
 
     chart.options.scales.x.max = xMax;
     chart.options.scales.x.min = xMin;
-
-    chart.update("none");
   });
+}
+
+// Bucle de renderizado desacoplado (optimización)
+let isRenderLoopRunning = false;
+function renderChartsLoop() {
+  if (isHistoryMode) return; // En historial el update es manual
+  
+  charts.forEach(chart => {
+    if (chart) chart.update("none");
+  });
+  
+  if (isRenderLoopRunning) {
+    requestAnimationFrame(renderChartsLoop);
+  }
+}
+
+function startRenderLoop() {
+  if (!isRenderLoopRunning) {
+    isRenderLoopRunning = true;
+    requestAnimationFrame(renderChartsLoop);
+  }
+}
+
+function stopRenderLoop() {
+  isRenderLoopRunning = false;
 }
 
 /**

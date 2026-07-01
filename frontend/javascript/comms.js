@@ -38,20 +38,23 @@ function connect() {
     btnConnect.classList.add("active");
     document.querySelector('.main-container').classList.remove('disconnected-state');
 
-    if (connIcon) connIcon.src = "assets/menu-bar/connect-icon.svg"
+    if (connIcon) connIcon.src = "assets/menu-bar/connect-icon.svg";
+    if (typeof startRenderLoop === 'function') startRenderLoop();
   };
 
   ws.onclose = () => {
     btnConnect.classList.remove("active");
     if (!isDemoRunning && !isHistoryMode) document.querySelector('.main-container').classList.add('disconnected-state');
-    if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg"
+    if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg";
+    if (!isDemoRunning && typeof stopRenderLoop === 'function') stopRenderLoop();
   };
 
 
   ws.onerror = () => {
     btnConnect.classList.remove("active");
     if (!isDemoRunning && !isHistoryMode) document.querySelector('.main-container').classList.add('disconnected-state');
-    if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg"
+    if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg";
+    if (!isDemoRunning && typeof stopRenderLoop === 'function') stopRenderLoop();
   };
 
   ws.onmessage = (e) => {
@@ -177,6 +180,7 @@ function startDemo() {
   resetUiIndicators();
 
   if (typeof setZoomEnabled === 'function') setZoomEnabled(false);
+  if (typeof startRenderLoop === 'function') startRenderLoop();
 
   const sliderContainer = document.getElementById('timeline-container');
   if (sliderContainer) sliderContainer.style.display = 'none';
@@ -210,6 +214,7 @@ function stopDemo() {
   if (demoIcon) demoIcon.src = "assets/menu-bar/start-icon.svg";
   if (typeof ws === 'undefined' || !ws || ws.readyState !== WebSocket.OPEN) {
     document.querySelector('.main-container').classList.add('disconnected-state');
+    if (typeof stopRenderLoop === 'function') stopRenderLoop();
   }
 
   if (window.pywebview && window.pywebview.api) {

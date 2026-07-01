@@ -46,10 +46,12 @@ class TelemetryDB:
         # Conexión con la DB
         self.conn = sqlite3.connect(DB_NAME, check_same_thread=False)
         self.cursor = self.conn.cursor()
+        self.cursor.execute("PRAGMA journal_mode=WAL;")
 
         # conexión con DB persistente y cifrado
         self.conn_hist = sqlite3.connect(DB_HISTORY_NAME, check_same_thread=False)
         self.cursor_hist = self.conn_hist.cursor()
+        self.cursor_hist.execute("PRAGMA journal_mode=WAL;")
         self.cursor_hist.execute("PRAGMA key = 'UAMOTORS_gotera'")
 
         # lock para evitar ace conditions entre hilos
