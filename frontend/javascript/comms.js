@@ -34,6 +34,7 @@ function connect() {
   ws.onopen = () => {
     console.log("Conectado al ESP32/Hardware");
     if (!isRecording) startTime = performance.now();
+    if (typeof setZoomEnabled === 'function') setZoomEnabled(false);
     btnConnect.classList.add("active");
     document.querySelector('.main-container').classList.remove('disconnected-state');
 
@@ -174,6 +175,8 @@ function startDemo() {
 
   clearChartData();
   resetUiIndicators();
+
+  if (typeof setZoomEnabled === 'function') setZoomEnabled(false);
 
   const sliderContainer = document.getElementById('timeline-container');
   if (sliderContainer) sliderContainer.style.display = 'none';

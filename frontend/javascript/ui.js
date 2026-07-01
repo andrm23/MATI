@@ -15,12 +15,12 @@ function formatTelemetryTime(seconds) {
   const s = Math.floor(seconds % 60);
 
   const ss = s.toString().padStart(2, "0");
-  
+
   if (h > 0) {
     const mm = m.toString().padStart(2, "0");
     return `${h}:${mm}:${ss}`;
   }
-  
+
   return `${m}:${ss}`;
 }
 
@@ -319,6 +319,7 @@ function displayHistoricalData(data) {
   if (data.length === 0) return alert("No hay datos en el archivo.");
 
   isHistoryMode = true;
+  if (typeof setZoomEnabled === 'function') setZoomEnabled(true);
   telemetrySeries.length = 0;
   data.forEach(d => telemetrySeries.push(d));
   document.querySelector('.main-container').classList.remove('disconnected-state');
@@ -353,12 +354,12 @@ function displayHistoricalData(data) {
 
     slider.oninput = function () {
       const start = parseFloat(this.value);
-      
+
       let windowSize = 60;
       if (typeof charts !== 'undefined' && charts.length > 0 && charts[0].options.scales.x.max !== undefined) {
-          windowSize = charts[0].options.scales.x.max - charts[0].options.scales.x.min;
+        windowSize = charts[0].options.scales.x.max - charts[0].options.scales.x.min;
       }
-      
+
       const percent = (this.max > 0) ? (this.value / this.max) * 100 : 0;
       this.style.setProperty('--slider-progress', `${percent}%`);
 
