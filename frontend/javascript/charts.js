@@ -91,22 +91,22 @@ function chartOptions() {
     scales: {
       x: {
         type: "linear",
-        afterBuildTicks: function(scale) {
+        afterBuildTicks: function (scale) {
           const min = scale.min;
           const max = scale.max;
           const range = max - min;
           if (range <= 0) return;
-          
+
           let dataRange = range;
           if (typeof isHistoryMode !== 'undefined' && !isHistoryMode) {
             dataRange = range / 1.025;
           }
-          
+
           let numTicks = 6;
           if (dataRange <= 15) numTicks = 5;
-          
+
           const step = dataRange / numTicks;
-          
+
           scale.ticks = [];
           for (let i = 0; i <= numTicks; i++) {
             scale.ticks.push({ value: min + i * step });
@@ -171,7 +171,7 @@ function chartOptions() {
 function syncCharts({ chart }) {
   const min = chart.scales.x.min;
   const max = chart.scales.x.max;
-  
+
   charts.forEach(c => {
     if (c !== chart) {
       c.options.scales.x.min = min;
@@ -191,7 +191,7 @@ function syncCharts({ chart }) {
     slider.value = min;
     const percent = (slider.max > 0) ? (slider.value / slider.max) * 100 : 0;
     slider.style.setProperty('--slider-progress', `${percent}%`);
-    
+
     if (typeof formatTelemetryTime === 'function') {
       timeLabel.innerText = `${formatTelemetryTime(min)} - ${formatTelemetryTime(max)}`;
     }
@@ -302,11 +302,11 @@ function addTelemetrySample(d, timeSeconds) {
       }
     }
 
-    const paddingRight = windowSize * 0.025; // 2.5% de espacio visual a la derecha
+    const paddingRight = windowSize * 0.025;
 
     let xMax, xMin;
     if (timeSeconds <= windowSize) {
-      xMax = windowSize + paddingRight; 
+      xMax = windowSize + paddingRight;
       xMin = 0;
     } else {
       xMax = timeSeconds + paddingRight;
@@ -319,9 +319,48 @@ function addTelemetrySample(d, timeSeconds) {
 
     chart.options.scales.x.max = xMax;
     chart.options.scales.x.min = xMin;
-
-    chart.update("none");
   });
+}
+
+// Bucle de renderizado desacoplado
+let isRenderLoopRunning = false;
+let lastFpsTime = 0;
+let frames = 0;
+let fpsEl = null;
+
+function renderChartsLoop(timestamp) {
+  if (isHistoryMode) return;
+
+  if (!fpsEl) fpsEl = document.getElementById("fps-counter");
+  if (fpsEl && timestamp) {
+    frames++;
+    if (timestamp - lastFpsTime >= 1000) {
+      fpsEl.innerText = `FPS: ${frames}`;
+      frames = 0;
+      lastFpsTime = timestamp;
+    }
+  }
+
+  charts.forEach(chart => {
+    if (chart) chart.update("none");
+  });
+
+  if (isRenderLoopRunning) {
+    requestAnimationFrame(renderChartsLoop);
+  }
+}
+
+function startRenderLoop() {
+  if (!isRenderLoopRunning) {
+    isRenderLoopRunning = true;
+    lastFpsTime = performance.now();
+    frames = 0;
+    requestAnimationFrame(renderChartsLoop);
+  }
+}
+
+function stopRenderLoop() {
+  isRenderLoopRunning = false;
 }
 
 /**
@@ -337,6 +376,14 @@ function resetZoom(chartInstance) {
  */
 function clearChartData() {
   telemetrySeries.length = 0;
+
+  // Reiniciar el temporizador para que las gráficas empiecen en 0
+  if (typeof isRecording !== 'undefined' && !isRecording &&
+    typeof isHistoryMode !== 'undefined' && !isHistoryMode) {
+    if (typeof startTime !== 'undefined') {
+      startTime = performance.now();
+    }
+  }
 
   charts.forEach(chart => {
     if (!chart) return;
@@ -408,5 +455,17 @@ function buildMetricControls(containerId, selectedMetrics) {
     });
 
     if (catMetrics.length > 0) container.appendChild(groupDiv);
+  });
+}
+
+function setZoomEnabled(enabled) {
+  charts.forEach(c => {
+    if (c.options.plugins && c.options.plugins.zoom) {
+      c.options.plugins.zoom.zoom.wheel.enabled = enabled;
+      c.options.plugins.zoom.zoom.pinch.enabled = enabled;
+      c.options.plugins.zoom.pan.enabled = enabled;
+
+      c.update('none');
+    }
   });
 }

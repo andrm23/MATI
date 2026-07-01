@@ -33,23 +33,28 @@ function connect() {
 
   ws.onopen = () => {
     console.log("Conectado al ESP32/Hardware");
+    if (!isRecording) startTime = performance.now();
+    if (typeof setZoomEnabled === 'function') setZoomEnabled(false);
     btnConnect.classList.add("active");
     document.querySelector('.main-container').classList.remove('disconnected-state');
 
-    if (connIcon) connIcon.src = "assets/menu-bar/connect-icon.svg"
+    if (connIcon) connIcon.src = "assets/menu-bar/connect-icon.svg";
+    if (typeof startRenderLoop === 'function') startRenderLoop();
   };
 
   ws.onclose = () => {
     btnConnect.classList.remove("active");
     if (!isDemoRunning && !isHistoryMode) document.querySelector('.main-container').classList.add('disconnected-state');
-    if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg"
+    if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg";
+    if (!isDemoRunning && typeof stopRenderLoop === 'function') stopRenderLoop();
   };
 
 
   ws.onerror = () => {
     btnConnect.classList.remove("active");
     if (!isDemoRunning && !isHistoryMode) document.querySelector('.main-container').classList.add('disconnected-state');
-    if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg"
+    if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg";
+    if (!isDemoRunning && typeof stopRenderLoop === 'function') stopRenderLoop();
   };
 
   ws.onmessage = (e) => {
@@ -67,7 +72,7 @@ function connect() {
       updateUI(d);
       draw(d.x, d.y);
 
-      const t_now = isRecording ? (performance.now() - startTime) / 1000 : performance.now() / 1000;
+      const t_now = (performance.now() - startTime) / 1000;
       addTelemetrySample(d, t_now);
 
       if (isRecording && !isDemoRunning && window.pywebview) {
@@ -94,6 +99,7 @@ function toggleRecord() {
 
     isRecording = true;
     startTime = performance.now();
+    clearChartData();
 
     btnRec.classList.add("active");
     recTimer.style.display = "block";
@@ -173,6 +179,9 @@ function startDemo() {
   clearChartData();
   resetUiIndicators();
 
+  if (typeof setZoomEnabled === 'function') setZoomEnabled(false);
+  if (typeof startRenderLoop === 'function') startRenderLoop();
+
   const sliderContainer = document.getElementById('timeline-container');
   if (sliderContainer) sliderContainer.style.display = 'none';
 
@@ -205,6 +214,7 @@ function stopDemo() {
   if (demoIcon) demoIcon.src = "assets/menu-bar/start-icon.svg";
   if (typeof ws === 'undefined' || !ws || ws.readyState !== WebSocket.OPEN) {
     document.querySelector('.main-container').classList.add('disconnected-state');
+    if (typeof stopRenderLoop === 'function') stopRenderLoop();
   }
 
   if (window.pywebview && window.pywebview.api) {

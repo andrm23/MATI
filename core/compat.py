@@ -7,12 +7,16 @@ def apply_fixes():
     """Aplica parches de entorno para asegurar compatibilidad multiplataforma."""
     sistema = platform.system()
 
+    # PARCHE PARA WINDOWS (Modo Windowed de PyInstaller)
+    if sistema == "Windows":
+        if sys.stdout is None:
+            sys.stdout = open(os.devnull, "w")
+        if sys.stderr is None:
+            sys.stderr = open(os.devnull, "w")
+        print("[COMPAT] Parches de salida para Windows aplicados.")
+
     # PARCHE PARA MACOS (Modo Windowed)
-    if sistema == "Darwin":  # Identificador de macOS
-        # if sys.stdout is None:
-        #     sys.stdout = open(os.devnull, "w")
-        # if sys.stderr is None:
-        #     sys.stderr = open(os.devnull, "w")
+    elif sistema == "Darwin":  # Identificador de macOS
         print("[COMPAT] Parches de salida para macOS aplicados.")
 
     # PARCHES PARA LINUX (Andrés / Xilinx / WebKit)
