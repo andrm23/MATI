@@ -1,4 +1,5 @@
 import threading
+from core.logger import log
 import time
 import math
 import json
@@ -284,7 +285,7 @@ class TelemetryAPI:
             webbrowser.open(url)
             return True
         except Exception as e:
-            print(f"Error al abrir el navegador: {e}")
+            log.error(f"Error al abrir el navegador: {e}")
             return False
 
     def open_external_link(self, url):
@@ -308,7 +309,7 @@ class TelemetryAPI:
             )
             return [row[0] for row in self.db.cursor_hist.fetchall()]
         except Exception as e:
-            print(f"Error al obtener sesiones: {e}")
+            log.error(f"Error al obtener sesiones: {e}")
             return []
 
     def get_session_data(self, session_id):
@@ -336,5 +337,5 @@ class TelemetryAPI:
             ]
             return [dict(zip(columnas, r)) for r in rows]
         except Exception as e:
-            print(f"Error al cargar sesión: {e}")
+            log.error(f"Error al cargar sesión: {e}")
             return []

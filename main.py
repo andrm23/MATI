@@ -3,9 +3,14 @@ import sys  # DO NOT DELETE THIS LINE/LIBRARY
 from core.telemetry_api import TelemetryAPI
 from core.bridge import handle_on_loaded
 from core.utils import get_resource_path
+from core.logger import exception_handler, check_send_crashes_async, log
 
 
 def app_inicializacion():
+
+    sys.excepthook = exception_handler
+    check_send_crashes_async()
+
     try:
         # Se define la ruta para asegurar que el entorno esté listo
         html_path = get_resource_path("frontend/index.html")
@@ -35,8 +40,8 @@ def app_inicializacion():
         webview.start(handle_on_loaded, ventana, debug=False)
 
     except Exception as e:
-        print(f"Error crítico en el arranque del MATI: {e}")
-
+        log.critical(f"Error crítico en el arranque del MATI: {e}", exc_info=True)
+        raise
 
 if __name__ == "__main__":
     app_inicializacion()
