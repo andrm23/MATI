@@ -3,6 +3,8 @@ import os
 import json
 import traceback
 import threading
+import logging
+from logging.handlers import RotatingFileHandler
 import urllib.request
 from core.env import CARPETA_SEGURA
 
@@ -82,3 +84,33 @@ def send_pending_crashes():
 def check_send_crashes_async():
     thread = threading.Thread(target=send_pending_crashes, daemon=True)
     thread.start()
+
+
+def get_local_logger(name="MATI"):
+    logger = logging.getLogger(name)
+
+    if logger.hasHandlers():
+        return logger
+
+    logger.setLevel(logging.DEBUG)
+    formatter = logging.Formatter(
+        "[%(asctime)s] [%(levelname)s] [%(filename)s:%(lineno)d] %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+    # Consola
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setFormatter(formatter)
+    console_handler.setLevel(logging.INFO)
+    logger.addHandler(console_handler)
+    # Archivo mati_app.log
+    log_file = os.path.join(CARPETA_SEGURA, "mati_app.log")
+    file_handler = RotatingFileHandler(
+        log_file, maxBytes=5 * 1024 * 1024, backupCount=3, encoding="utf-8"
+    )
+    file_handler.setFormatter(formatter)
+    file_handler.setLevel(logging.DEBUG)
+    logger.addHandler(file_handler)
+    return logger
+
+
+log = get_local_logger()
