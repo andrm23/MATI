@@ -24,12 +24,12 @@ class TelemetryAPI:
         Inicializa el estado de la API, configurando banderas de control y estableciendo la conexión
         con la base de datos SQLite.
         """
-        self.db = TelemetryDB()
-        self.is_running = False
-        self.window = None
-        self.is_recording = False
-        self.latest_payload = None
-        self.rec_start_time = 0
+        self._db = TelemetryDB()
+        self._is_running = False
+        self._window = None
+        self._is_recording = False
+        self._latest_payload = None
+        self._rec_start_time = 0
 
     def open_external_link(self, url):
         """Abre una URL en el navegador predeterminado del sistema."""
@@ -46,7 +46,7 @@ class TelemetryAPI:
         Args:
             window (webview.Window): La instancia de la ventana generada por la librería pywebview.
         """
-        self.window = window
+        self._window = window
 
     def get_latest_data(self):
         """
@@ -62,8 +62,8 @@ class TelemetryAPI:
                  ('elapsed').
             None: Si la simulación aún no ha generado el primer paquete de datos.
         """
-        if getattr(self, "latest_payload", None):
-            return json.dumps(self.latest_payload)
+        if getattr(self, "_latest_payload", None):
+            return json.dumps(self._latest_payload)
         return None
 
     def start_demo(self):
@@ -74,8 +74,8 @@ class TelemetryAPI:
         se presiona en botón "DEMO" desde el frontend.
 
         """
-        if not self.is_running:
-            self.is_running = True
+        if not self._is_running:
+            self._is_running = True
             t = threading.Thread(target=self.hardware_loop)
             t.daemon = True
             t.start()
@@ -88,7 +88,7 @@ class TelemetryAPI:
         DEMO" o en caso de conectarse con el módulo ESP32."
         """
 
-        self.is_running = False
+        self._is_running = False
 
     def start_record(self):
         """
@@ -97,9 +97,9 @@ class TelemetryAPI:
         Esta fución se encarga de crear una nueva tabla dentro de la base de datos para preparar el
         almacenamiento de datos de telemetría.
         """
-        self.is_recording = True
-        self.rec_start_time = time.time()
-        self.db.create_table()  # borrado de la DB y reset del PK
+        self._is_recording = True
+        self._rec_start_time = time.time()
+        self._db.create_table()  # borrado de la DB y reset del PK
 
     def stop_record(self):
         """
@@ -111,22 +111,22 @@ class TelemetryAPI:
         Returns:
             str: Mensaje que indica el path en el que se exportó el archivo csv.
         """
-        self.is_recording = False
+        self._is_recording = False
 
-        duracion_segundos = int(time.time() - self.rec_start_time)
+        duracion_segundos = int(time.time() - self._rec_start_time)
         m, s = divmod(duracion_segundos, 60)
         duracion_str = f"{m:02d}-{s:02d}"
 
         fecha_iso = datetime.now().strftime("%Y-%m-%d")
         nombre_final = f"MATI_{fecha_iso}_{duracion_str}"
 
-        full_id = self.db.save_to_history(nombre_final)
+        full_id = self._db.save_to_history(nombre_final)
 
         desktop_path = os.path.join(
             os.path.expanduser("~"), "Desktop", f"{nombre_final}.csv"
         )
 
-        total_registros = self.db.export_csv(desktop_path)
+        total_registros = self._db.export_csv(desktop_path)
 
         return {"total": total_registros, "path": desktop_path, "session_id": full_id}
 
@@ -141,13 +141,13 @@ class TelemetryAPI:
         Args:
             data (dict): Diccionario con las lecturas de los sensores (g, phi, etc).
         """
-        if getattr(self, "is_recording", False):
+        if getattr(self, "_is_recording", False):
             d_limpio = {
                 clave: round(valor, 4)
                 for clave, valor in data.items()
                 if isinstance(valor, (int, float))
             }
-            self.db.insert_data(d_limpio)
+            self._db.insert_data(d_limpio)
 
     def clamp(self, value, min_val, max_val):
         """
@@ -185,7 +185,7 @@ class TelemetryAPI:
         #  perf_counter es el equivalente al performance.now() de JS
         demo_start = time.perf_counter()
 
-        while self.is_running:
+        while self._is_running:
             t += 0.05
 
             # diccionario con los datos
@@ -252,15 +252,15 @@ class TelemetryAPI:
             d["Time"] = elapsed  # Agregamos el tiempo al diccionario para la DB
             d_limpio = {clave: round(valor, 3) for clave, valor in d.items()}
             # Escritura en base de datos SQLite
-            if getattr(self, "is_recording", False):
-                self.db.insert_data(d_limpio)
+            if getattr(self, "_is_recording", False):
+                self._db.insert_data(d_limpio)
 
             # empaquetado y envió a frontend
-            self.latest_payload = {"d": d_limpio, "elapsed": round(elapsed, 3)}
+            self._latest_payload = {"d": d_limpio, "elapsed": round(elapsed, 3)}
 
-            # if self.window:
+            # if self._window:
             #     js_command = f"if(window.receiveDataFromPython) window.receiveDataFromPython({json.dumps(payload)});"
-            #     self.window.evaluate_js(js_command)
+            #     self._window.evaluate_js(js_command)
 
             time.sleep(0.05)
 
@@ -273,8 +273,8 @@ class TelemetryAPI:
         corrupción del archivo de datos.
         """
 
-        self.is_running = False
-        self.db.close()
+        self._is_running = False
+        self._db.close()
 
     def open_releases_page(self):
         """Abre la página oficial de versiones en el navegador."""
@@ -304,10 +304,10 @@ class TelemetryAPI:
     def get_history_sessions(self):
         """Consulta la base de datos segura (.mati) y devuelve las sesiones únicas."""
         try:
-            self.db.cursor_hist.execute(
+            self._db.cursor_hist.execute(
                 "SELECT DISTINCT session_id FROM telemetry_data ORDER BY id DESC"
             )
-            return [row[0] for row in self.db.cursor_hist.fetchall()]
+            return [row[0] for row in self._db.cursor_hist.fetchall()]
         except Exception as e:
             log.error(f"Error al obtener sesiones: {e}")
             return []
@@ -316,8 +316,8 @@ class TelemetryAPI:
         """Recupera todos los registros de una sesión específica del historial."""
         try:
             query = "SELECT Time, G, Steer, Accel, Brake, FL, FR, RL, RR FROM telemetry_data WHERE session_id = ? ORDER BY id ASC"
-            self.db.cursor_hist.execute(query, (session_id,))
-            rows = self.db.cursor_hist.fetchall()
+            self._db.cursor_hist.execute(query, (session_id,))
+            rows = self._db.cursor_hist.fetchall()
 
             # Mapeamos a diccionario respetando tus nombres en singular
             columnas = [
