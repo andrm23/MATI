@@ -6,6 +6,8 @@ import threading
 import logging
 from logging.handlers import RotatingFileHandler
 import urllib.request
+import ssl
+import platform
 from core.env import CARPETA_SEGURA
 
 DISCORD_WEBHOOK_URL = "REEMPLAZAR_WEBHOOK_AQUI"
@@ -40,14 +42,12 @@ def exception_handler(exc_type, exc_value, exc_tb):
 
 
 def send_pending_crashes():
-    if DISCORD_WEBHOOK_URL == "REEMPLAZAR_WEBHOOK_AQUI" or DISCORD_WEBHOOK_URL == "":
+    if "REEMPLAZAR" in DISCORD_WEBHOOK_URL or DISCORD_WEBHOOK_URL == "":
         return
 
     flag_file = os.path.join(CARPETA_SEGURA, "discord_init.flag")
     if not os.path.exists(flag_file):
         try:
-            import ssl
-            import platform
             ctx = ssl.create_default_context()
             ctx.check_hostname = False
             ctx.verify_mode = ssl.CERT_NONE
@@ -79,7 +79,6 @@ def send_pending_crashes():
     sent_errors = 0
     for error_playload in errors_queue:
         try:
-            import ssl
             ctx = ssl.create_default_context()
             ctx.check_hostname = False
             ctx.verify_mode = ssl.CERT_NONE
