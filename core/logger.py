@@ -16,8 +16,9 @@ def get_queue_file_path():
 
 
 def exception_handler(exc_type, exc_value, exc_tb):
+    import platform
     error_details = "".join(traceback.format_exception(exc_type, exc_value, exc_tb))
-    new_error = {"content": f"CRASH MATI:\n```python\n{error_details}\n```"}
+    new_error = {"content": f"CRASH MATI ({platform.node()}):\n```python\n{error_details}\n```"}
     queue_file = get_queue_file_path()
     errors_queue = []
 
@@ -42,6 +43,28 @@ def send_pending_crashes():
     if DISCORD_WEBHOOK_URL == "WEBHOOK_URL" or DISCORD_WEBHOOK_URL == "":
         return
 
+    flag_file = os.path.join(CARPETA_SEGURA, "discord_init.flag")
+    if not os.path.exists(flag_file):
+        try:
+            import ssl
+            import platform
+            ctx = ssl.create_default_context()
+            ctx.check_hostname = False
+            ctx.verify_mode = ssl.CERT_NONE
+            msg = {"content": f"MATI instalado y conectado exitosamente en un nuevo equipo: {platform.system()}"}
+            data = json.dumps(msg).encode("utf-8")
+            req = urllib.request.Request(
+                DISCORD_WEBHOOK_URL,
+                data=data,
+                headers={"Content-Type": "application/json", "User-Agent": "MATI-Logger"},
+            )
+            with urllib.request.urlopen(req, timeout=3, context=ctx):
+                pass
+            with open(flag_file, "w") as f:
+                f.write("ok")
+        except Exception:
+            pass
+
     queue_file = get_queue_file_path()
 
     if not os.path.exists(queue_file):
@@ -56,6 +79,10 @@ def send_pending_crashes():
     sent_errors = 0
     for error_playload in errors_queue:
         try:
+            import ssl
+            ctx = ssl.create_default_context()
+            ctx.check_hostname = False
+            ctx.verify_mode = ssl.CERT_NONE
             data = json.dumps(error_playload).encode("utf-8")
             req = urllib.request.Request(
                 DISCORD_WEBHOOK_URL,
@@ -65,7 +92,7 @@ def send_pending_crashes():
                     "User-Agent": "MATI-Logger",
                 },
             )
-            with urllib.request.urlopen(req, timeout=3):
+            with urllib.request.urlopen(req, timeout=3, context=ctx):
                 pass
             sent_errors += 1
         except urllib.error.URLError:
