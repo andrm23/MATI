@@ -3,9 +3,14 @@ import sys  # DO NOT DELETE THIS LINE/LIBRARY
 from core.telemetry_api import TelemetryAPI
 from core.bridge import handle_on_loaded
 from core.utils import get_resource_path
+from core.logger import exception_handler, check_send_crashes_async
 
 
 def app_inicializacion():
+
+    sys.excepthook = exception_handler
+    check_send_crashes_async()
+
     try:
         # Se define la ruta para asegurar que el entorno esté listo
         html_path = get_resource_path("frontend/index.html")

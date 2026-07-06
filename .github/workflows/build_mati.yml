@@ -3,7 +3,7 @@ name: Build and Public Release
 on:
   push:
     tags:
-      - 'v*' # Se activa con tags como v1.3.5
+      - "v*" # Se activa con tags como v1.3.5
   workflow_dispatch:
 
 jobs:
@@ -15,30 +15,36 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
-          
+          python-version: "3.10"
+
       - name: Install dependencies
         run: pip install pyinstaller pywebview
-      
+
+      - name: Inyectar URL secreta de Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          python -c "import os; content = open('core/logger.py').read(); open('core/logger.py', 'w').write(content.replace('WEBHOOK_AQUI', os.environ.get('DISCORD_WEBHOOK_URL', '')))"
+
       # --- BUILD WINDOWS (Para Andrés) ---
       - name: Build Windows
         if: matrix.os == 'windows-latest'
         # Todo en una sola línea para evitar errores de sintaxis en PowerShell
         run: pyinstaller --noconfirm --windowed --onefile --name "MATI" --icon="frontend/assets/icon.ico" --add-data "frontend;frontend" --add-data "core;core" main.py
-        
+
       - name: Upload Windows to Release
         if: matrix.os == 'windows-latest'
         uses: softprops/action-gh-release@v2
         with:
-          repository: lexrammart/MATI-Releases 
+          repository: lexrammart/MATI-Releases
           token: ${{ secrets.RELEASE_TOKEN }}
           target_commitish: main
           tag_name: ${{ github.ref_name }}
           files: dist/MATI.exe
-          
+
       - name: Build Mac
         if: matrix.os == 'macos-latest'
         run: |
@@ -58,7 +64,7 @@ jobs:
         if: matrix.os == 'macos-latest'
         uses: softprops/action-gh-release@v2
         with:
-          repository: lexrammart/MATI-Releases 
+          repository: lexrammart/MATI-Releases
           token: ${{ secrets.RELEASE_TOKEN }}
           target_commitish: main
           tag_name: ${{ github.ref_name }}
