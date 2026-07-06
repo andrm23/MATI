@@ -20,6 +20,7 @@ def get_queue_file_path():
 def exception_handler(exc_type, exc_value, exc_tb):
     import platform
     error_details = "".join(traceback.format_exception(exc_type, exc_value, exc_tb))
+    log.critical(f"UNHANDLED EXCEPTION:\n{error_details}")
     new_error = {"content": f"CRASH MATI ({platform.node()}):\n```python\n{error_details}\n```"}
     queue_file = get_queue_file_path()
     errors_queue = []
@@ -48,9 +49,7 @@ def send_pending_crashes():
     flag_file = os.path.join(CARPETA_SEGURA, "discord_init.flag")
     if not os.path.exists(flag_file):
         try:
-            ctx = ssl.create_default_context()
-            ctx.check_hostname = False
-            ctx.verify_mode = ssl.CERT_NONE
+            ctx = ssl._create_unverified_context()
             msg = {"content": f"MATI instalado y conectado exitosamente en un nuevo equipo: {platform.system()}"}
             data = json.dumps(msg).encode("utf-8")
             req = urllib.request.Request(
@@ -79,9 +78,7 @@ def send_pending_crashes():
     sent_errors = 0
     for error_playload in errors_queue:
         try:
-            ctx = ssl.create_default_context()
-            ctx.check_hostname = False
-            ctx.verify_mode = ssl.CERT_NONE
+            ctx = ssl._create_unverified_context()
             data = json.dumps(error_playload).encode("utf-8")
             req = urllib.request.Request(
                 DISCORD_WEBHOOK_URL,

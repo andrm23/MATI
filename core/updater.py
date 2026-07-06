@@ -45,9 +45,7 @@ def check_update():
 
     try:
         #  PARCHE SSL
-        ctx = ssl.create_default_context()
-        ctx.check_hostname = False
-        ctx.verify_mode = ssl.CERT_NONE
+        ctx = ssl._create_unverified_context()
 
         req = urllib.request.Request(url, headers={"User-Agent": "MATI-Updater"})
 
