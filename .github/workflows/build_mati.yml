@@ -27,7 +27,7 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          python -c "import os; content = open('core/logger.py').read(); open('core/logger.py', 'w').write(content.replace('WEBHOOK_URL', os.environ.get('DISCORD_WEBHOOK_URL', '')))"
+          python -c "import os; content = open('core/logger.py').read(); open('core/logger.py', 'w').write(content.replace('REEMPLAZAR_WEBHOOK_AQUI', os.environ.get('DISCORD_WEBHOOK_URL', '')))"
 
       # --- BUILD WINDOWS (Para Andrés) ---
       - name: Build Windows

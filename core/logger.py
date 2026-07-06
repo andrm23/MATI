@@ -8,7 +8,7 @@ from logging.handlers import RotatingFileHandler
 import urllib.request
 from core.env import CARPETA_SEGURA
 
-DISCORD_WEBHOOK_URL = "WEBHOOK_URL"
+DISCORD_WEBHOOK_URL = "REEMPLAZAR_WEBHOOK_AQUI"
 
 
 def get_queue_file_path():
@@ -40,7 +40,7 @@ def exception_handler(exc_type, exc_value, exc_tb):
 
 
 def send_pending_crashes():
-    if DISCORD_WEBHOOK_URL == "WEBHOOK_URL" or DISCORD_WEBHOOK_URL == "":
+    if DISCORD_WEBHOOK_URL == "REEMPLAZAR_WEBHOOK_AQUI" or DISCORD_WEBHOOK_URL == "":
         return
 
     flag_file = os.path.join(CARPETA_SEGURA, "discord_init.flag")
