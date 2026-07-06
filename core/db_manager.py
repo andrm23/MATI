@@ -7,6 +7,7 @@ telemetría capturadas y su posterior exportación a formatos estándar.
 """
 
 import sqlite3
+from core.logger import log
 import os
 import csv
 import threading
@@ -41,7 +42,7 @@ class TelemetryDB:
             try:
                 os.remove(DB_NAME)
             except Exception as e:
-                print(f"[ERROR] No se pudo borrar la DB temporal: {e}")
+                log.error(f"No se pudo borrar la DB temporal: {e}")
 
         # Conexión con la DB
         self.conn = sqlite3.connect(DB_NAME, check_same_thread=False)

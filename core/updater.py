@@ -1,4 +1,5 @@
 import urllib.request
+from core.logger import log
 import json
 import ssl
 import os
@@ -56,19 +57,19 @@ def check_update():
         latest_version_tag = data.get("tag_name", "")
 
         # INFO para consola
-        print(f"[*] INFO: La última versión en GitHub es: '{latest_version_tag}'")
+        log.info(f"La última versión en GitHub es: '{latest_version_tag}'")
 
         latest_version = latest_version_tag.replace("v", "").strip(" .")
 
         if not latest_version:
-            print("Advertencia: El tag llegó vacío.")
+            log.warning("Advertencia: El tag llegó vacío.")
             return None
 
         try:
             version_github = tuple(map(int, latest_version.split(".")))
             version_local = tuple(map(int, ACTUAL_VERSION.split(".")))
         except ValueError:
-            print(f"Error matemático: El tag '{latest_version_tag}' no es válido.")
+            log.error(f"Error matemático: El tag '{latest_version_tag}' no es válido.")
             return None
 
         changelog = data.get("body", "Mejoras de rendimiento y telemetría.")
@@ -79,10 +80,10 @@ def check_update():
             return (True, datos_reales)
 
     except urllib.error.HTTPError as e:
-        print(f"[*] ERROR: GitHub respondió con código {e.code}")
+        log.error(f"GitHub respondió con código {e.code}")
     except urllib.error.URLError as e:
-        print(f"[*] INFO: Sin conexión a internet o DNS fallido. Modo offline activo.")
+        log.info("Sin conexión a internet o DNS fallido. Modo offline activo.")
     except Exception as e:
-        print(f"[*] ERROR inesperado en updater: {e}")
+        log.error(f"Error inesperado en updater: {e}")
 
     return None
