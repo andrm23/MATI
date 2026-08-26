@@ -1,0 +1,3 @@
+@echo iff
+echo Iniciando MATI en modo desarrollador...
+watchmedo auto-restart --patterns="*.py;*.html;*.js;*.css" --recursive -- python main.py
