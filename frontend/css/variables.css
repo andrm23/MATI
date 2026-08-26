@@ -6,7 +6,7 @@
     --card-bg: #f5f5f7;
     --track-bg: #FFFFFF;
 
-    [data-theme="light"]{
+    [data-theme="dark"]{
         --bg-color: #0b0b0b;
         --panel-bg: #111;
         --card-bg: #141414;
