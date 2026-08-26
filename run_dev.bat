@@ -1,3 +1,3 @@
-@echo iff
+@echo off
 echo Iniciando MATI en modo desarrollador...
-watchmedo auto-restart --patterns="*.py;*.html;*.js;*.css" --recursive -- python main.py
+venv\Scripts\python.exe -m watchdog.watchmedo auto-restart --patterns=".py;.html;.js;.css" --recursive -- venv\Scripts\python.exe main.py
