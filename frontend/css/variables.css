@@ -1,18 +1,25 @@
 /* variables.css */
 :root {
     /* Paleta de Fondos (Grises Mate) */
-    --bg-color: #0b0b0b;
-    --panel-bg: #111;
-    --card-bg: #141414;
-    --track-bg: #000;
+    --bg-color: #d2d5da;
+    --panel-bg:#EDF0F4;
+    --card-bg: #f5f5f7;
+    --track-bg: #FFFFFF;
+
+    [data-theme="light"]{
+        --bg-color: #0b0b0b;
+        --panel-bg: #111;
+        --card-bg: #141414;
+        --track-bg: #000;
+    }
 
     /* Tipografía y Textos */
-    --text-main: #e0e0e0;
-    --text-muted: #a0a0a0;
+    --text-main: #080808;
+    --text-muted: #000000;
 
     /* Colores de estado */
-    --color-pos: #00cc66;
-    --color-neg: #ff3333;
+    --color-pos: #0cc403;
+    --color-neg: #d61b1b;
     --color-tab: #0055ff;
     --btn-color: var(--color-tab);
 
