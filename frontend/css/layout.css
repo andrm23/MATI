@@ -1,7 +1,7 @@
 .controls-bar {
   position: sticky;
   top: 0;
-  background: rgba(10, 10, 10, 0.95);
+  /* background: rgba(10, 10, 10, 0.95);*/ /*<--se comenta para el light theme*/
   border-bottom: 1px solid var(--border-main);
   padding: 10px 12px;
   display: flex;
@@ -20,7 +20,7 @@
 
 .left-panel {
   position: relative;
-  background: radial-gradient(circle at center, #1a1a1a 0%, var(--track-bg) 100%);
+  background: radial-gradient(circle at center, #b5c0cf 0%, var(--track-bg) 100%); /* dark theme =  #1a1a1a */
   border-right: 1px solid var(--border-main);
   display: flex;
   justify-content: center;

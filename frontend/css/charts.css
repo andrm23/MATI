@@ -60,7 +60,7 @@
 .pedal-val-text {
   font-size: 0.9rem;
   font-family: "Roboto Mono";
-  color: #fff;
+  color: #090909;
   margin-top: 5px;
   width: 60px;
   text-align: center;
@@ -71,7 +71,33 @@
   font-family: "Roboto Mono";
   font-size: 1.6rem;
   font-weight: bold;
-  color: #fff;
+  color: #090909;
+}
+
+[data-theme="dark"]{
+  .rpm-value {
+    font-family: "Roboto Mono";
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #fff;
+  }
+
+.unit-val,
+.pedal-val-text {
+    font-size: 0.9rem;
+    font-family: "Roboto Mono";
+    color: #fff;
+    margin-top: 5px;
+    width: 60px;
+    text-align: center;
+    display: inline-block;
+  }
+
+  .g-value-display .number {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #fff;
+  }
 }
 
 .pedals-container {
@@ -87,6 +113,7 @@
   flex-direction: column;
   align-items: center;
   height: 100%;
+  border: 1px black;
 }
 
 .pedal-fill {
@@ -154,7 +181,7 @@
 .g-value-display .number {
   font-size: 4rem;
   font-weight: 700;
-  color: #fff;
+  color: #090909;
 }
 
 .g-value-display .unit {
@@ -223,6 +250,7 @@
   border-radius: 1px;
   position: relative;
   overflow: hidden;
+  border: 1px solid var(--border-muted);
 }
 
 .charts-grid {

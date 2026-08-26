@@ -34,13 +34,14 @@ function draw(x, y) {
   ctx.clearRect(0, 0, w, h);
 
   // Dibujo de ejes y círculos de referencia (1G, 2G, 3G)
-  ctx.strokeStyle = "#333";
+  ctx.strokeStyle = "#1c1c1c"; // "#333";
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(cx, 0); ctx.lineTo(cx, h);
   ctx.moveTo(0, cy); ctx.lineTo(w, cy);
   ctx.stroke();
 
+  /*numeros indicadores G*/
   ctx.fillStyle = "#444";
   ctx.font = "12px Roboto Mono";
   for (let i = 1; i <= 3; i++) {
@@ -59,7 +60,7 @@ function draw(x, y) {
   // Renderizado de la estela
   if (trail.length > 1) {
     ctx.beginPath();
-    ctx.strokeStyle = "rgba(0,170,255,0.6)";
+    ctx.strokeStyle = "rgb(0, 170, 255)"; //"rgba(0,170,255,0.6)"
     ctx.lineWidth = 5;
     ctx.moveTo(trail[0].x, trail[0].y);
     for (let i = 1; i < trail.length; i++) ctx.lineTo(trail[i].x, trail[i].y);
@@ -68,7 +69,7 @@ function draw(x, y) {
 
   // Punto indicador de posición actual
   ctx.beginPath();
-  ctx.fillStyle = "#f0f0f0";
+  ctx.fillStyle = "#1c1c1c"; //"#f0f0f0
   ctx.arc(sx, sy, 8, 0, Math.PI * 2);
   ctx.fill();
 }
