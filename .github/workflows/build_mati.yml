@@ -29,10 +29,8 @@ jobs:
         run: |
           python -c "import os; content = open('core/logger.py').read(); open('core/logger.py', 'w').write(content.replace('REEMPLAZAR_WEBHOOK_AQUI', os.environ.get('DISCORD_WEBHOOK_URL', '')))"
 
-      # --- BUILD WINDOWS (Para Andrés) ---
       - name: Build Windows
         if: matrix.os == 'windows-latest'
-        # Todo en una sola línea para evitar errores de sintaxis en PowerShell
         run: pyinstaller --noconfirm --windowed --onefile --name "MATI" --icon="frontend/assets/icon.ico" --add-data "frontend;frontend" --add-data "core;core" main.py
 
       - name: Upload Windows to Release
