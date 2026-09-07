@@ -1,5 +1,5 @@
 <h1>
-  <img src="frontend/assets/tira-uamotors.svg" width="200" align="absmiddle" alt="UAMOTORS Logo">
+  <img src="frontend/assets/tira-uamotors.svg" width="175" align="absmiddle" alt="UAMOTORS Logo">
   &nbsp;MATI&nbsp;| Measurement And Telemetry Insights
 </h1>
 
