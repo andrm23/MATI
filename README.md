@@ -1,8 +1,7 @@
-<img src="frontend/assets/tira-uamotors.svg" width="250" align="left" alt="UAMOTORS Logo">
-
-# MATI | Measurement And Telemetry Insights
-
-<br clear="both"/>
+<h1>
+  <img src="frontend/assets/tira-uamotors.svg" width="250" align="absmiddle" alt="UAMOTORS Logo">
+  &nbsp;MATI&nbsp;|&nbsp;Measurement&nbsp;And&nbsp;Telemetry&nbsp;Insights
+</h1>
 
 **MATI** (palabra que significa "saber/conocer" en Náhuatl) es una aplicación de escritorio diseñada como un **Dashboard de Telemetría** para los monoplaza **"OP"** del equipo de **UAMOTORS** de la Universidad Autónoma Metropolitana.
 
