@@ -482,3 +482,54 @@
 .capsule-track, .pedal-track, #steering-wheel svg, #gPlot, .chartWrap {
   transition: opacity 0.5s ease;
 }
+/* --- Indicador de Estado (Pill) --- */
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  border-radius: 20px;
+  background-color: #333;
+  border: 1px solid var(--border-main);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: bold;
+  user-select: none;
+  transition: all 0.3s ease;
+  height: 36px;
+  box-sizing: border-box;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.status-live {
+  color: var(--color-pos);
+}
+
+.status-demo {
+  color: #ffaa00;
+}
+
+.status-history {
+  color: var(--color-tab);
+}
+
+.status-disconnected {
+  color: #888;
+}
+
+.status-live .status-dot,
+.status-demo .status-dot {
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
