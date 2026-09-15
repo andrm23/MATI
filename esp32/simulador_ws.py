@@ -3,11 +3,14 @@ import websockets
 
 
 async def handler():
-    pass
+    try:
+        await websocket.await_closed()
+    except websockets.exceptions.ConnectionClosedOK:
+        pass
 
 
 async def main():
-    pass
+    async with websockets.serve(handler, "0.0.0.0", 81)
 
 
 if __name__ == "__main__":
