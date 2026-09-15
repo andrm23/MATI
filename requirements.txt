@@ -2,3 +2,4 @@
 pywebview==6.1
 sqlcipher3==0.6.2
 watchdog>=4.0.0
+websockets>=12.0

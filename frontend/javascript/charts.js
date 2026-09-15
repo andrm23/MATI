@@ -330,7 +330,11 @@ let frames = 0;
 let fpsEl = null;
 
 function renderChartsLoop(timestamp) {
-  if (isHistoryMode) return;
+  if (isHistoryMode) {
+    // Restablecer estado del bucle
+    isRenderLoopRunning = false;
+    return;
+  }
 
   if (!fpsEl) fpsEl = document.getElementById("fps-counter");
   if (fpsEl && timestamp) {
