@@ -29,7 +29,9 @@ function connect() {
   const ip = document.getElementById("ipInput").value;
   if (ws) ws.close();
 
-  ws = new WebSocket(`ws://${ip}:81`);
+  // Si nos conectamos al simulador local, usamos el puerto 8181 para evitar errores de permisos
+  const port = (ip === "localhost" || ip === "127.0.0.1") ? 8181 : 81;
+  ws = new WebSocket(`ws://${ip}:${port}`);
 
   ws.onopen = () => {
     console.log("Conectado al ESP32/Hardware");

@@ -1,33 +1,49 @@
 import asyncio
+import json
 import websockets
-import logging
-
-logging.basicConfig(level=logging.INFO, format="[SIM]: %(message)s")
+from core.logger import log
 
 
 async def handler(websocket):
     client_ip = websocket.remote_address[0]
-    logging.info(f"Conectado a {client_ip}")
+    log.info(f"[SIM]: Conectado a {client_ip}")
+
+    # Definir valores constantes de prueba
+    datos_prueba = {
+        "g": 1.5, "x": 0.8, "y": -0.8, "phi": 15,
+        "acel": 40, "fren": -10,
+        "fi": 5, "fd": 5, "ti": -5, "td": -5,
+        "tfi": 80, "tfd": 80, "tti": 80, "ttd": 80,
+        "rpmFi": 3500, "rpmFd": 3500, "rpmTi": 3500, "rpmTd": 3500
+    }
+
+    # Convertir diccionario a formato JSON
+    mensaje_json = json.dumps(datos_prueba)
 
     try:
-        await websocket.wait_closed()
-    except Exception:
+        # Enviar datos en bucle a 10Hz
+        while True:
+            await websocket.send(mensaje_json)
+            await asyncio.sleep(0.1)
+    except websockets.exceptions.ConnectionClosed:
         pass
+    except Exception as e:
+        log.error(f"[SIM]: Error inesperado: {e}")
 
-    logging.info(f"Desconectado de {client_ip}")
+    log.info(f"[SIM]: Desconectado de {client_ip}")
 
 
 async def main():
-    host = "0.0.0.0"
-    port = 81
-    logging.info(f"Servidor simulador conectado en ws://127.0.0.1:{port}")
+    host = "localhost"
+    port = 8181
+    log.info(f"[SIM]: Servidor simulador escuchando en ws://{host}:{port}")
 
     async with websockets.serve(handler, host, port):
-        await asyncio.Future()  # Mantiene el script corriendo
+        await asyncio.Future()
 
 
 if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        logging.info("Simulador detenido manualmente (Ctrl+C).")
+        log.info("[SIM]: Simulador detenido manualmente.")
