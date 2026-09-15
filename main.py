@@ -16,6 +16,20 @@ def app_inicializacion():
         html_path = get_resource_path("frontend/index.html")
         TITULO_APP = "MATI"
 
+        # Iniciar simulador de forma silenciosa en el fondo
+        import threading
+        import asyncio
+        from esp32.simulador_ws import main as start_sim
+        
+        def run_sim():
+            # Creamos un nuevo event loop para este hilo
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(start_sim())
+            
+        sim_thread = threading.Thread(target=run_sim, daemon=True)
+        sim_thread.start()
+
         # Instancia del API
         api = TelemetryAPI()
 

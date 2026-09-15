@@ -38,11 +38,14 @@ class TelemetryDB:
         """
         os.makedirs(CARPETA_SEGURA, exist_ok=True)
 
-        if os.path.exists(DB_NAME):
-            try:
-                os.remove(DB_NAME)
-            except Exception as e:
-                log.error(f"No se pudo borrar la DB temporal: {e}")
+        # Borramos la base de datos temporal y sus archivos de registro (WAL/SHM) para evitar corruption (disk I/O error)
+        for ext in ["", "-wal", "-shm"]:
+            filepath = DB_NAME + ext
+            if os.path.exists(filepath):
+                try:
+                    os.remove(filepath)
+                except Exception as e:
+                    log.error(f"No se pudo borrar {filepath}: {e}")
 
         # Conexión con la DB
         self.conn = sqlite3.connect(DB_NAME, check_same_thread=False)
