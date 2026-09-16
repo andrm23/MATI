@@ -16,7 +16,7 @@ jobs:
           
       - name: Install dependencies
         run: |
-          pip install pyinstaller pywebview
+          pip install -r requirements.txt pyinstaller
       
       - name: Build Mac (DEBUG Mode)
         run: |
