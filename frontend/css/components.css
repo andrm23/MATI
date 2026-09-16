@@ -146,7 +146,7 @@
   top: 0; left: 0;
   width: 100%; height: 100%;
   background: rgba(0,0,0,0.8);
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   z-index: 1000;
@@ -159,18 +159,10 @@
   padding: 30px;
   border: 1px solid var(--border-main);
   border-radius: var(--radius-round);
-  max-width: 400px;
-  text-align: center;
-}
-
-#modalHistory .modal-content {
-  background: var(--card-bg);
-  border: 1px solid var(--border-main);
-  color: var(--text-main);
   width: 420px;
   max-width: 90vw;
-  padding: 25px;
-  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
 }
 
 #modalHistory select:focus,
@@ -206,35 +198,10 @@
   background: var(--border-bright);
 }
 
-#csvModal > div {
-    background: var(--card-bg) !important;
-    color: var(--text-main) !important;
-    border-radius: 12px !important; 
-    font-family: 'Roboto', sans-serif !important;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.4) !important;
-    border: 1px solid var(--border-main) !important; 
-    width: 420px !important;
-    padding: 30px !important;
-    text-align: center;
-}
-
-.csv-modal-body {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin: 25px 0;
-    text-align: left;
-}
-
-#csvModal img {
-    border: none !important;       
-    outline: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    width: 74px !important;         
-    height: auto !important;
+.csv-modal-msg-container img {
+    width: 74px;
+    height: auto;
     display: block;
-    opacity: 1 !important;
 }
 
 #csvModalMsg {
@@ -537,11 +504,6 @@
 
 /* --- Modales Generales --- */
 
-/* Ocultar modales por defecto. */
-.modal {
-  display: none;
-}
-
 /* Controlar la fuente de iconos y versión. */
 .mati-icon-font {
   display: flex;
@@ -664,20 +626,6 @@
 }
 
 /* --- Modal: Exportación CSV --- */
-
-/* Configurar el overlay fondo oscuro del modal CSV. */
-#csvModal {
-  display: none;
-  position: fixed;
-  z-index: 9999;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.7);
-  justify-content: center;
-  align-items: center;
-}
 
 /* Alinear el ícono y texto del mensaje de éxito. */
 .csv-modal-msg-container {
