@@ -11,6 +11,9 @@ on:
         required: true
         default: 'beta-test'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     strategy:
