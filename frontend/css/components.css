@@ -153,8 +153,9 @@
 }
 
 .modal-content {
-  font-family: 'Roboto Mono';
-  background: #f0f0f0;
+  font-family: 'Roboto Mono', monospace;
+  background: var(--card-bg);
+  color: var(--text-main);
   padding: 30px;
   border: 1px solid var(--border-main);
   border-radius: var(--radius-round);
@@ -163,16 +164,13 @@
 }
 
 #modalHistory .modal-content {
-  background: #f0f0f0;
+  background: var(--card-bg);
   border: 1px solid var(--border-main);
-  color: #111;
-  max-width: 420px;
+  color: var(--text-main);
+  width: 420px;
+  max-width: 90vw;
   padding: 25px;
   border-radius: 8px;
-}
-
-#modalInfo img {
-  mix-blend-mode: multiply;
 }
 
 #modalHistory select:focus,
@@ -183,12 +181,14 @@
 }
 
 #modalHistory input[type="file"] {
-    color: #333 !important;
-    background: #f9f9f9;
-    padding: 8px;
-    border: 1px solid #ddd;
+    color: var(--text-main) !important;
+    background: var(--track-bg);
+    padding: 6px;
+    border: 1px solid var(--border-muted);
     border-radius: var(--radius-std);
-    font-size: 0.75rem;
+    font-size: 0.85rem;
+    height: 39px;
+    box-sizing: border-box;
 }
 
 #modalHistory input[type="file"]::-webkit-file-upload-button {
@@ -207,14 +207,13 @@
 }
 
 #csvModal > div {
-    background: #f0f0f0 !important;
-    color: #111 !important;
+    background: var(--card-bg) !important;
+    color: var(--text-main) !important;
     border-radius: 12px !important; 
     font-family: 'Roboto', sans-serif !important;
     box-shadow: 0 10px 40px rgba(0,0,0,0.4) !important;
-    border: none !important; 
+    border: 1px solid var(--border-main) !important; 
     width: 420px !important;
-    margin: 20vh auto !important;
     padding: 30px !important;
     text-align: center;
 }
@@ -240,7 +239,7 @@
 
 #csvModalMsg {
     margin-left: 10px;
-    color: #333;
+    color: var(--text-main);
     font-weight: 500;
 }
 
@@ -250,9 +249,10 @@
     font-size: 1.3rem;
     margin-bottom: 20px;
     text-align: center;
-    border-bottom: 2px solid #f0f0f0;
-    padding-bottom: 10px;
-    background: linear-gradient(180deg, #FF0000 0%, #FF1A7D 100%);
+    border-bottom: 2px solid var(--text-main);
+    padding-bottom: 15px;
+    /* Tema Claro: background: linear-gradient(180deg, #FF0000 0%, #FF1A7D 100%); */
+    background: linear-gradient(180deg, #FF3333 0%, #FF3B8C 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -554,14 +554,14 @@
 #app-version {
   color: var(--text-muted);
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   line-height: 1;
 }
 
-/* Dar formato a los textos informativos dentro de los modales claros. */
+/* Dar formato a los textos informativos dentro de los modales. */
 .modal-info-text {
-  font-size: 0.8rem;
-  color: #111;
+  font-size: 0.85rem;
+  color: var(--text-main);
 }
 
 /* Añadir margen superior específico a los textos informativos. */
@@ -569,10 +569,10 @@
   margin-top: 15px;
 }
 
-/* Separar secciones dentro de los modales claros. */
+/* Separar secciones dentro de los modales. */
 .modal-info-divider {
   border: none;
-  border-top: 1px solid #333;
+  border-top: 1px solid var(--border-main);
   margin: 10px 0;
 }
 
@@ -622,9 +622,9 @@
 
 /* Formatear las etiquetas de los formularios. */
 .modal-form-label {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: #555;
+  color: var(--text-main);
   display: block;
   margin-bottom: 5px;
 }
@@ -632,13 +632,15 @@
 /* Estilizar la lista desplegable de sesiones. */
 #historySessionSelect {
   width: 100%;
-  background: #f9f9f9;
-  color: #333;
-  border: 1px solid #ddd;
-  padding: 10px;
+  background: var(--track-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-muted);
+  padding: 8px 10px;
   border-radius: 4px;
   font-family: 'Roboto Mono', monospace;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
+  height: 39px;
+  box-sizing: border-box;
 }
 
 /* Alinear los elementos de carga de archivos. */
@@ -673,6 +675,8 @@
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.7);
+  justify-content: center;
+  align-items: center;
 }
 
 /* Alinear el ícono y texto del mensaje de éxito. */

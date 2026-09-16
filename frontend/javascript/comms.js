@@ -126,8 +126,8 @@ function toggleRecord() {
       const modal = document.getElementById('csvModal');
       const msg = document.getElementById('csvModalMsg');
       if (modal && msg) {
-        msg.innerHTML = `<b>Sesión:</b> ${response.session_id}<br><b>Ruta:</b> ${response.path}`;
-        modal.style.display = 'block';
+        msg.innerHTML = `<b>Sesión:</b> ${response.session_id}<br><br><b>Ruta:</b> ${response.path}`;
+        modal.style.display = 'flex';
       }
     });
 
