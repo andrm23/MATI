@@ -188,11 +188,9 @@
   font-weight: bold;
 }
 
-/* Configurar contenedor del volante con animación de rotación suave. */
 #steering-wheel {
   width: 300px;
   height: 90px;
-  transition: transform 0.1s linear;
 }
 
 /* Dibujar geometría base del volante con trazo exterior. */

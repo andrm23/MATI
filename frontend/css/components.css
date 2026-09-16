@@ -665,6 +665,7 @@
 
 /* Configurar el overlay fondo oscuro del modal CSV. */
 #csvModal {
+  display: none;
   position: fixed;
   z-index: 9999;
   left: 0;

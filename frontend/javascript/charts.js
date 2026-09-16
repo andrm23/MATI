@@ -247,7 +247,7 @@ function buildDatasets(sorted, selectedMetrics) {
       data: sorted.map((row) => ({ x: row.time, y: row[metricKey] })),
       borderColor: COLORS[metricKey] || "#cccccc",
       pointRadius: 0,
-      tension: 0.16,
+      tension: 0,
       borderWidth: 2,
     });
   });
