@@ -1,0 +1,69 @@
+name: Build Beta (Current Repo)
+
+on:
+  workflow_dispatch:
+    inputs:
+      beta_tag:
+        description: 'Nombre de la versión beta (ej. beta-css-cleanup)'
+        required: true
+        default: 'beta-test'
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install pyinstaller pywebview
+
+      - name: Inyectar URL secreta de Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          python -c "import os; content = open('core/logger.py').read(); open('core/logger.py', 'w').write(content.replace('REEMPLAZAR_WEBHOOK_AQUI', os.environ.get('DISCORD_WEBHOOK_URL', '')))"
+
+      - name: Build Windows
+        if: matrix.os == 'windows-latest'
+        run: pyinstaller --noconfirm --windowed --onefile --name "MATI-Beta" --icon="frontend/assets/icon.ico" --add-data "frontend;frontend" --add-data "core;core" main.py
+
+      - name: Build Mac
+        if: matrix.os == 'macos-latest'
+        run: |
+          pyinstaller --noconfirm --windowed --name "MATI-Beta" \
+          --icon="frontend/assets/icon.icns" \
+          --target-arch universal2 \
+          --add-data "frontend:frontend" \
+          --add-data "core:core" \
+          main.py
+
+      - name: Zip Mac App
+        if: matrix.os == 'macos-latest'
+        run: cd dist && zip -r MATI-macOS-Beta.zip MATI-Beta.app
+
+      - name: Upload Windows Beta Release
+        if: matrix.os == 'windows-latest'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.beta_tag }}
+          name: Beta Release ${{ github.event.inputs.beta_tag }}
+          files: dist/MATI-Beta.exe
+          prerelease: true
+          # Al omitir el campo 'repository', se publicará en el repo actual
+
+      - name: Upload Mac Beta Release
+        if: matrix.os == 'macos-latest'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.beta_tag }}
+          name: Beta Release ${{ github.event.inputs.beta_tag }}
+          files: dist/MATI-macOS-Beta.zip
+          prerelease: true
