@@ -1,6 +1,9 @@
 name: Build Beta (Current Repo)
 
 on:
+  push:
+    branches:
+      - 'refactor/css-cleanup-and-theming'
   workflow_dispatch:
     inputs:
       beta_tag:
@@ -53,17 +56,16 @@ jobs:
         if: matrix.os == 'windows-latest'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.event.inputs.beta_tag }}
-          name: Beta Release ${{ github.event.inputs.beta_tag }}
+          tag_name: ${{ github.event.inputs.beta_tag || 'beta-auto' }}
+          name: Beta Release ${{ github.event.inputs.beta_tag || 'beta-auto' }}
           files: dist/MATI-Beta.exe
           prerelease: true
-          # Al omitir el campo 'repository', se publicará en el repo actual
 
       - name: Upload Mac Beta Release
         if: matrix.os == 'macos-latest'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.event.inputs.beta_tag }}
-          name: Beta Release ${{ github.event.inputs.beta_tag }}
+          tag_name: ${{ github.event.inputs.beta_tag || 'beta-auto' }}
+          name: Beta Release ${{ github.event.inputs.beta_tag || 'beta-auto' }}
           files: dist/MATI-macOS-Beta.zip
           prerelease: true
