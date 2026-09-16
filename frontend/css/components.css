@@ -163,11 +163,12 @@
 }
 
 #modalHistory .modal-content {
-  background: var(--card-bg);
+  background: #f0f0f0;
   border: 1px solid var(--border-main);
-  color: #fff;
-  max-width: 450px;
+  color: #111;
+  max-width: 420px;
   padding: 25px;
+  border-radius: 8px;
 }
 
 #modalInfo img {
@@ -532,4 +533,174 @@
   0% { opacity: 1; }
   50% { opacity: 0.3; }
   100% { opacity: 1; }
+}
+
+/* --- Modales Generales --- */
+
+/* Ocultar modales por defecto. */
+.modal {
+  display: none;
+}
+
+/* Controlar la fuente de iconos y versión. */
+.mati-icon-font {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: -2px;
+}
+
+/* Formatear el texto de la versión de la app. */
+#app-version {
+  color: var(--text-muted);
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+/* Dar formato a los textos informativos dentro de los modales claros. */
+.modal-info-text {
+  font-size: 0.8rem;
+  color: #111;
+}
+
+/* Añadir margen superior específico a los textos informativos. */
+.modal-info-text-mt {
+  margin-top: 15px;
+}
+
+/* Separar secciones dentro de los modales claros. */
+.modal-info-divider {
+  border: none;
+  border-top: 1px solid #333;
+  margin: 10px 0;
+}
+
+/* Alinear los logos de las instituciones. */
+.modal-logos {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 15px;
+  align-items: center;
+}
+
+/* Escalar los logos institucionales. */
+.modal-logos img {
+  height: 40px;
+  width: auto;
+}
+
+/* Alinear el área de créditos. */
+.credit-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+/* Ajustar el logo de GitHub en créditos. */
+.github-icon {
+  width: 35px;
+  height: 35px;
+  display: block;
+}
+
+/* Añadir margen al botón de cierre del modal de info. */
+.btn-close-info {
+  margin-top: 20px;
+}
+
+/* --- Modal: Historial --- */
+
+/* Alinear los grupos de formulario en el historial. */
+.modal-form-group {
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+/* Formatear las etiquetas de los formularios. */
+.modal-form-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #555;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Estilizar la lista desplegable de sesiones. */
+#historySessionSelect {
+  width: 100%;
+  background: #f9f9f9;
+  color: #333;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.75rem;
+}
+
+/* Alinear los elementos de carga de archivos. */
+.modal-file-input-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Flexibilizar el input de archivo. */
+#csvFileInput {
+  flex: 1;
+}
+
+/* Centrar los botones de acción del modal. */
+.modal-footer-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* --- Modal: Exportación CSV --- */
+
+/* Configurar el overlay fondo oscuro del modal CSV. */
+#csvModal {
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+}
+
+/* Alinear el ícono y texto del mensaje de éxito. */
+.csv-modal-msg-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+/* Formatear el texto del mensaje de exportación. */
+#csvModalMsg {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-align: left;
+  word-break: break-all;
+  font-family: 'Roboto Mono', monospace;
+}
+
+/* --- Elementos residuales --- */
+
+/* Posicionar el contador de FPS flotante. */
+#fps-counter {
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+  z-index: 9999;
 }

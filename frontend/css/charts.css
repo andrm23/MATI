@@ -224,8 +224,9 @@
   margin-top: 20px;
 }
 
-/* Controlar la columna contenedora de RPM. */
-.rpm-column-wrapper {
+/* Controlar la columna contenedora de RPM y Pedales. */
+.rpm-column-wrapper,
+.pedal-column-wrapper {
   flex: 1;
   display: flex;
   flex-direction: column;
