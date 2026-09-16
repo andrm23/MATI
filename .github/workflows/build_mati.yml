@@ -1,11 +1,9 @@
 name: Build and Public Release
-
 on:
   push:
     tags:
       - "v*" # Se activa con tags como v1.3.5
   workflow_dispatch:
-
 jobs:
   build:
     strategy:
@@ -15,24 +13,19 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
-
       - name: Install dependencies
         run: pip install -r requirements.txt pyinstaller
-
       - name: Inyectar URL secreta de Discord
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           python -c "import os; content = open('core/logger.py').read(); open('core/logger.py', 'w').write(content.replace('REEMPLAZAR_WEBHOOK_AQUI', os.environ.get('DISCORD_WEBHOOK_URL', '')))"
-
       - name: Build Windows
         if: matrix.os == 'windows-latest'
         run: pyinstaller --noconfirm --windowed --onefile --name "MATI" --icon="frontend/assets/icon.ico" --add-data "frontend;frontend" --add-data "core;core" main.py
-
       - name: Upload Windows to Release
         if: matrix.os == 'windows-latest'
         uses: softprops/action-gh-release@v2
@@ -42,22 +35,18 @@ jobs:
           target_commitish: main
           tag_name: ${{ github.ref_name }}
           files: dist/MATI.exe
-
       - name: Build Mac
         if: matrix.os == 'macos-latest'
         run: |
           # Eliminamos --onefile para evitar problemas de descompresión y permisos
           pyinstaller --noconfirm --windowed --name "MATI" \
           --icon="frontend/assets/icon.icns" \
-          --target-arch universal2 \
           --add-data "frontend:frontend" \
           --add-data "core:core" \
           main.py
-
       - name: Zip Mac App
         if: matrix.os == 'macos-latest'
         run: cd dist && zip -r MATI-macOS.zip MATI.app
-
       - name: Upload Mac to Release
         if: matrix.os == 'macos-latest'
         uses: softprops/action-gh-release@v2
