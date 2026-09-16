@@ -204,6 +204,32 @@
   font-weight: bold;
 }
 
+/* Configurar contenedor del volante con animación de rotación suave. */
+#steering-wheel {
+  width: 300px;
+  height: 90px;
+  transition: transform 0.1s linear;
+}
+
+/* Dibujar geometría base del volante con trazo exterior. */
+#steering-wheel svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #555;
+  stroke-width: 4;
+}
+
+/* Definir el color interior del cuerpo del volante. */
+.steering-body {
+  fill: var(--track-center); /* Reemplaza el #1a1a1a que estaba hardcodeado */
+}
+
+/* Definir el color del marcador superior del volante. */
+.steering-marker {
+  fill: #00aaff;
+}
+
 .sensors-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
