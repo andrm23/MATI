@@ -20,7 +20,7 @@
 
 .left-panel {
   position: relative;
-  background: radial-gradient(circle at center, #b5c0cf 0%, var(--track-bg) 100%); /* dark theme =  #1a1a1a */
+  background: radial-gradient(circle at center, var(--track-center) 0%, var(--track-bg) 100%);
   border-right: 1px solid var(--border-main);
   display: flex;
   justify-content: center;
@@ -90,4 +90,49 @@
     border-right: 0;
     border-bottom: 1px solid var(--border-main);
   }
+}
+
+/* --- Header y Barra Superior --- */
+
+/* Controlar la visualización y tipografía del temporizador de grabación. */
+#rec-timer {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.8rem;
+  display: none;
+}
+
+/* Manejar la estructura principal del contenedor de la línea de tiempo. */
+#timeline-container {
+  display: none;
+  flex: 1;
+  align-items: center;
+  gap: 0;
+  margin: 0 10px;
+}
+
+/* Envolver los elementos internos de la línea de tiempo. */
+.timeline-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+}
+
+/* Dar estilo a la etiqueta descriptiva del control de tiempo. */
+.timeline-label {
+  color: var(--text-muted);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* Contener y formatear el valor numérico del tiempo seleccionado. */
+.timeline-value-box {
+  color: var(--text-main);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  width: 100px;
+  text-align: right;
 }

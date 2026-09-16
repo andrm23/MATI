@@ -266,3 +266,32 @@ function resetUiIndicators() {
   updateUI(zeros);
   // clearChartData();
 }
+/**
+ * Actualiza el indicador visual de estado (Pill).
+ * @param {string} mode - Modo actual (LIVE, DEMO, HISTORY, DISCONNECTED).
+ */
+function setAppModeIndicator(mode) {
+  const pill = document.getElementById("status-pill");
+  const text = document.getElementById("status-text");
+  if (!pill || !text) return;
+
+  pill.classList.remove("status-live", "status-demo", "status-history", "status-disconnected");
+
+  switch(mode) {
+    case "LIVE":
+      pill.classList.add("status-live");
+      text.innerText = "EN VIVO";
+      break;
+    case "DEMO":
+      pill.classList.add("status-demo");
+      text.innerText = "MODO DEMO";
+      break;
+    case "HISTORY":
+      pill.classList.add("status-history");
+      text.innerText = "HISTORIAL";
+      break;
+    default:
+      pill.classList.add("status-disconnected");
+      text.innerText = "DESCONECTADO";
+  }
+}

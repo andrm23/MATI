@@ -29,7 +29,9 @@ function connect() {
   const ip = document.getElementById("ipInput").value;
   if (ws) ws.close();
 
-  ws = new WebSocket(`ws://${ip}:81`);
+  // Si nos conectamos al simulador local, usamos el puerto 8181 para evitar errores de permisos
+  const port = (ip === "localhost" || ip === "127.0.0.1") ? 8181 : 81;
+  ws = new WebSocket(`ws://${ip}:${port}`);
 
   ws.onopen = () => {
     console.log("Conectado al ESP32/Hardware");
@@ -37,6 +39,7 @@ function connect() {
     if (typeof setZoomEnabled === 'function') setZoomEnabled(false);
     btnConnect.classList.add("active");
     document.querySelector('.main-container').classList.remove('disconnected-state');
+    if (typeof setAppModeIndicator === 'function') setAppModeIndicator("LIVE");
 
     if (connIcon) connIcon.src = "assets/menu-bar/connect-icon.svg";
     if (typeof startRenderLoop === 'function') startRenderLoop();
@@ -44,7 +47,10 @@ function connect() {
 
   ws.onclose = () => {
     btnConnect.classList.remove("active");
-    if (!isDemoRunning && !isHistoryMode) document.querySelector('.main-container').classList.add('disconnected-state');
+    if (!isDemoRunning && !isHistoryMode) {
+      document.querySelector('.main-container').classList.add('disconnected-state');
+      if (typeof setAppModeIndicator === 'function') setAppModeIndicator("DISCONNECTED");
+    }
     if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg";
     if (!isDemoRunning && typeof stopRenderLoop === 'function') stopRenderLoop();
   };
@@ -52,7 +58,10 @@ function connect() {
 
   ws.onerror = () => {
     btnConnect.classList.remove("active");
-    if (!isDemoRunning && !isHistoryMode) document.querySelector('.main-container').classList.add('disconnected-state');
+    if (!isDemoRunning && !isHistoryMode) {
+      document.querySelector('.main-container').classList.add('disconnected-state');
+      if (typeof setAppModeIndicator === 'function') setAppModeIndicator("DISCONNECTED");
+    }
     if (connIcon) connIcon.src = "assets/menu-bar/disconnect-icon.svg";
     if (!isDemoRunning && typeof stopRenderLoop === 'function') stopRenderLoop();
   };
@@ -117,8 +126,8 @@ function toggleRecord() {
       const modal = document.getElementById('csvModal');
       const msg = document.getElementById('csvModalMsg');
       if (modal && msg) {
-        msg.innerHTML = `<b>Sesión:</b> ${response.session_id}<br><b>Ruta:</b> ${response.path}`;
-        modal.style.display = 'block';
+        msg.innerHTML = `<b>Sesión:</b> ${response.session_id}<br><br><b>Ruta:</b> ${response.path}`;
+        modal.style.display = 'flex';
       }
     });
 
@@ -190,6 +199,8 @@ function startDemo() {
   if (btnDemo) btnDemo.classList.add("active");
   document.querySelector('.main-container').classList.remove('disconnected-state');
   if (demoIcon) demoIcon.src = "assets/menu-bar/stop-icon.svg";
+  
+  if (typeof setAppModeIndicator === 'function') setAppModeIndicator("DEMO");
 
   if (window.pywebview && window.pywebview.api) {
     if (!isRecording) startTime = performance.now();
@@ -215,6 +226,7 @@ function stopDemo() {
   if (typeof ws === 'undefined' || !ws || ws.readyState !== WebSocket.OPEN) {
     document.querySelector('.main-container').classList.add('disconnected-state');
     if (typeof stopRenderLoop === 'function') stopRenderLoop();
+    if (typeof setAppModeIndicator === 'function') setAppModeIndicator("DISCONNECTED");
   }
 
   if (window.pywebview && window.pywebview.api) {

@@ -60,6 +60,7 @@ function displayHistoricalData(data) {
 
   isHistoryMode = true;
   if (typeof setZoomEnabled === 'function') setZoomEnabled(true);
+  if (typeof setAppModeIndicator === 'function') setAppModeIndicator("HISTORY");
   telemetrySeries.length = 0;
   data.forEach(d => telemetrySeries.push(d));
   document.querySelector('.main-container').classList.remove('disconnected-state');

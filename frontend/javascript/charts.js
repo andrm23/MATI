@@ -69,7 +69,7 @@ function draw(x, y) {
 
   // Punto indicador de posición actual
   ctx.beginPath();
-  ctx.fillStyle = "#1c1c1c"; //"#f0f0f0
+  ctx.fillStyle = "#f0f0f0"; // vincular a tema dinámico 
   ctx.arc(sx, sy, 8, 0, Math.PI * 2);
   ctx.fill();
 }
@@ -247,7 +247,7 @@ function buildDatasets(sorted, selectedMetrics) {
       data: sorted.map((row) => ({ x: row.time, y: row[metricKey] })),
       borderColor: COLORS[metricKey] || "#cccccc",
       pointRadius: 0,
-      tension: 0.16,
+      tension: 0,
       borderWidth: 2,
     });
   });
@@ -330,7 +330,11 @@ let frames = 0;
 let fpsEl = null;
 
 function renderChartsLoop(timestamp) {
-  if (isHistoryMode) return;
+  if (isHistoryMode) {
+    // Restablecer estado del bucle
+    isRenderLoopRunning = false;
+    return;
+  }
 
   if (!fpsEl) fpsEl = document.getElementById("fps-counter");
   if (fpsEl && timestamp) {
@@ -470,3 +474,33 @@ function setZoomEnabled(enabled) {
     }
   });
 }
+// Implementar lógica para que las gráficas reaccionen al cambio de tema.
+function updateChartTheme() {
+  /*
+  // ESQUELETO DE AYUDA:
+  // 1. Obtén el color actual del CSS (el navegador calculará el color según el data-theme)
+  // const root = document.documentElement;
+  // const gridColor = getComputedStyle(root).getPropertyValue('--border-muted').trim();
+  // const textColor = getComputedStyle(root).getPropertyValue('--text-muted').trim();
+  // const titleColor = getComputedStyle(root).getPropertyValue('--text-main').trim();
+
+  // 2. Aplica estos colores a todas las gráficas principales y fúerzalas a actualizar
+  // charts.forEach(chart => {
+  //   if (chart.options.scales.x) {
+  //     chart.options.scales.x.grid.color = gridColor;
+  //     chart.options.scales.x.ticks.color = textColor;
+  //     chart.options.scales.x.title.color = titleColor;
+  //   }
+  //   if (chart.options.scales.y) {
+  //     chart.options.scales.y.grid.color = gridColor;
+  //     chart.options.scales.y.ticks.color = textColor;
+  //     chart.options.scales.y.title.color = titleColor;
+  //   }
+  //   if (chart.options.plugins && chart.options.plugins.legend) {
+  //     chart.options.plugins.legend.labels.color = textColor;
+  //   }
+  //   chart.update();
+  // });
+  */
+}
+

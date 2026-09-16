@@ -13,6 +13,11 @@
 
 <body>
   <div class="controls-bar">
+    <div id="status-pill" class="status-pill status-disconnected">
+      <span class="status-dot"></span>
+      <span id="status-text">DESCONECTADO</span>
+    </div>
+    <div class="menu-divider"></div>
     <input type="text" id="ipInput" value="192.168.4.1" size="12" />
     <button id="btn-connect" onclick="connect()" class="tab-button" data-tooltip="CONECTAR">
       <img src="assets/menu-bar/disconnect-icon.svg" alt="CONECTAR" class="menu-icon" id="connect-status-icon">
@@ -24,7 +29,7 @@
     <div class="menu-divider"></div>
     <button id="btnRec" onclick="toggleRecord()" class="tab-button" data-tooltip="GRABAR">REC</button>
     <button id="btnDown" class="btn-download" onclick="downloadCSV()">CSV</button>
-    <span id="rec-timer" style="font-family: 'Roboto Mono'; font-size: 0.8rem; display: none">00:00</span>
+    <span id="rec-timer">00:00</span>
 
     <div class="menu-divider"></div>
     <button id="btn-tab-telemetry" class="tab-button active" onclick="switchTab('telemetry')" data-tooltip="DASHBOARD">
@@ -33,22 +38,23 @@
     <button id="btn-tab-charts" class="tab-button" onclick="switchTab('charts')" data-tooltip="GRÁFICAS">
       <img src="assets/menu-bar/charts-icon.svg" alt="Gráficas" class="menu-icon">
     </button>
+    <button id="btn-theme-toggle" class="tab-button" data-tooltip="TEMA">
+      <!-- Lógica e icono para cambiar el tema claro/oscuro -->
+    </button>
     <button id="btn-history" onclick="toggleHistoryModal()" class="tab-button" data-tooltip="HISTORIAL">
       <img src="assets/menu-bar/history-icon.svg" alt="Historial" class="menu-icon">
     </button>
 
-    <div id="timeline-container" style="display: none; flex: 1; align-items: center; gap: 0; margin: 0 10px;">
-      <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
+    <div id="timeline-container">
+      <div class="timeline-wrapper">
         <div class="menu-divider"></div>
-        <span
-          style="color: var(--color-muted); font-family: 'Roboto Mono'; font-size: 0.9rem; font-weight: bold; white-space: nowrap;">
+        <span class="timeline-label">
           TIEMPO
         </span>
 
         <input type="range" id="historySlider" min="0" value="0" step="0.5">
 
-        <span
-          style="color: #fff; font-family: 'Roboto Mono'; font-size: 0.9rem; white-space: nowrap; width: 100px; text-align: right;">
+        <span class="timeline-value-box">
           <span id="timeline-val">0.0 - 60.0</span>
         </span>
         <div class="menu-divider"></div>
@@ -79,12 +85,12 @@
         <div>
           <div class="section-header">Posición de giro</div>
           <div class="steering-box">
-            <div id="steering-wheel" style="width: 300px; height: 90px; transition: transform 0.1s linear">
-              <svg viewBox="0 0 130 90" style="width: 100%; height: 100%; fill: none; stroke: #555; stroke-width: 4">
+            <div id="steering-wheel">
+              <svg viewBox="0 0 130 90">
                 <path
                   d="M 20 10 H 110 C 120 10 125 20 125 45 C 125 70 120 80 110 80 H 20 C 10 80 5 70 5 45 C 5 20 10 10 20 10 Z"
-                  fill="#1a1a1a"></path>
-                <rect x="55" y="5" width="20" height="10" fill="#00aaff"></rect>
+                  class="steering-body"></path>
+                <rect x="55" y="5" width="20" height="10" class="steering-marker"></rect>
               </svg>
             </div>
             <div class="steering-val" id="phi-val">0.0</div>
@@ -151,20 +157,19 @@
               </div>
             </div>
           </div> -->
-          <div style="flex: 1; display: flex; flex-direction: column; height: 100%;">
+          <div class="pedal-column-wrapper">
             <div class="col-header">Freno / Acelerador</div>
-            <div class="pedals-wrapper"
-              style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+            <div class="pedals-wrapper">
               <div class="pedals-container">
                 <div class="pedal-group">
                   <div class="pedal-track">
-                    <div id="bar-brake" class="pedal-fill" style="background: var(--color-neg)"></div>
+                    <div id="bar-brake" class="pedal-fill"></div>
                   </div>
                   <div id="val-brake" class="pedal-val-text">0.0</div>
                 </div>
                 <div class="pedal-group">
                   <div class="pedal-track">
-                    <div id="bar-throttle" class="pedal-fill" style="background: var(--color-pos)"></div>
+                    <div id="bar-throttle" class="pedal-fill"></div>
                   </div>
                   <div id="val-throttle" class="pedal-val-text">0.0</div>
                 </div>
@@ -172,9 +177,9 @@
             </div>
           </div>
 
-          <div style="flex: 1; display: flex; flex-direction: column; height: 100%;">
+          <div class="rpm-column-wrapper">
             <div class="col-header">RPM</div>
-            <div class="sensor-column-card" style="flex: 1;">
+            <div class="sensor-column-card">
               <div class="sensor-row">
                 <div class="sensor-unit"><span class="unit-label">FI</span><span class="rpm-value" id="rpm-fi">0</span>
                 </div>
@@ -229,89 +234,85 @@
   <script src="javascript/charts.js"></script>
   <script src="javascript/app.js"></script>
 
-  <div id="modalInfo" class="modal" style="display: none;">
+  <div id="modalInfo" class="modal">
     <div class="modal-content">
       <div class="app-branding">
-        <img src="assets/logo-uamotors-redondo.jpg" class="app-icon" alt="MATI">
-        <div class="mati-icon-font" style="display: flex; flex-direction: column; align-items: flex-start; gap: -2px;">
-          <img src="assets/icon-mati-name-tag.png" class="mati-icon" alt="MATI-FONT">
-          <p id="app-version" style="color: var(--text-muted); margin: 0; font-size: 0.8rem; line-height: 1;"></p>
+        <img src="assets/logo-uamotors-redondo.svg" class="app-icon" alt="MATI">
+        <div class="mati-icon-font">
+          <img src="assets/icon-mati-name-tag-blanco.png" class="mati-icon" alt="MATI-FONT">
+          <p id="app-version"></p>
         </div>
       </div>
-      <p style="font-size: 0.8rem; color: black;">Measurement And Telemetry Insights</p>
-      <hr style="border: 1; border-top: 1px solid #333; margin: 10px 0;">
-      <p style="font-size: 0.8rem; color: black">Un proyecto de: <br> UAMOTORS <br> Universidad Autónoma Metropolitana
+      <p class="modal-info-text">Measurement And Telemetry Insights</p>
+      <hr class="modal-info-divider">
+      <p class="modal-info-text">Un proyecto de: <br> UAMOTORS <br> Departamento de Electronics <br> Universidad Autónoma Metropolitana
       </p>
-      <div style="display: flex; justify-content: center; gap: 20px; margin-top: 15px; align-items: center;">
-        <img src="assets/logo-uam.jpg" alt="Logo UAM" style="height: 40px; width: auto;">
-        <img src="assets/logo-uamotors-tira.png" alt="Logo UAMOTORS" style="height: 40px; width: auto;">
+      <div class="modal-logos">
+        <img src="assets/logo-uam-blanco.png" alt="Logo UAM">
+        <img src="assets/logo-uamotors-tira.svg" alt="Logo UAMOTORS">
       </div>
-      <hr style="border: 1; border-top: 1px solid #333; margin: 10px 0;">
-      <p style="font-size: 0.8rem; color: black; margin-top: 15px;">Desarrollado por Andrés M. & Alejandro R.</p>
-      <div class="credit-area"
-        style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px;">
+      <hr class="modal-info-divider">
+      <p class="modal-info-text modal-info-text-mt">Desarrollado por Andrés M. & Alejandro R.</p>
+      <div class="credit-area">
         <div>
-          <img src="assets/icon-github.png" class="github-icon" alt="GitHub Icon"
-            style="width: 35px; height: 35px; display: block;">
+          <img src="assets/icon-github.png" class="github-icon" alt="GitHub Icon">
         </div>
         <div class="credits-column">
           <a href="#" onclick="window.pywebview.api.open_external_link('https://github.com/andrm23')">andrm23</a>
           <a href="#" onclick="window.pywebview.api.open_external_link('https://github.com/lexrammart')">lexrammart</a>
         </div>
       </div>
-      <button onclick="toggleModal()" style="margin-top: 20px;">CERRAR</button>
+      <div class="modal-footer-btns btn-close-info">
+        <button class="btn-modal-history" onclick="toggleModal()">CERRAR</button>
+      </div>
     </div>
   </div>
 
-  <div id="modalHistory" class="modal" style="display: none;">
-    <div class="modal-content"
-      style="max-width: 420px; background: #f0f0f0; color: #111; border-radius: 8px; padding: 25px;">
+  <div id="modalHistory" class="modal">
+    <div class="modal-content">
 
       <h2 class="modal-gradient-title">HISTORIAL DE REGISTROS</h2>
 
-      <div style="margin-bottom: 20px; text-align: left;">
-        <label style="font-size: 0.8rem; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Seleccionar
-          registro:</label>
-        <select id="historySessionSelect"
-          style="width: 100%; background: #f9f9f9; color: #333; border: 1px solid #ddd; padding: 10px; border-radius: 4px; font-family: 'Roboto Mono'; font-size: 0.75rem;">
+      <div class="modal-form-group">
+        <label class="modal-form-label">Seleccionar registro:</label>
+        <select id="historySessionSelect">
           <option value="">Cargando sesiones...</option>
         </select>
       </div>
 
-      <div style="margin-bottom: 25px; text-align: left;">
-        <label style="font-size: 0.8rem; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Cargar
-          archivo (CSV):</label>
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <input type="file" id="csvFileInput" accept=".csv" style="flex: 1;">
+      <div class="modal-form-group">
+        <label class="modal-form-label">Cargar archivo (CSV):</label>
+        <div class="modal-file-input-group">
+          <input type="file" id="csvFileInput" accept=".csv">
           <button class="btn-modal-history clear" onclick="clearCSVSelection()" title="Quitar archivo">✕</button>
         </div>
       </div>
 
-      <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+      <div class="modal-footer-btns">
         <button class="btn-modal-history" onclick="loadHistoryData()">CARGAR</button>
         <button class="btn-modal-history cancel" onclick="toggleHistoryModal()">CANCELAR</button>
       </div>
     </div>
   </div>
 
-  <div id="csvModal"
-    style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.7);">
-    <div class="csv-modal-container">
+  <div id="csvModal" class="modal">
+    <div class="modal-content csv-modal">
       <h2 class="modal-gradient-title">EXPORTACIÓN EXITOSA</h2>
 
-      <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+      <div class="csv-modal-msg-container">
         <img src="assets/csv-icon.svg" alt="Exportación">
 
-        <div id="csvModalMsg"
-          style="font-size:0.85rem; line-height:1.4; text-align: left; word-break:break-all; font-family: 'Roboto Mono';">
+        <div id="csvModalMsg">
         </div>
       </div>
 
-      <button class="btn-csv-accept" onclick="document.getElementById('csvModal').style.display='none'">ACEPTAR</button>
+      <div class="modal-footer-btns">
+        <button class="btn-modal-history" onclick="document.getElementById('csvModal').style.display='none'">ACEPTAR</button>
+      </div>
     </div>
   </div>
 
-  <div id="fps-counter" style="position: fixed; bottom: 5px; right: 5px; font-family: 'Roboto Mono', monospace; font-size: 10px; color: rgba(255, 255, 255, 0.2); pointer-events: none; z-index: 9999;"></div>
+  <div id="fps-counter"></div>
 </body>
 
 </html>
