@@ -59,8 +59,8 @@
 .unit-val,
 .pedal-val-text {
   font-size: 0.9rem;
-  font-family: "Roboto Mono";
-  color: #090909;
+  font-family: "Roboto Mono", monospace;
+  color: var(--text-main);
   margin-top: 5px;
   width: 60px;
   text-align: center;
@@ -68,36 +68,10 @@
 }
 
 .rpm-value {
-  font-family: "Roboto Mono";
+  font-family: "Roboto Mono", monospace;
   font-size: 1.6rem;
   font-weight: bold;
-  color: #090909;
-}
-
-[data-theme="dark"]{
-  .rpm-value {
-    font-family: "Roboto Mono";
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: #fff;
-  }
-
-.unit-val,
-.pedal-val-text {
-    font-size: 0.9rem;
-    font-family: "Roboto Mono";
-    color: #fff;
-    margin-top: 5px;
-    width: 60px;
-    text-align: center;
-    display: inline-block;
-  }
-
-  .g-value-display .number {
-    font-size: 4rem;
-    font-weight: 700;
-    color: #fff;
-  }
+  color: var(--text-main);
 }
 
 .pedals-container {
@@ -122,6 +96,16 @@
   position: absolute;
   border-radius: 1px;
   height: 0%;
+}
+
+/* Aplicar el color de estado al pedal de freno. */
+#bar-brake {
+  background: var(--color-neg);
+}
+
+/* Aplicar el color de estado al pedal del acelerador. */
+#bar-throttle {
+  background: var(--color-pos);
 }
 
 .metric-controls {
@@ -240,7 +224,16 @@
   margin-top: 20px;
 }
 
+/* Controlar la columna contenedora de RPM. */
+.rpm-column-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .sensor-column-card {
+  flex: 1;
   background: var(--card-bg);
   border: 1px solid var(--border-muted);
   border-radius: var(--radius-std);
@@ -267,6 +260,10 @@
   border: 1px solid var(--border-muted);
   border-radius: var(--radius-std);
   padding: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .pedal-track {

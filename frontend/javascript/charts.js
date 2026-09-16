@@ -69,7 +69,7 @@ function draw(x, y) {
 
   // Punto indicador de posición actual
   ctx.beginPath();
-  ctx.fillStyle = "#1c1c1c"; //"#f0f0f0
+  ctx.fillStyle = "#f0f0f0"; // TODO: vincular a tema dinámico 
   ctx.arc(sx, sy, 8, 0, Math.PI * 2);
   ctx.fill();
 }
