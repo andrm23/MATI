@@ -20,7 +20,7 @@
 
 .left-panel {
   position: relative;
-  background: radial-gradient(circle at center, #b5c0cf 0%, var(--track-bg) 100%); /* dark theme =  #1a1a1a */
+  background: radial-gradient(circle at center, var(--track-center) 0%, var(--track-bg) 100%);
   border-right: 1px solid var(--border-main);
   display: flex;
   justify-content: center;

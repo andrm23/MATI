@@ -181,7 +181,7 @@
 .g-value-display .number {
   font-size: 4rem;
   font-weight: 700;
-  color: #090909;
+  color: var(--text-main);
 }
 
 .g-value-display .unit {
