@@ -128,8 +128,8 @@
 }
 
 .metric-btn {
-  background: #1a1a1a;
-  color: #888;
+  background: var(--track-center);
+  color: var(--text-muted);
   border: 1px solid var(--border-main);
   padding: 2px 4px;
   border-radius: var(--radius-std);
@@ -152,7 +152,7 @@
   border-color: var(--btn-color) !important;
   font-weight: bold;
   opacity: 1;
-  background: #111 !important;
+  background: var(--panel-bg) !important;
 }
 
 .g-value-display {
@@ -198,18 +198,18 @@
   width: 100%;
   height: 100%;
   fill: none;
-  stroke: #555;
+  stroke: var(--border-bright);
   stroke-width: 4;
 }
 
 /* Definir el color interior del cuerpo del volante. */
 .steering-body {
-  fill: var(--track-center); /* Reemplaza el #1a1a1a que estaba hardcodeado */
+  fill: var(--track-center); /* Reemplaza el var(--track-center) que estaba hardcodeado */
 }
 
 /* Definir el color del marcador superior del volante. */
 .steering-marker {
-  fill: #00aaff;
+  fill: var(--color-tab);
 }
 
 .sensors-grid {
@@ -288,7 +288,7 @@
 }
 
 .chart-section {
-  background: #111;
+  background: var(--panel-bg);
   border: 1px solid var(--border-main);
   border-radius: var(--radius-round);
   padding: 10px;
@@ -300,7 +300,7 @@
 .chartWrap {
   flex: 1;
   min-height: 0;
-  background: #090909;
+  background: var(--bg-color);
   border-radius: var(--radius-std);
   padding: 5px;
 }

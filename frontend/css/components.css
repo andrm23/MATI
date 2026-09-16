@@ -1,3 +1,21 @@
+/* --- Botones Base --- */
+.tab-button, .btn-info, .btn-modal-history {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-std);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+/* Base de botones de ícono cuadrados */
+.tab-button, .btn-info {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+}
+
 .menu-icon {
   width: 18px;
   height: 18px;
@@ -11,33 +29,23 @@
   padding: 0 10px;       
   vertical-align: middle;
   border: 1px solid var(--border-main);
-  background: #222;     
+  background: var(--border-muted);     
   border-radius: var(--radius-std);
   font-family: "Roboto Mono", monospace;
   font-size: 0.75rem;
-  color: #fff;
+  color: var(--text-main);
 }
 
 .tab-button {
-  width: 36px; 
-  height: 36px; 
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 0.65rem; 
   font-weight: bold;
   border: 1px solid var(--border-main);   
-  border-radius: var(--radius-std);
-  transition: all 0.2s ease;
-  box-sizing: border-box;
 }
 
-.tab-button:hover {
+.tab-button:hover, .btn-info:hover {
   background: rgba(0, 71, 171, 0.15); 
   color: var(--color-tab);                        
   border-color: var(--color-tab);    
-  cursor: pointer;
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
 }
 
@@ -47,7 +55,7 @@
 
 .tab-button.active {
   background: var(--color-tab) !important;
-  color: #ffffff;
+  color: var(--text-main);
   border: 1.5px solid var(--color-tab) !important;
   box-sizing: border-box;
   font-weight: bold;
@@ -76,7 +84,7 @@
 #btnRec:hover {
   background: rgba(255, 51, 51, 0.15); 
   border-color: var(--color-neg);     
-  color: #fff;
+  color: var(--text-main);
   text-shadow: 0 0 8px rgba(255, 51, 51, 0.3);
   box-shadow: 0 0 10px rgba(255, 51, 51, 0.2);
 }
@@ -84,31 +92,19 @@
 #btnRec.active {
   background: var(--color-neg) !important; 
   border-color: var(--color-neg) !important;
-  color: #fff;
+  color: var(--text-main);
   animation: pulse 1.5s infinite;
 }
 
 .btn-info {
-  margin-left: 0 !important;
+  margin-left: 0;
   background: transparent;
   border: 1px solid var(--border-main);
   color: var(--text-main);
   font-size: 1.1rem;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-std);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
 }
 
 .btn-info:hover {
-  background: rgba(0, 71, 171, 0.15); 
-  color: var(--color-tab);
-  border-color: var(--color-tab);
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
   box-shadow: 0 0 10px rgba(0, 71, 171, 0.2);
 }
 
@@ -132,7 +128,7 @@
 }
 
 .btn-rec.recording { 
-  background: #e53935; 
+  background: var(--color-neg); 
   animation: pulse 1.5s infinite; 
 }
 
@@ -185,7 +181,7 @@
 
 #modalHistory input[type="file"]::-webkit-file-upload-button {
   background: var(--border-main);
-  color: #fff;
+  color: var(--text-main);
   border: none;
   padding: 5px 12px;
   border-radius: 3px;
@@ -227,31 +223,28 @@
 
 .btn-modal-history {
     background: var(--border-main); 
-    color: #fff;
-    border: none;
+    color: var(--text-main);
+    border: 1px solid transparent;
     padding: 6px 15px;
-    cursor: pointer;
-    border-radius: var(--radius-std);
     font-weight: 500;
     font-size: 0.75rem;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .btn-modal-history:hover {
     background: var(--border-bright);
+    border-color: #ff3333;
 }
 
 .btn-modal-history.cancel {
-    background: #f0f0f0;
-    color: #666;
+    background: transparent;
+    color: var(--text-muted);
+    border-color: var(--border-muted);
 }
 
 .btn-modal-history.cancel:hover {
-    background: #e0e0e0; 
-    color: #333;
+    background: transparent; 
+    color: #ff3333;
+    border-color: var(--border-muted);
 }
 
 .btn-modal-history.clear {
@@ -279,7 +272,7 @@
 #historySlider::-webkit-slider-runnable-track {
     width: 100%;
     height: 4px;
-    background: linear-gradient(to right, var(--color-tab) var(--slider-progress, 0%), #333 var(--slider-progress, 0%));
+    background: linear-gradient(to right, var(--color-tab) var(--slider-progress, 0%), var(--border-main) var(--slider-progress, 0%));
     border-radius: 5px;
 }
 
@@ -291,7 +284,7 @@
     border-radius: 50%;
     background: var(--color-tab); 
     cursor: pointer;
-    border: 1px solid #666; 
+    border: 1px solid var(--border-muted); 
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
     margin-top: -5px; 
     transition: transform 0.1s ease, box-shadow 0.1s ease;
@@ -339,8 +332,8 @@
 }
 
 .metric-btn {
-  background: #1a1a1a;
-  color: #888;
+  background: var(--track-center);
+  color: var(--text-muted);
   border: 1px solid var(--border-main); 
   padding: 2px 4px;
   border-radius: var(--radius-std);
@@ -355,11 +348,11 @@
 .metric-btn:hover {
   opacity: 1;
   border-color: var(--color-tab) !important;
-  color: #eee;
+  color: var(--text-main);
 }
 
 .metric-btn.active {
-  color: #fff;
+  color: var(--text-main);
   font-weight: bold;
   opacity: 1;
 }
@@ -382,11 +375,11 @@
 }
 
 .credits-column a:hover {
-  background: linear-gradient(180deg, #FF0000 0%, #FF1A7D 100%);
+  background: linear-gradient(180deg, #FF3333 0%, #FF3B8C 100%);
   -webkit-background-clip: text; 
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 5px rgba(255, 26, 125, 0.6));
+  filter: drop-shadow(0 0 5px rgba(255, 59, 140, 0.6));
   padding-left: 1px; 
 }
 
@@ -401,7 +394,7 @@
   left: 50%;
   transform: translateX(-50%) translateY(5px);
   background: rgba(20, 20, 20, 0.95);
-  color: #A0A0A0; 
+  color: var(--text-muted); 
   padding: 6px 10px;
   border-radius: 6px;
   font-size: 0.75rem;
@@ -412,7 +405,7 @@
   transition: opacity 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
   pointer-events: none;
   z-index: 1000;
-  border: 1px solid #333;
+  border: 1px solid var(--border-main);
   box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 [data-tooltip]:hover::after {
@@ -425,7 +418,7 @@
 .menu-divider {
   width: 1px;
   height: 20px;
-  background: var(--border-bright, #444);
+  background: var(--border-bright);
   margin: 0 5px;
 }
 
@@ -451,13 +444,15 @@
   transition: opacity 0.5s ease;
 }
 /* --- Indicador de Estado (Pill) --- */
+
+
 .status-pill {
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 0 12px;
   border-radius: 20px;
-  background-color: #333;
+  background-color: var(--border-main);
   border: 1px solid var(--border-main);
   font-family: 'Roboto Mono', monospace;
   font-size: 0.75rem;
@@ -488,7 +483,7 @@
 }
 
 .status-disconnected {
-  color: #888;
+  color: var(--text-muted);
 }
 
 .status-live .status-dot,

@@ -12,9 +12,9 @@ body {
 
 /* Estilo base para inputs */
 input {
-  background: #222;
+  background: var(--border-muted);
   border: 1px solid var(--border-bright);
-  color: #fff;
+  color: var(--text-main);
   padding: 5px;
   border-radius: var(--radius-std);
   text-align: center;
@@ -22,8 +22,8 @@ input {
 
 /* Estilo base para botones */
 button {
-  background: #333;
-  color: #fff;
+  background: var(--border-main);
+  color: var(--text-main);
   border: none;
   padding: 6px 10px;
   cursor: pointer;
