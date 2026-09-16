@@ -31,28 +31,51 @@
     --radius-round: 8px;   
 }
 
-/* Reservar paleta de colores para futura implementación del tema claro. */
-/*
+/* Implementar paleta de colores para el tema claro */
 [data-theme="light"] {
-    --bg-color: #d6e0f0;
-    --panel-bg: #d6e0f0d6;
-    --card-bg: #d6e0f0;
-    --track-bg: #d6e0f0;
-    --track-center: #b5c0cf;
+    /* Paleta de fondos */
+    --bg-color: ;
+    --panel-bg: ;
+    --card-bg: ;
+    --track-bg: ;
+    --track-center: ;
 
-    --text-main: #1c1c1c;
-    --text-muted: #1c1c1c;
+    /* Tipografía y textos */
+    --text-main: ;
+    --text-muted: ;
 
-    --color-pos: #0cc403;
-    --color-neg: #d61b1b;
-    --color-tab: #0055ff;
-    --btn-color: var(--color-tab);
+    /* Colores de estado */
+    --color-pos: ;
+    /* Se recomienda utilizar #FF0000 para títulos en este tema por su contraste */
+    --color-neg: ;
+    --color-tab: ;
+    --btn-color: ;
 
-    --border-main: #3d3a3a;       
-    --border-muted: #787878;      
-    --border-bright: #151313;
+    /* Bordes y líneas */
+    --border-main: ;       
+    --border-muted: ;      
+    --border-bright: ;
 
-    --bg-hover: #b5c0cf;
-    --shadow-modal: rgba(255, 255, 255, 0.938);
+    /* Estados y hovers */
+    --bg-hover: ;
+    --shadow-modal: ;
 }
+
+/* 
+  Respaldo de los colores originales para referencia:
+  --bg-color: #d6e0f0;
+  --panel-bg: #d6e0f0d6;
+  --card-bg: #d6e0f0;
+  --track-bg: #d6e0f0;
+  --track-center: #b5c0cf;
+  --text-main: #1c1c1c;
+  --text-muted: #1c1c1c;
+  --color-pos: #0cc403;
+  --color-neg: #d61b1b;
+  --color-tab: #0055ff;
+  --border-main: #3d3a3a;       
+  --border-muted: #787878;      
+  --border-bright: #151313;
+  --bg-hover: #b5c0cf;
+  --shadow-modal: rgba(255, 255, 255, 0.938);
 */
