@@ -64,10 +64,14 @@ def check_update():
             return None
 
         try:
-            version_github = tuple(map(int, latest_version.split(".")))
-            version_local = tuple(map(int, ACTUAL_VERSION.split(".")))
+            # Limpiar sufijos (ej: "1.7.0-FSAE" -> "1.7.0") tomando solo la parte antes del guion o espacio
+            clean_github = latest_version.split("-")[0].split(" ")[0]
+            clean_local = ACTUAL_VERSION.split("-")[0].split(" ")[0]
+            
+            version_github = tuple(map(int, clean_github.split(".")))
+            version_local = tuple(map(int, clean_local.split(".")))
         except ValueError:
-            log.error(f"Error matemático: El tag '{latest_version_tag}' no es válido.")
+            log.error(f"Error matemático evaluando versiones: github='{latest_version}', local='{ACTUAL_VERSION}'")
             return None
 
         changelog = data.get("body", "Mejoras de rendimiento y telemetría.")

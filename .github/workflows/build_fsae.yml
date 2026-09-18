@@ -1,0 +1,75 @@
+name: Build FSAE Release
+
+on:
+  push:
+    branches:
+      - feat/light-theme-implementation
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install pyinstaller pywebview
+
+      - name: Inyectar URL secreta de Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        # Se reemplaza bash script por python inline para compatibilidad cross-platform
+        run: |
+          python -c "import os; content = open('core/logger.py').read(); open('core/logger.py', 'w').write(content.replace('REEMPLAZAR_WEBHOOK_AQUI', os.environ.get('DISCORD_WEBHOOK_URL', '')))"
+
+      - name: Leer versión y preparar tags
+        shell: bash
+        run: |
+          RAW_VER=$(cat core/version.txt)
+          # Reemplazar espacios por guiones para que sea un Git Tag válido
+          CLEAN_TAG=$(echo "$RAW_VER" | tr ' ' '-')
+          echo "VERSION_NAME=$RAW_VER" >> $GITHUB_ENV
+          echo "TAG_NAME=$CLEAN_TAG" >> $GITHUB_ENV
+
+      - name: Build Windows
+        if: matrix.os == 'windows-latest'
+        run: pyinstaller --noconfirm --windowed --onefile --name "MATI" --icon="frontend/assets/icon.ico" --add-data "frontend;frontend" --add-data "core;core" main.py
+
+      - name: Build Mac
+        if: matrix.os == 'macos-latest'
+        run: |
+          pyinstaller --noconfirm --windowed --name "MATI" \
+          --icon="frontend/assets/icon.icns" \
+          --target-arch universal2 \
+          --add-data "frontend:frontend" \
+          --add-data "core:core" \
+          main.py
+
+      - name: Zip Mac App
+        if: matrix.os == 'macos-latest'
+        run: cd dist && zip -r MATI-macOS.zip MATI.app
+
+      - name: Upload Windows Release
+        if: matrix.os == 'windows-latest'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          name: MATI ${{ env.VERSION_NAME }}
+          files: dist/MATI.exe
+          prerelease: false
+
+      - name: Upload Mac Release
+        if: matrix.os == 'macos-latest'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          name: MATI ${{ env.VERSION_NAME }}
+          files: dist/MATI-macOS.zip
+          prerelease: false
