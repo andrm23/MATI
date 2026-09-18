@@ -69,7 +69,7 @@ function draw(x, y) {
 
   // Punto indicador de posición actual
   ctx.beginPath();
-  ctx.fillStyle = "#f0f0f0"; // vincular a tema dinámico 
+  ctx.fillStyle = "#001329"; // vincular a tema dinámico 
   ctx.arc(sx, sy, 8, 0, Math.PI * 2);
   ctx.fill();
 }
@@ -119,7 +119,7 @@ function chartOptions() {
           color: "#000000" // leyenda tiempo en gráficas
         },
         ticks: {
-          color: "#adadad",
+          color: "#000000", //"#adadad"
           callback: function (value) {
             if (typeof formatTelemetryTime === 'function') {
               return formatTelemetryTime(value);
@@ -135,8 +135,8 @@ function chartOptions() {
       },
       y: {
         title: { display: true, text: "Valor", color: "#d0d0d0" },
-        ticks: { color: "#adadad" },
-        grid: { color: "#222" }
+        ticks: { color: "#050505" },  //"#adadad"
+        grid: { color: "#030303" }       // #222
       },
     },
     plugins: {

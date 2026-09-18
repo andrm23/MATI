@@ -57,8 +57,9 @@ let isHistoryMode = false;
  * @constant {Object}
  */
 const COLORS = {
-  g: "#00d1ff", phi: "#8b5cf6", acel: "#00cc66", fren: "#ff3333",
-  fi: "#FBBF24", fd: "#f97316", ti: "#3b82f6", td: "#ec4899",
+  //g: "#00d1ff", phi: "#8b5cf6", acel: "#00cc66", fren: "#ff3333"
+  g: "#01728b", phi: "#8b5cf6", acel: "#00c462", fren: "#ff3333",
+  fi: "#eeab00", fd: "#f06400", ti: "#ce0089", td: "#d15392",
   tfi: "#ff7849", tfd: "#ff8f4c", tti: "#ff5f55", ttd: "#ff3b47",
   // pfi: "#8ab4ff", pfd: "#6fa0ff", pti: "#5a91ff", ptd: "#3f7fff",
 };
