@@ -23,7 +23,7 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: pip install pyinstaller pywebview
+        run: pip install pyinstaller pywebview websockets
 
       - name: Inyectar URL secreta de Discord
         env:
@@ -63,8 +63,11 @@ jobs:
         if: matrix.os == 'windows-latest'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ env.TAG_NAME }}
-          name: MATI ${{ env.VERSION_NAME }}
+          repository: UAMOTORS/MATI-Releases
+          token: ${{ secrets.MATI_RELEASE_TOKEN }}
+          target_commitish: main
+          tag_name: "v1.7.0"
+          name: "MATI ${{ env.VERSION_NAME }}"
           files: dist/MATI.exe
           prerelease: false
 
@@ -72,7 +75,10 @@ jobs:
         if: matrix.os == 'macos-latest'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ env.TAG_NAME }}
-          name: MATI ${{ env.VERSION_NAME }}
+          repository: UAMOTORS/MATI-Releases
+          token: ${{ secrets.MATI_RELEASE_TOKEN }}
+          target_commitish: main
+          tag_name: "v1.7.0"
+          name: "MATI ${{ env.VERSION_NAME }}"
           files: dist/MATI-macOS.zip
           prerelease: false
