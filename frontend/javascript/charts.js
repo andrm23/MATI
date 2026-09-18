@@ -116,7 +116,7 @@ function chartOptions() {
         title: {
           display: true,
           text: "TIEMPO ᴍᴍ:ss",
-          color: "#d0d0d0"
+          color: "#000000" // leyenda tiempo en gráficas
         },
         ticks: {
           color: "#adadad",

@@ -1,5 +1,5 @@
 /* Definir variables globales de estilo por defecto (Tema oscuro). */
-:root {
+[data-theme="light"]  {
     /* Paleta de fondos oscuros */
     --bg-color: #0b0b0b;
     --panel-bg: #111;
@@ -32,33 +32,33 @@
 }
 
 /* Implementar paleta de colores para el tema claro */
-[data-theme="light"] {
+:root {
     /* Paleta de fondos */
-    --bg-color: ;
-    --panel-bg: ;
-    --card-bg: ;
-    --track-bg: ;
-    --track-center: ;
+    --bg-color: #d6e0f0;
+    --panel-bg: #d6e0f0d6;
+    --card-bg: #d6e0f0;
+    --track-bg: #d6e0f0;
+    --track-center: #b5c0cf;
 
     /* Tipografía y textos */
-    --text-main: ;
-    --text-muted: ;
+    --text-main: #1c1c1c;
+    --text-muted: #1c1c1c;
 
     /* Colores de estado */
-    --color-pos: ;
+    --color-pos: #0cc403;
     /* Se recomienda utilizar #FF0000 para títulos en este tema por su contraste */
-    --color-neg: ;
-    --color-tab: ;
-    --btn-color: ;
+    --color-neg: #d61b1b;
+    --color-tab: #0055ff;
+    --btn-color: var(--color-tab);
 
     /* Bordes y líneas */
-    --border-main: ;       
-    --border-muted: ;      
-    --border-bright: ;
+    --border-main: #3d3a3a;      
+    --border-muted: #787878;      
+    --border-bright: #151313;
 
     /* Estados y hovers */
-    --bg-hover: ;
-    --shadow-modal: ;
+    --bg-hover: #b5c0cf;
+    --shadow-modal: rgba(255, 255, 255, 0.938);
 }
 
 /* 
