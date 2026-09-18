@@ -23,7 +23,9 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: pip install pyinstaller pywebview websockets
+        run: |
+          pip install pyinstaller pywebview
+          pip install --no-binary websockets websockets
 
       - name: Inyectar URL secreta de Discord
         env:
