@@ -1,5 +1,5 @@
 /* Definir variables globales de estilo por defecto (Tema oscuro). */
-[data-theme="light"]  {
+:root {
     /* Paleta de fondos oscuros */
     --bg-color: #0b0b0b;
     --panel-bg: #111;
@@ -32,7 +32,7 @@
 }
 
 /* Implementar paleta de colores para el tema claro */
-:root {
+[data-theme="light"]  {
     /* Paleta de fondos */
     --bg-color: #d6e0f0;
     --panel-bg: #d6e0f0d6;
@@ -48,7 +48,7 @@
     --color-pos: #0cc403;
     /* Se recomienda utilizar #FF0000 para títulos en este tema por su contraste */
     --color-neg: #d61b1b;
-    --color-tab: #0055ff;
+    --color-tab: #0055ffe8;
     --btn-color: var(--color-tab);
 
     /* Bordes y líneas */
@@ -79,3 +79,90 @@
   --bg-hover: #b5c0cf;
   --shadow-modal: rgba(255, 255, 255, 0.938);
 */
+
+/* --- FIX DE IMÁGENES PARA TEMA CLARO --- */
+/* Invertir a negro los iconos y textos que son blancos por defecto (excepto GitHub) */
+[data-theme="light"] .mati-icon,
+[data-theme="light"] .modal-logos img:first-child,
+[data-theme="light"] .csv-modal-msg-container img {
+    filter: brightness(0);
+}
+
+/* Remover el invert(0.8) de los iconos del menú para que sean negros */
+[data-theme="light"] .menu-icon {
+    filter: none;
+}
+
+/* Tira de UAMOTORS: Cargar la variante del logo en negro y rojo puro */
+[data-theme="light"] .modal-logos img:nth-child(2) {
+    content: url('../assets/logo-uamotors-tira-claro.svg');
+}
+
+/* --- FIX BOTONES DE MODAL PARA TEMA CLARO --- */
+[data-theme="light"] .btn-modal-history {
+    background: #ffffff; /* Botón blanco limpio */
+    color: var(--text-main);
+    border: 1px solid var(--border-muted);
+}
+
+[data-theme="light"] .btn-modal-history:hover {
+    background: rgba(214, 27, 27, 0.1); /* Fondo rojizo muy sutil para que contraste el texto rojo */
+    border-color: var(--color-neg);
+    color: var(--color-neg);
+}
+
+[data-theme="light"] .btn-modal-history.cancel {
+    background: transparent;
+    color: var(--text-muted);
+    border-color: var(--border-muted);
+}
+
+[data-theme="light"] .btn-modal-history.cancel:hover {
+    background: rgba(214, 27, 27, 0.05);
+    color: var(--color-neg);
+    border-color: var(--color-neg);
+}
+
+[data-theme="light"] .btn-modal-history.clear {
+    background: var(--color-neg);
+    color: #ffffff; /* Texto blanco sobre fondo rojo */
+    border: none;
+}
+
+[data-theme="light"] .btn-modal-history.clear:hover {
+    background: #b71c1c; 
+    color: #ffffff;
+}
+
+/* Adaptar botón de subida de archivo (Choose File) para tema claro */
+[data-theme="light"] #modalHistory input[type="file"]::-webkit-file-upload-button {
+    background: #ffffff;
+    color: var(--text-main);
+    border: 1px solid var(--border-muted);
+}
+
+[data-theme="light"] #modalHistory input[type="file"]::-webkit-file-upload-button:hover {
+    background: rgba(214, 27, 27, 0.1);
+    border-color: var(--color-neg);
+    color: var(--color-neg);
+}
+
+/* --- FIX BARRA SUPERIOR PARA TEMA CLARO --- */
+[data-theme="light"] .controls-bar button,
+[data-theme="light"] .controls-bar input {
+    background-color: #ffffff;
+    border: 1px solid var(--border-muted);
+    color: var(--text-main);
+}
+
+[data-theme="light"] .status-pill {
+    background-color: #ffffff;
+    border: 1px solid var(--border-muted);
+    /* No sobreescribir el color aquí para que .status-live, .status-demo, etc. funcionen */
+}
+
+/* Mantener el texto blanco cuando los botones están activos (con fondo azul o rojo) */
+[data-theme="light"] .controls-bar .tab-button.active,
+[data-theme="light"] .controls-bar #btnRec.active {
+    color: #ffffff !important;
+}
