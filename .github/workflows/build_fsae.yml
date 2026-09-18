@@ -45,7 +45,7 @@ jobs:
 
       - name: Build Windows
         if: matrix.os == 'windows-latest'
-        run: pyinstaller --noconfirm --windowed --onefile --name "MATI" --icon="frontend/assets/icon.ico" --add-data "frontend;frontend" --add-data "core;core" main.py
+        run: pyinstaller --noconfirm --windowed --onefile --name "MATI" --icon="frontend/assets/icon.ico" --hidden-import="websockets" --add-data "frontend;frontend" --add-data "core;core" main.py
 
       - name: Build Mac
         if: matrix.os == 'macos-latest'
@@ -53,6 +53,7 @@ jobs:
           pyinstaller --noconfirm --windowed --name "MATI" \
           --icon="frontend/assets/icon.icns" \
           --target-arch universal2 \
+          --hidden-import="websockets" \
           --add-data "frontend:frontend" \
           --add-data "core:core" \
           main.py
